@@ -64,13 +64,14 @@ chart_element = ChartModule([{"Label": "Person", "Color": ADULT},
                              {"Label": "Victim", "Color": VICTIM}])
 another_chart = ChartModule([{"Label": "Stress", "Color": AGGRESSOR}])
 
-model_params = {"initial_families": UserSettableParameter('slider', 'Initial Families', 50, 5, 500),
+model_params = {"model_scale": UserSettableParameter('slider', 'Model Scale', 1000, 100, 2000),
+                "initial_families": UserSettableParameter('slider', 'Initial Families', 500, 20, 1000),
                 "gender_stress": UserSettableParameter('slider', "Male Gender Stress", 0.80, 0.1, 1.0, 0.05),
                 "is_working_pct": UserSettableParameter('slider', 'Percentage Employed', 0.9, 0.01, 1.0, 0.01),
                 "chance_changing_working_status": UserSettableParameter('slider', 'Chance of Changing Working Status',
-                                                                        0.4, 0.1, 1.0, 0.05),
+                                                                        0.05, 0.05, 1.0, 0.05),
                 "pct_change_wage": UserSettableParameter('slider', 'Percentage of Changing Wage Chance',
-                                                         0.5, 0.1, 1.0, 0.05)
+                                                         0.05, 0.05, 1.0, 0.05)
                 }
 
 server = ModularServer(Home, [canvas_element, chart_element, another_chart], "Home Violence", model_params)

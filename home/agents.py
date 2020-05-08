@@ -1,7 +1,6 @@
 from mesa.agent import Agent
 
 
-GENERAL_ADJUSTMENT = 1000
 ITEM_SPECIFIC_ADJUSTMENT = 10
 
 HIGH = 10
@@ -90,17 +89,17 @@ class Person(Agent):
         # House size: higher the wage or smaller the wage per person, less contribution to stress
         tmp += 1 - (self.wage / self.num_members_family) * MEDIUM
         # Education
-        tmp += 1 - (self.years_study / ITEM_SPECIFIC_ADJUSTMENT) * HIGH
+        tmp += 1 - (self.years_study / (self.model.model_scale ** (1/3))) * HIGH
         # Home permanence
         tmp += self.hours_home * MEDIUM
         # History of assault
-        tmp += self.assaulted / ITEM_SPECIFIC_ADJUSTMENT * HIGH
+        tmp += self.assaulted / (self.model.model_scale ** (1/3)) * HIGH
         # Access to weapon
         tmp += 1 * HIGH if self.has_gun else 0
         # Chemical dependence
         tmp += 1 * self.model.random.random() * HIGH if self.under_influence else 0
         # General effect adjustment
-        tmp /= GENERAL_ADJUSTMENT
+        tmp /= self.model.model_scale
         self.stress = tmp
 
     def trigger_violence(self):
@@ -123,6 +122,9 @@ class Person(Agent):
             self.spouse.got_attacked += 1
 
     def trigger_call_help(self):
+        # TODO: implement dissuassion, ethnicity
+        # TODO: check two scenarios, restrict attack to male, calculate family wage and use it
+        # TODO: import family creation from data.
         pass
 
 

@@ -33,7 +33,8 @@ class Home(Model):
                  gender_stress=0.80,
                  is_working_pct=0.80,
                  chance_changing_working_status=0.05,
-                 pct_change_wage=0.05):
+                 pct_change_wage=0.05,
+                 model_scale=1000):
         """
         Create a new Guns model with the given parameters.
 
@@ -52,6 +53,7 @@ class Home(Model):
         self.is_working_pct = is_working_pct
         self.chance_changing_working_status = chance_changing_working_status
         self.pct_change_wage = pct_change_wage
+        self.model_scale = model_scale
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
