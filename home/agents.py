@@ -85,9 +85,9 @@ class Person(Agent):
         # Salary
         tmp += (1 - self.wage) * HIGH
         # Neighborhood quality
-        tmp += (1 - self.wage) * MEDIUM
+        tmp += -self.family.family_wage * MEDIUM
         # House size: higher the wage or smaller the wage per person, less contribution to stress
-        tmp += 1 - (self.wage / self.num_members_family) * MEDIUM
+        tmp += 1 - (self.family.family_wage / self.num_members_family) * MEDIUM
         # Education
         tmp += 1 - (self.years_study / (self.model.model_scale ** (1/3))) * HIGH
         # Home permanence
@@ -108,6 +108,11 @@ class Person(Agent):
         """
         self.update_stress()
 
+        # Restrict aggression to male partners
+        if self.got_attacked == 'female':
+            # Stop!
+            return
+
         # First time offender get registered in the system and changes class as an Aggressor and a Victim
         if self.assaulted == 0:
             if self.stress > self.random.random():
@@ -122,8 +127,8 @@ class Person(Agent):
             self.spouse.got_attacked += 1
 
     def trigger_call_help(self):
-        # TODO: implement dissuassion, ethnicity
-        # TODO: check two scenarios, restrict attack to male, calculate family wage and use it
+        # TODO: implement dissuasion, ethnicity
+        # TODO: check two scenarios
         # TODO: import family creation from data.
         pass
 
@@ -138,6 +143,7 @@ class Family(Agent):
         self.pos = pos
         self.context_stress = 0
         self.members = dict()
+        self.family_wage = 0
 
     def add_agent(self, agent):
         self.members[agent.unique_id] = agent
@@ -151,8 +157,10 @@ class Family(Agent):
         # Likelihood of triggering aggression
         # New values
         stress = 0
-        for agents in self.members.values():
-            stress += agents.stress
+        self.family_wage = 0
+        for agent in self.members.values():
+            stress += agent.stress
+            self.family_wage += agent.wage
         self.context_stress = stress / len(self.members)
 
 
