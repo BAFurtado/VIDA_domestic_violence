@@ -1,6 +1,14 @@
 from mesa.agent import Agent
 
 
+GENERAL_ADJUSTMENT = 100
+ITEM_SPECIFIC_ADJUSTMENT = 10
+
+HIGH = 10
+MEDIUM = 5
+LOW = 1
+
+
 class Person(Agent):
     """
     A person who lives within a family, incurs in chance of suffering violence.
@@ -26,8 +34,6 @@ class Person(Agent):
         self.reserve_wage = reserve_wage
         self.under_influence = under_influence
         self.wage = wage
-        # Include: escolaridade (autor e vitima), posse de arma, dependencia quimica,
-        # Dissuassão:
         self.spouse = None
         self.got_attacked = 0
         self.assaulted = 0
@@ -69,18 +75,32 @@ class Person(Agent):
         agent.spouse = self
 
     def update_stress(self):
+        # Although all adults stress is updated, only 'males' are aggressors
         self.step_change()
-        # Update num_members_family
-        self.num_members_family = len(self.family.members)
 
         # Update stress based on gender, wage level, hours at home, family size and history of violence
         # Check new table of influences
-        # Wage influences neighborhood_influence and house_size
+        # Wage influences neighborhood_quality and house_size
+        # Gender
         tmp = self.model.gender_stress if self.gender == 'male' else 1 - self.model.gender_stress
-        tmp *= (1 - self.wage)
-        tmp *= self.hours_home
-        tmp **= 1/self.num_members_family
-        tmp **= 1/(1 + self.assaulted)
+        # Salary
+        tmp += (1 - self.wage)
+        # Neighborhood quality
+        tmp += (1 - self.wage)
+        # House size
+        tmp += self.wage / self.num_members_family
+        # Education
+        tmp += (1 - self.years_study / ITEM_SPECIFIC_ADJUSTMENT)
+        # Home permanence
+        tmp += self.hours_home
+        # History of assault
+        tmp += self.assaulted / ITEM_SPECIFIC_ADJUSTMENT
+        # Access to weapon
+        tmp += 1 if self.has_gun else 0
+        # Chemical dependence
+        tmp += 1 * self.model.random.random() if self.under_influence else 0
+        # Effect adjustment
+        tmp /= GENERAL_ADJUSTMENT
         self.stress = tmp
 
     def trigger_violence(self):
@@ -136,7 +156,7 @@ class Family(Agent):
 
 if __name__ == '__main__':
     # Bernardo's debugging model
-    from home_violence.home.model import Home
+    from home.model import Home
     m1 = Home()
     bob = m1.schedule.agents[0]
     maria = m1.schedule.agents[1]
