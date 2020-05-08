@@ -7,16 +7,24 @@ class Person(Agent):
 
     """
 
-    def __init__(self, unique_id, model, pos, gender='male', age=25, is_working=False, wage=0, reserve_wage=.5,
-                 category='person'):
+    def __init__(self, unique_id, model, pos, gender='male', age=25, color='negra',
+                 years_study=6, has_gun=False, is_working=False,
+                 wage=0, reserve_wage=.5, under_influence=False,
+                 category='person', denounce=False, condemnation=False,
+                 knowledge_protection=False, knowledge_condemnation=False):
         super().__init__(unique_id, model)
         self.pos = pos
         self.gender = gender
+        # Higher incidence of atack by 15-29. Victims 20-50
         self.age = age
-        # Alterar idade
-        # Etnia: negra +30%
+        # H: Ethnicity influences victimization, likelihood increases 30%
+        self.color = color
+        # H: Education less than 6, likelihood increases 60%
+        self.years_study = years_study
+        self.has_gun = has_gun
         self.is_working = is_working
         self.reserve_wage = reserve_wage
+        self.under_influence = under_influence
         self.wage = wage
         # Include: escolaridade (autor e vitima), posse de arma, dependencia quimica,
         # Dissuassão:
@@ -25,10 +33,15 @@ class Person(Agent):
         self.assaulted = 0
         self.hours_home = .34 if self.is_working else .67
         self.family = None
-        # Numero de quartos/dividido numero de filhos
+        # Correlate wage and numbers of family: likelihood that people by room is relevant
         self.num_members_family = 1
         self.stress = 0
         self.category = category
+        # Measures of dissuasion
+        self.denounce = denounce
+        self.condemnation = condemnation
+        self.knowledge_protection = knowledge_protection
+        self.knowledge_condemnation = knowledge_condemnation
 
     def step(self):
         """
@@ -61,6 +74,8 @@ class Person(Agent):
         self.num_members_family = len(self.family.members)
 
         # Update stress based on gender, wage level, hours at home, family size and history of violence
+        # Check new table of influences
+        # Wage influences neighborhood_influence and house_size
         tmp = self.model.gender_stress if self.gender == 'male' else 1 - self.model.gender_stress
         tmp *= (1 - self.wage)
         tmp *= self.hours_home
