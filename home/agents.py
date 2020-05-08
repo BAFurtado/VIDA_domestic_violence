@@ -1,7 +1,7 @@
 from mesa.agent import Agent
 
 
-GENERAL_ADJUSTMENT = 100
+GENERAL_ADJUSTMENT = 1000
 ITEM_SPECIFIC_ADJUSTMENT = 10
 
 HIGH = 10
@@ -84,22 +84,22 @@ class Person(Agent):
         # Gender
         tmp = self.model.gender_stress if self.gender == 'male' else 1 - self.model.gender_stress
         # Salary
-        tmp += (1 - self.wage)
+        tmp += (1 - self.wage) * HIGH
         # Neighborhood quality
-        tmp += (1 - self.wage)
-        # House size
-        tmp += self.wage / self.num_members_family
+        tmp += (1 - self.wage) * MEDIUM
+        # House size: higher the wage or smaller the wage per person, less contribution to stress
+        tmp += 1 - (self.wage / self.num_members_family) * MEDIUM
         # Education
-        tmp += (1 - self.years_study / ITEM_SPECIFIC_ADJUSTMENT)
+        tmp += 1 - (self.years_study / ITEM_SPECIFIC_ADJUSTMENT) * HIGH
         # Home permanence
-        tmp += self.hours_home
+        tmp += self.hours_home * MEDIUM
         # History of assault
-        tmp += self.assaulted / ITEM_SPECIFIC_ADJUSTMENT
+        tmp += self.assaulted / ITEM_SPECIFIC_ADJUSTMENT * HIGH
         # Access to weapon
-        tmp += 1 if self.has_gun else 0
+        tmp += 1 * HIGH if self.has_gun else 0
         # Chemical dependence
-        tmp += 1 * self.model.random.random() if self.under_influence else 0
-        # Effect adjustment
+        tmp += 1 * self.model.random.random() * HIGH if self.under_influence else 0
+        # General effect adjustment
         tmp /= GENERAL_ADJUSTMENT
         self.stress = tmp
 

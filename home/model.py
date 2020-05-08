@@ -98,7 +98,7 @@ class Home(Model):
                 family.add_agent(child)
             # Update number of family members
             for member in family.members.values():
-                member.num_members_family = len(self.family.members)
+                member.num_members_family = len(family.members)
 
         self.running = True
         self.datacollector.collect(self)
