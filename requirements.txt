@@ -1,1 +1,8 @@
-mesa
+mesa~=0.8.6
+
+numpy~=1.18.1
+pandas~=1.0.3
+click~=7.1.1
+tornado~=6.0.4
+tqdm~=4.44.1
+setuptools~=46.1.3

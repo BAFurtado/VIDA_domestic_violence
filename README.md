@@ -37,11 +37,15 @@ salário, horas em casa e número de membros na família; maior probabilidade de
 ### To run the models:
 #### Para rodar os modelos, desde a instalação inicial
 
-1. Preferencialmente, download e instale Python, via [https://www.anaconda.com/distribution] conda. No mínimo, tenha Pyton3 instalado
-2. Preferencialmente, download e instale uma IDE. Sugiro [https://www.jetbrains.com/pycharm/download/] PyCharm Community. Universitários tem acesso à versão profissional, basta cadastro com e-mail institucional. 
+1. Preferencialmente, download e instale Python, via [https://www.anaconda.com/distribution] conda. 
+No mínimo, tenha Pyton3 instalado
+2. Preferencialmente, download e instale uma IDE. Sugiro 
+[https://www.jetbrains.com/pycharm/download/] PyCharm Community. 
+Universitários tem acesso à versão profissional, basta cadastro com e-mail institucional. 
 3. Donwload e instale [https://git-scm.com/downloads] [GIT].
-4. Com todos funcionando, vá até o Terminal do PyCharm (ou command line com acesso a Python) e usando o Git, clone esse repositório:
-    1. `git clone https://github.com/BAFurtado/armas.git`  
+4. Com todos funcionando, vá até o Terminal do PyCharm (ou command line com acesso a Python) e usando o Git, 
+clone esse repositório:
+    1. `git clone https://github.com/BAFurtado/home_violence.git`  
     2. `pip install mesa`
     
 #### To actually run
