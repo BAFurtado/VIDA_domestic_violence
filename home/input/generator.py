@@ -1,6 +1,7 @@
 # Later replace by self.model.random
 import numpy as np
 import pandas as pd
+from collections import defaultdict
 
 import home.input.geography as geo
 import home.input.population as pop
@@ -79,13 +80,56 @@ def add_qualification(people, qualification):
 
 
 def add_etnias(people, etnias):
-    to_add = np.random.choice(list(etnias['cor']), len(ppl), p=list(etnias['PROP']/100))
+    to_add = np.random.choice(list(etnias['cor']), len(people), p=list(etnias['PROP']/100))
     people.loc[:, 'cor'] = to_add
     return people
 
 
-def sort_into_families():
-    pass
+def sort_into_families(people):
+    # Creating categories
+    people.loc[(people.gender == 'male') & (people.age > 18), 'category'] = 'male_adult'
+    people.loc[(people.gender == 'female') & (people.age > 18), 'category'] = 'female_adult'
+    people.loc[people.age <= 18, 'category'] = 'child'
+    people = people.sort_values(by=['AREAP', 'category'], ascending=False)
+
+    # Sorting into families by APs, ensuring one potential aggressor by family
+    lst_aps = people.AREAP.unique()
+    families = defaultdict(list)
+    for ap in lst_aps:
+        temp_ppl = people[people.AREAP == ap].copy()
+        males = list(temp_ppl[temp_ppl.category == 'male_adult'].index)
+        females = list(temp_ppl[temp_ppl.category == 'female_adult'].index)
+        children = list(temp_ppl[temp_ppl.category == 'child'].index)
+        if len(males) > 0:
+            for alpha in males:
+                families[alpha].append(alpha)
+            while len(females) > 0:
+                alpha = np.random.choice(males)
+                families[alpha].append(females.pop())
+            while len(children) > 0:
+                alpha = np.random.choice(males)
+                families[alpha].append(children.pop())
+        elif len(females) > 0:
+            for femme in females:
+                families[femme].append(femme)
+            while len(children) > 0:
+                femme = np.random.choice(females)
+                families[femme].append(children.pop())
+    return list(families.values())
+
+
+def main(params):
+    my_geo = geo.Geography(params)
+    cod = [value for value in my_geo.mun_codes]
+    people = pop.filter_pop(cod).copy()
+    people.loc[:, 'PROP'] = people.num_people / people.num_people.sum()
+    qt = quali_table(metro)
+    people = generate_people(prms, people, 'PROP')
+    people = add_qualification(people, qt)
+    people = add_etnias(people, pop.etnias)
+    # families = None
+    families = sort_into_families(people)
+    return people, families
 
 
 if __name__ == '__main__':
@@ -101,14 +145,4 @@ if __name__ == '__main__':
     # Parameters for this model
     prms['MEMBERS_PER_FAMILY'] = 2.5
     prms['INITIAL_FAMILIES'] = 500
-
-    my_geo = geo.Geography(prms)
-    cod = [value for value in my_geo.mun_codes]
-    p = pop.filter_pop(cod).copy()
-    p.loc[:, 'PROP'] = p.num_people / p.num_people.sum()
-    # Logo
-    prms['PERCENTAGE_ACTUAL_POP'] = prms['INITIAL_FAMILIES'] * prms['MEMBERS_PER_FAMILY'] / p.num_people.sum()
-    qt = quali_table(metro)
-    ppl = generate_people(prms, p, 'PROP')
-    ppl = add_qualification(ppl, qt)
-    ppl = add_etnias(ppl, pop.etnias)
+    ppl, fams = main(prms)
