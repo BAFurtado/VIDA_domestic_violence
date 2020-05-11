@@ -3,6 +3,13 @@ import pandas as pd
 import home.input.geography as geo
 
 
+""" Objective is to have data on population, age, gender and qualification.
+    Geography class provides the list of IBGE's AREAS DE PONDERAÇÃO (APs) for a given metropolis input.
+    Using that, population gets number of people by age and gender in each AP.
+    Here, we unite all the data, given a metropolis.
+"""
+
+
 def quali_table(metro):
     """ Provide list of municipality codes for a metropolitan region and
     return a table with APs codes and percentage of qualification by years of study

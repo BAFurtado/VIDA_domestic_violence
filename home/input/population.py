@@ -7,6 +7,15 @@ import pandas as pd
 
 import home.input.geography as geo
 
+try:
+    pop = pd.read_csv('home/input/num_people_age_gender_AP.csv', sep=';')
+except FileNotFoundError:
+    pop = pd.read_csv('num_people_age_gender_AP.csv', sep=';')
+
+
+def filter_pop(codes):
+    return pop[pop.mun.isin(codes)]
+
 
 if __name__ == '__main__':
     p = dict()
@@ -16,10 +25,6 @@ if __name__ == '__main__':
     p['SIMPLIFY_POP_EVOLUTION'] = False
     p['LIST_NEW_AGE_GROUPS'] = [6, 12, 17, 25, 35, 45, 65, 100]
     my_geo = geo.Geography(p)
-    # codes = [str(value) for value in my_geo.mun_codes]
-    # ps, tps = load_pops(codes, p)
-    try:
-        pop = pd.read_csv('home/input/num_people_age_gender_AP.csv', sep=';')
-    except FileNotFoundError:
-        pop = pd.read_csv('num_people_age_gender_AP.csv', sep=';')
-    
+    cod = [value for value in my_geo.mun_codes]
+    pop = filter_pop(cod)
+
