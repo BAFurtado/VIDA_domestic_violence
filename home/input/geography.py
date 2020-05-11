@@ -1,9 +1,13 @@
 import pandas as pd
 
-
-ACP_CODES = pd.read_csv('ACPs_BR.csv', sep=';', header=0, decimal=',')
-ACPS_MUN_CODES = pd.read_csv('ACPs_MUN_CODES.csv', sep=';', header=0, decimal=',')
-STATES_CODES = pd.read_csv('STATES_ID_NUM.csv', sep=';', header=0, decimal=',')
+try:
+    ACP_CODES = pd.read_csv('home/input/ACPs_BR.csv', sep=';', header=0, decimal=',')
+    ACPS_MUN_CODES = pd.read_csv('home/input/ACPs_MUN_CODES.csv', sep=';', header=0, decimal=',')
+    STATES_CODES = pd.read_csv('home/input/STATES_ID_NUM.csv', sep=';', header=0, decimal=',')
+except FileNotFoundError:
+    ACP_CODES = pd.read_csv('ACPs_BR.csv', sep=';', header=0, decimal=',')
+    ACPS_MUN_CODES = pd.read_csv('ACPs_MUN_CODES.csv', sep=';', header=0, decimal=',')
+    STATES_CODES = pd.read_csv('STATES_ID_NUM.csv', sep=';', header=0, decimal=',')
 
 
 def state_string(state, states_codes):
