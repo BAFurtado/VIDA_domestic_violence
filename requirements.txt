@@ -6,4 +6,3 @@ click~=7.1.1
 tornado~=6.0.4
 tqdm~=4.44.1
 setuptools~=46.1.3
-statsmodels~=0.11.0

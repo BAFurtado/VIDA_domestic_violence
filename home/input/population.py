@@ -5,26 +5,15 @@ by age groups.
 
 import pandas as pd
 
-import home.input.geography as geo
 
 try:
     pop = pd.read_csv('home/input/num_people_age_gender_AP.csv', sep=';')
 except FileNotFoundError:
     pop = pd.read_csv('num_people_age_gender_AP.csv', sep=';')
 
+p_etnias = {'cor': ['branca', 'preta', 'amarela', 'parda', 'indigena'], 'PROP': [47.52, 7.52, 1.1, 43.43, .43]}
+etnias = pd.DataFrame.from_dict(p_etnias)
+
 
 def filter_pop(codes):
     return pop[pop.mun.isin(codes)]
-
-
-if __name__ == '__main__':
-    p = dict()
-    metro = 'BRASILIA'
-    p['PROCESSING_ACPS'] = [metro]
-    p['PERCENTAGE_ACTUAL_POP'] = .005
-    p['SIMPLIFY_POP_EVOLUTION'] = False
-    p['LIST_NEW_AGE_GROUPS'] = [6, 12, 17, 25, 35, 45, 65, 100]
-    my_geo = geo.Geography(p)
-    cod = [value for value in my_geo.mun_codes]
-    pop = filter_pop(cod)
-
