@@ -1,11 +1,9 @@
 # Later replace by self.model.random
-import random
 import numpy as np
 import pandas as pd
 
 import home.input.geography as geo
 import home.input.population as pop
-
 
 """ Objective is to have data on population, age, gender and qualification.
     Geography class provides the list of IBGE's AREAS DE PONDERAÇÃO (APs) for a given metropolis input.
@@ -70,6 +68,22 @@ def generate_people(params, df, col):
     return people
 
 
+def add_qualification(people, qualification):
+    for i in people.index:
+        people.loc[i, 'years_study'] = np.random.choice(qualification.loc[qualification['AREAP'] ==
+                                                                          str(people.loc[i, 'AREAP']), 'qual'],
+                                                        p=qualification.loc[qualification['AREAP'] ==
+                                                                            str(people.loc[i, 'AREAP']),
+                                                                            'perc_qual_AP'])
+    return people
+
+
+def add_etnias(people, etnias):
+    to_add = np.random.choice(list(etnias['cor']), len(ppl), p=list(etnias['PROP']/100))
+    people.loc[:, 'cor'] = to_add
+    return people
+
+
 def sort_into_families():
     pass
 
@@ -96,3 +110,5 @@ if __name__ == '__main__':
     prms['PERCENTAGE_ACTUAL_POP'] = prms['INITIAL_FAMILIES'] * prms['MEMBERS_PER_FAMILY'] / p.num_people.sum()
     qt = quali_table(metro)
     ppl = generate_people(prms, p, 'PROP')
+    ppl = add_qualification(ppl, qt)
+    ppl = add_etnias(ppl, pop.etnias)
