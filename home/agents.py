@@ -16,7 +16,7 @@ class Person(Agent):
 
     def __init__(self, unique_id, model, pos, gender='male', age=25, color='negra',
                  years_study=6, has_gun=False, is_working=False,
-                 wage=0, reserve_wage=.5, under_influence=False,
+                 wage=0, reserve_wage=.5, under_influence=False, address=None,
                  category='person', denounce=False, condemnation=False,
                  knowledge_protection=False, knowledge_condemnation=False):
         super().__init__(unique_id, model)
@@ -33,6 +33,8 @@ class Person(Agent):
         self.reserve_wage = reserve_wage
         self.under_influence = under_influence
         self.wage = wage
+        self.address = address
+        # Set during the simulation
         self.spouse = None
         self.got_attacked = 0
         self.assaulted = 0

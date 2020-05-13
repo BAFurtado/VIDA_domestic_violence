@@ -11,7 +11,8 @@ try:
 except FileNotFoundError:
     pop = pd.read_csv('num_people_age_gender_AP.csv', sep=';')
 
-p_etnias = {'cor': ['branca', 'preta', 'amarela', 'parda', 'indigena'], 'PROP': [47.52, 7.52, 1.1, 43.43, .43]}
+p_etnias = {'cor': ['branca', 'preta', 'amarela', 'parda', 'indigena'],
+            'PROP': [47.52, 7.52, 1.1, 43.43, .43]}
 etnias = pd.DataFrame.from_dict(p_etnias)
 
 

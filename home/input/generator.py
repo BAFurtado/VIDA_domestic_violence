@@ -6,7 +6,8 @@ from collections import defaultdict
 import home.input.geography as geo
 import home.input.population as pop
 
-""" Objective is to have data on population, age, gender and qualification.
+""" 
+    Objective is to have data on population, age, gender and qualification.
     Geography class provides the list of IBGE's AREAS DE PONDERAÇÃO (APs) for a given metropolis input.
     Using that, population gets number of people by age and gender in each AP.
     Here, we unite all the data, given a metropolis.
@@ -70,6 +71,7 @@ def generate_people(params, df, col):
 
 
 def add_qualification(people, qualification):
+    # TODO: restrict years of study to maximum age
     for i in people.index:
         people.loc[i, 'years_study'] = np.random.choice(qualification.loc[qualification['AREAP'] ==
                                                                           str(people.loc[i, 'AREAP']), 'qual'],
@@ -119,6 +121,20 @@ def sort_into_families(people):
 
 
 def main(params):
+    """ Needs basic config parameters, especially metropolitan area of choice, average  number of people per family
+        and approximate number of families in the sample.
+
+        The process samples actual data for GENDER, AGE, SCHOOLING IN YEARS from Census 2000 and color
+        (from 2012 generic source)
+
+        Returns DataFrame and indexes of grouped families by APs (weighting areas from IBGE)
+        """
+
+    # Parameters to run Geography that do not change
+    params['PERCENTAGE_ACTUAL_POP'] = .005
+    params['SIMPLIFY_POP_EVOLUTION'] = False
+    params['LIST_NEW_AGE_GROUPS'] = [6, 12, 17, 25, 35, 45, 65, 100]
+
     my_geo = geo.Geography(params)
     cod = [value for value in my_geo.mun_codes]
     people = pop.filter_pop(cod).copy()
@@ -134,14 +150,9 @@ def main(params):
 
 if __name__ == '__main__':
     metro = 'BRASILIA'
-
     # Necessary parameters to generate data
     prms = dict()
     prms['PROCESSING_ACPS'] = [metro]
-    prms['PERCENTAGE_ACTUAL_POP'] = .005
-    prms['SIMPLIFY_POP_EVOLUTION'] = False
-    prms['LIST_NEW_AGE_GROUPS'] = [6, 12, 17, 25, 35, 45, 65, 100]
-
     # Parameters for this model
     prms['MEMBERS_PER_FAMILY'] = 2.5
     prms['INITIAL_FAMILIES'] = 500

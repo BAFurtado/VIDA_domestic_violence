@@ -15,9 +15,19 @@ from mesa.datacollection import DataCollector
 try:
     from home.agents import Person, Family
     from home.schedule import RandomActivationByBreed
+    from home.input import generator
 except ModuleNotFoundError:
     from agents import Person, Family
     from schedule import RandomActivationByBreed
+    from input import generator
+
+# Parameters to choose metropolitan region
+# More details available at input/population
+metro = 'BRASILIA'
+prms = dict()
+prms['PROCESSING_ACPS'] = [metro]
+prms['MEMBERS_PER_FAMILY'] = 2.5
+prms['INITIAL_FAMILIES'] = 500
 
 
 class Home(Model):
@@ -30,10 +40,12 @@ class Home(Model):
 
     def __init__(self, height=40, width=40,
                  initial_families=400,
-                 gender_stress=0.80,
-                 is_working_pct=0.80,
-                 chance_changing_working_status=0.05,
-                 pct_change_wage=0.05,
+                 gender_stress=.8,
+                 under_influence=.1,
+                 has_gun=.5,
+                 is_working_pct=.8,
+                 chance_changing_working_status=.05,
+                 pct_change_wage=.05,
                  model_scale=1000):
         """
         Create a new Guns model with the given parameters.
@@ -50,6 +62,8 @@ class Home(Model):
         self.initial_families = initial_families
 
         self.gender_stress = gender_stress
+        self.under_influence = under_influence
+        self.has_gun = has_gun
         self.is_working_pct = is_working_pct
         self.chance_changing_working_status = chance_changing_working_status
         self.pct_change_wage = pct_change_wage
@@ -65,8 +79,16 @@ class Home(Model):
         self.datacollector = DataCollector(model_reporters=model_reporters)
 
         # Create people:
-        for i in range(self.initial_families):
-            # 1. Create a family. Create a couple, add to the family
+        people, families = generator.main(params=prms)
+        # General random data for each individual
+        n = sum([len(f) for f in families])
+        working = np.random.choice([True, False], n, p=[self.is_working_pct, 1 - self.is_working_pct])
+        influence = np.random.choice([True, Family], n, p=[self.under_influence, 1 - self.under_influence])
+        gun = np.random.choice([True, Family], n, p=[self.has_gun, 1 - self.has_gun])
+        w = np.random.beta(2, 5, n)
+        i = 0
+        for fam in families:
+            # 1. Create a family.
             x = self.random.randrange(self.width)
             y = self.random.randrange(self.height)
             # Create a family
@@ -75,18 +97,26 @@ class Home(Model):
             self.grid.place_agent(family, (x, y))
             self.schedule.add(family)
             # Add people to families
-            to_marry = list()
-            for gender in ['male', 'female']:
-                adult = Person(self.next_id(), self, (x, y), gender=gender,
-                               age=round(self.random.triangular(19, 80, 34)),
-                               is_working=np.random.choice([True, False],
-                                                           p=[self.is_working_pct, 1 - self.is_working_pct]),
-                               reserve_wage=np.random.beta(2, 5))
-                self.grid.place_agent(adult, (x, y))
-                self.schedule.add(adult)
-                family.add_agent(adult)
-                to_marry.append(adult)
+            for each in fam:
+                person = people.loc[each]
+                doe = Person(self.next_id(), self, (x, y),
+                             # From IBGE's samples
+                             gender=person.gender,
+                             age=person.age,
+                             color=person.cor,
+                             address=person.AREAP,
+                             years_study=person.years_study,
+                             # End sample
+                             is_working=working[i],
+                             reserve_wage=w[i],
+                             under_influence=influence[i],
+                             has_gun=gun[i])
+                i += 1
+                self.grid.place_agent(doe, (x, y))
+                self.schedule.add(doe)
+                family.add_agent(doe)
             # 2. Marry the couple
+
             to_marry[0].assign_spouse(to_marry[1])
             # 3. Create some children, Add to the family
             num_children = int(self.random.triangular(0, 5, 1.8))
