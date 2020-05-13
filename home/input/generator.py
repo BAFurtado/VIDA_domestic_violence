@@ -45,16 +45,14 @@ import home.input.population as pop
 """
 
 
-def quali_table(metro):
+def quali_table(params):
     """ Provide list of municipality codes for a metropolitan region and
     return a table with APs codes and percentage of qualification by years of study
     """
-    params = dict()
-    params['PROCESSING_ACPS'] = [metro]
     my_geo = geo.Geography(params)
     mun_codes = [str(value) for value in my_geo.mun_codes]
     # Load qualifications data 2000, combining municipal-level with AP-level
-    quali_aps = pd.read_csv('quali_aps.csv', sep=';')
+    quali_aps = pd.read_csv('home/input/quali_aps.csv', sep=';')
     quali_aps.AREAP = quali_aps.AREAP.astype(str)
     selected_quali = quali_aps[quali_aps.AREAP.str[:7].isin(mun_codes)]
     return selected_quali
@@ -139,8 +137,8 @@ def main(params):
     cod = [value for value in my_geo.mun_codes]
     people = pop.filter_pop(cod).copy()
     people.loc[:, 'PROP'] = people.num_people / people.num_people.sum()
-    qt = quali_table(metro)
-    people = generate_people(prms, people, 'PROP')
+    qt = quali_table(params)
+    people = generate_people(params, people, 'PROP')
     people = add_qualification(people, qt)
     people = add_etnias(people, pop.etnias)
     # families = None

@@ -54,11 +54,13 @@ class Person(Agent):
         """
         A model step.
         """
-        # Check and execute
-        if self.age > 18:
-            self.trigger_violence()
-        else:
-            pass
+        # Check and execute: if male, if adult, if got a victim at home
+        if self.gender == 'male':
+            if self.age > 18:
+                if self.spouse is not None:
+                    self.trigger_violence()
+
+        self.update_stress()
 
     def step_change(self):
         # How conditions that cause stress change?
@@ -77,6 +79,7 @@ class Person(Agent):
 
     def update_stress(self):
         # Although all adults stress is updated, only 'males' are aggressors
+        # Before updating stress, check whether conditions have changed
         self.step_change()
 
         # Update stress based on gender, wage level, hours at home, family size and history of violence
@@ -110,11 +113,6 @@ class Person(Agent):
         """
         self.update_stress()
 
-        # Restrict aggression to male partners
-        if self.got_attacked == 'female':
-            # Stop!
-            return
-
         # First time offender get registered in the system and changes class as an Aggressor and a Victim
         if self.assaulted == 0:
             if self.stress > self.random.random():
@@ -131,7 +129,6 @@ class Person(Agent):
     def trigger_call_help(self):
         # TODO: implement dissuasion, ethnicity
         # TODO: check two scenarios
-        # TODO: import family creation from data.
         pass
 
 

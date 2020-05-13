@@ -7,6 +7,12 @@ Directly adapted from mesa example which is inspired by the model found in NetLo
     Center for Connected Learning and Computer-Based Modeling,
     Northwestern University, Evanston, IL.
 """
+# import os
+# d = '/home/furtadobb/MyModels/home_violence'
+# if os.getcwd() != d:
+#     os.chdir(d)
+#     print(os.getcwd())
+
 import numpy as np
 from mesa import Model
 from mesa.space import MultiGrid
@@ -185,5 +191,6 @@ class Home(Model):
 
 if __name__ == '__main__':
     # Bernardo's debugging
+
     my_model = Home()
     my_model.run_model()
