@@ -83,8 +83,8 @@ class Home(Model):
         # General random data for each individual
         n = sum([len(f) for f in families])
         working = np.random.choice([True, False], n, p=[self.is_working_pct, 1 - self.is_working_pct])
-        influence = np.random.choice([True, Family], n, p=[self.under_influence, 1 - self.under_influence])
-        gun = np.random.choice([True, Family], n, p=[self.has_gun, 1 - self.has_gun])
+        influence = np.random.choice([True, False], n, p=[self.under_influence, 1 - self.under_influence])
+        gun = np.random.choice([True, False], n, p=[self.has_gun, 1 - self.has_gun])
         w = np.random.beta(2, 5, n)
         i = 0
         for fam in families:
@@ -96,39 +96,39 @@ class Home(Model):
             # Add family to grid
             self.grid.place_agent(family, (x, y))
             self.schedule.add(family)
+            # Marriage procedures
+            engaged = ['male_adult', 'female_adult']
+            to_marry = list()
             # Add people to families
             for each in fam:
                 person = people.loc[each]
                 doe = Person(self.next_id(), self, (x, y),
-                             # From IBGE's samples
+                             # From IBGE's sampling
                              gender=person.gender,
                              age=person.age,
                              color=person.cor,
                              address=person.AREAP,
                              years_study=person.years_study,
-                             # End sample
+                             # End of sampling
                              is_working=working[i],
                              reserve_wage=w[i],
                              under_influence=influence[i],
                              has_gun=gun[i])
+                # Marrying
+                if len(engaged) > 0:
+                    if person.category in engaged:
+                        engaged.remove(person.category)
+                        to_marry.append(doe)
+                # Change position in the random list previously sampled
                 i += 1
                 self.grid.place_agent(doe, (x, y))
                 self.schedule.add(doe)
                 family.add_agent(doe)
             # 2. Marry the couple
+            if len(to_marry) == 2:
+                to_marry[0].assign_spouse(to_marry[1])
 
-            to_marry[0].assign_spouse(to_marry[1])
-            # 3. Create some children, Add to the family
-            num_children = int(self.random.triangular(0, 5, 1.8))
-            for ch in range(num_children):
-                child = Person(self.next_id(), self, (x, y), gender=np.random.choice(['female', 'male'], p=[.6, .4]),
-                               age=round(self.random.triangular(0, 18, 9)),
-                               is_working=False,
-                               wage=0)
-                self.grid.place_agent(child, (x, y))
-                self.schedule.add(child)
-                family.add_agent(child)
-            # Update number of family members
+            # 3. Update number of family members
             for member in family.members.values():
                 member.num_members_family = len(family.members)
 
