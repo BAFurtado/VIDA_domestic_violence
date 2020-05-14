@@ -69,13 +69,19 @@ def generate_people(params, df, col):
 
 
 def add_qualification(people, qualification):
-    # TODO: restrict years of study to maximum age
+    # Restricting schooling to possible attainable years of study, given age of person
     for i in people.index:
-        people.loc[i, 'years_study'] = np.random.choice(qualification.loc[qualification['AREAP'] ==
-                                                                          str(people.loc[i, 'AREAP']), 'qual'],
-                                                        p=qualification.loc[qualification['AREAP'] ==
-                                                                            str(people.loc[i, 'AREAP']),
-                                                                            'perc_qual_AP'])
+        age = people.loc[i, 'age']
+        if age <= 6:
+            people.loc[i, 'years_study'] = 0
+            continue
+        while True:
+            study = np.random.choice(qualification.loc[qualification['AREAP'] == str(people.loc[i, 'AREAP']), 'qual'],
+                                     p=qualification.loc[qualification['AREAP'] == str(people.loc[i, 'AREAP']),
+                                                         'perc_qual_AP'])
+            if study <= max(0, age - 6):
+                people.loc[i, 'years_study'] = study
+                break
     return people
 
 
