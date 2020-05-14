@@ -1,15 +1,10 @@
 import pandas as pd
 
-try:
-    ACP_CODES = pd.read_csv('home/input/ACPs_BR.csv', sep=';', header=0, decimal=',')
-    ACPS_MUN_CODES = pd.read_csv('home/input/ACPs_MUN_CODES.csv', sep=';', header=0, decimal=',')
-    STATES_CODES = pd.read_csv('home/input/STATES_ID_NUM.csv', sep=';', header=0, decimal=',')
-    mun_list = pd.read_csv('home/input/names_and_codes_municipalities.csv', header=0, sep=';', decimal=',')
-except FileNotFoundError:
-    ACP_CODES = pd.read_csv('ACPs_BR.csv', sep=';', header=0, decimal=',')
-    ACPS_MUN_CODES = pd.read_csv('ACPs_MUN_CODES.csv', sep=';', header=0, decimal=',')
-    STATES_CODES = pd.read_csv('STATES_ID_NUM.csv', sep=';', header=0, decimal=',')
-    mun_list = pd.read_csv('names_and_codes_municipalities.csv', header=0, sep=';', decimal=',')
+
+ACP_CODES = pd.read_csv('violence/input/ACPs_BR.csv', sep=';', header=0, decimal=',')
+ACPS_MUN_CODES = pd.read_csv('violence/input/ACPs_MUN_CODES.csv', sep=';', header=0, decimal=',')
+STATES_CODES = pd.read_csv('violence/input/STATES_ID_NUM.csv', sep=';', header=0, decimal=',')
+mun_list = pd.read_csv('violence/input/names_and_codes_municipalities.csv', header=0, sep=';', decimal=',')
 
 
 def state_string(state, states_codes):

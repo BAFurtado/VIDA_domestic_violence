@@ -7,21 +7,19 @@ Directly adapted from mesa example which is inspired by the model found in NetLo
     Center for Connected Learning and Computer-Based Modeling,
     Northwestern University, Evanston, IL.
 """
-
+import os
+if __name__ == '__main__':
+    os.chdir('/home/furtadobb/MyModels/home_violence/')
 
 import numpy as np
 from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 
-try:
-    from home.agents import Person, Family
-    from home.schedule import RandomActivationByBreed
-    from home.input import generator
-except ModuleNotFoundError:
-    from agents import Person, Family
-    from schedule import RandomActivationByBreed
-    from input import generator
+from violence.agents import Person, Family
+from violence.schedule import RandomActivationByBreed
+from violence.input import generator
+
 
 # Parameters to choose metropolitan region
 # More details available at input/population
@@ -37,7 +35,7 @@ class Home(Model):
     """
 
     verbose = True  # Print-monitoring
-    description = 'A model for simulating the victim aggressor interaction mediated by presence of home.'
+    description = 'A model for simulating the victim aggressor interaction mediated by presence of violence.'
 
     def __init__(self, height=40, width=40,
                  initial_families=400,
@@ -49,11 +47,7 @@ class Home(Model):
                  pct_change_wage=.05,
                  model_scale=1000):
         """
-        Create a new Guns model with the given parameters.
-
-        Args:
-            initial_families: Number of families to start with
-            initial_people: Number of people to start with
+        A violence violence model of Brazilian metropolis
 
         """
         super().__init__()
@@ -190,6 +184,7 @@ class Home(Model):
 
 if __name__ == '__main__':
     # Bernardo's debugging
-
     my_model = Home()
+    for i in range(10):
+        my_model.step()
     my_model.run_model()

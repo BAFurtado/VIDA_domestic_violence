@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 from collections import defaultdict
 
-import home.input.geography as geo
-import home.input.population as pop
+import violence.input.geography as geo
+import violence.input.population as pop
 
 """ 
     Objective is to have data on population, age, gender and qualification.
@@ -52,7 +52,7 @@ def quali_table(params):
     my_geo = geo.Geography(params)
     mun_codes = [str(value) for value in my_geo.mun_codes]
     # Load qualifications data 2000, combining municipal-level with AP-level
-    quali_aps = pd.read_csv('home/input/quali_aps.csv', sep=';')
+    quali_aps = pd.read_csv('violence/input/quali_aps.csv', sep=';')
     quali_aps.AREAP = quali_aps.AREAP.astype(str)
     selected_quali = quali_aps[quali_aps.AREAP.str[:7].isin(mun_codes)]
     return selected_quali

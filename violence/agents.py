@@ -50,7 +50,7 @@ class Person(Agent):
         """
         A model step.
         """
-        # Check and execute: if male, if adult, if got a victim at home
+        # Check and execute: if male, if adult, if got a victim at violence
         if self.gender == 'male':
             if self.age > 18:
                 if self.spouse is not None:
@@ -78,7 +78,7 @@ class Person(Agent):
         # Before updating stress, check whether conditions have changed
         self.step_change()
 
-        # Update stress based on gender, wage level, hours at home, family size and history of violence
+        # Update stress based on gender, wage level, hours at violence, family size and history of violence
         # Check new table of influences
         # Wage influences neighborhood_quality and house_size
         # Gender
@@ -172,7 +172,7 @@ class Family(Agent):
 
 if __name__ == '__main__':
     # Bernardo's debugging model
-    from home.model import Home
+    from violence.model import Home
     m1 = Home()
     bob = m1.schedule.agents[0]
     maria = m1.schedule.agents[1]

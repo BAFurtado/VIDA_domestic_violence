@@ -4,12 +4,9 @@ from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import CanvasGrid, ChartModule
 from mesa.visualization.UserParam import UserSettableParameter
 
-try:
-    from home.agents import Person, Family
-    from home.model import Home
-except ModuleNotFoundError:
-    from agents import Person, Family
-    from model import Home
+from violence.agents import Person, Family
+from violence.model import Home
+
 
 # dark grey
 ADULT = "#757575"

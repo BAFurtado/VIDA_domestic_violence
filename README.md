@@ -32,7 +32,7 @@ salário, horas em casa e número de membros na família; maior probabilidade de
 
 4.2 Em que medida o não acesso à rede de proteção amplia a violência doméstica e os feminicídios?
 
-![Influential factors](home/table.png)
+![Influential factors](violence/table.png)
 
 ### To run the models:
 #### Para rodar os modelos, desde a instalação inicial
