@@ -1,7 +1,7 @@
 """ Gets a metropolitan region choice and returns a dictionary with male and female proportion of population
 by age groups.
 """
-# TODO: just read and process num_people_age_gender_AP.csv
+
 
 import pandas as pd
 

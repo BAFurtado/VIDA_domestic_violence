@@ -7,11 +7,7 @@ Directly adapted from mesa example which is inspired by the model found in NetLo
     Center for Connected Learning and Computer-Based Modeling,
     Northwestern University, Evanston, IL.
 """
-# import os
-# d = '/home/furtadobb/MyModels/home_violence'
-# if os.getcwd() != d:
-#     os.chdir(d)
-#     print(os.getcwd())
+
 
 import numpy as np
 from mesa import Model
@@ -33,7 +29,6 @@ metro = 'BRASILIA'
 prms = dict()
 prms['PROCESSING_ACPS'] = [metro]
 prms['MEMBERS_PER_FAMILY'] = 2.5
-prms['INITIAL_FAMILIES'] = 500
 
 
 class Home(Model):
@@ -85,6 +80,7 @@ class Home(Model):
         self.datacollector = DataCollector(model_reporters=model_reporters)
 
         # Create people:
+        prms['INITIAL_FAMILIES'] = self.initial_families
         people, families = generator.main(params=prms)
         # General random data for each individual
         n = sum([len(f) for f in families])
