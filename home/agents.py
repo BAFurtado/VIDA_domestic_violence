@@ -22,11 +22,8 @@ class Person(Agent):
         super().__init__(unique_id, model)
         self.pos = pos
         self.gender = gender
-        # Higher incidence of atack by 15-29. Victims 20-50
         self.age = age
-        # H: Ethnicity influences victimization, likelihood increases 30%
         self.color = color
-        # H: Education less than 6, likelihood increases 60%
         self.years_study = years_study
         self.has_gun = has_gun
         self.is_working = is_working
@@ -40,7 +37,6 @@ class Person(Agent):
         self.assaulted = 0
         self.hours_home = .34 if self.is_working else .67
         self.family = None
-        # Correlate wage and numbers of family: likelihood that people by room is relevant
         self.num_members_family = 1
         self.stress = 0
         self.category = category
@@ -93,11 +89,23 @@ class Person(Agent):
         tmp += -self.family.family_wage * MEDIUM
         # House size: higher the wage or smaller the wage per person, less contribution to stress
         tmp += 1 - (self.family.family_wage / self.num_members_family) * MEDIUM
-        # Education
-        tmp += 1 - (self.years_study / (self.model.model_scale ** (1/3))) * HIGH
+
+        # Hypothesis 1: # Education Education less than 6, likelihood increases by 60%
+        if self.years_study < 6:
+            tmp += 1 - (self.years_study / (self.model.model_scale ** (1/3))) * 1.6 * HIGH
+        else:
+            tmp += 1 - (self.years_study / (self.model.model_scale ** (1 / 3))) * HIGH
+        # Hypothesis 2: # Higher incidence of attack by male between 15-29 years old
+        if 15 > self.age > 29:
+            tmp *= HIGH
+        # Hypothesis 3: Ethnicity influences victimization, likelihood increases 30% when spouse is black
+        # This stress indicator will only update for married males
+        if self.spouse is not None:
+            if self.spouse.color == 'preta':
+                tmp *= 1.3
         # Home permanence
         tmp += self.hours_home * MEDIUM
-        # History of assault
+        # History of assault. This stress indicator updates only for those 'male' attackers who already have a history
         tmp += self.assaulted / (self.model.model_scale ** (1/3)) * HIGH
         # Access to weapon
         tmp += 1 * HIGH if self.has_gun else 0
@@ -130,7 +138,6 @@ class Person(Agent):
         # TODO: implement dissuasion, ethnicity
         # TODO: check two scenarios
         pass
-
 
 class Family(Agent):
     """

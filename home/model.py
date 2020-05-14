@@ -25,7 +25,7 @@ except ModuleNotFoundError:
 
 # Parameters to choose metropolitan region
 # More details available at input/population
-metro = 'BRASILIA'
+metro = 'BELEM'
 prms = dict()
 prms['PROCESSING_ACPS'] = [metro]
 prms['MEMBERS_PER_FAMILY'] = 2.5
@@ -72,6 +72,9 @@ class Home(Model):
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
+        # Model reporters. How they work: lambda function passes model and other parameters.
+        # Then another function may iterate over each 'agent in model.schedule.agents'
+        # Then server is going to collect info using the keys in model_reporters dictionary
         model_reporters = {
             "Person": lambda m: self.count_type_citizens(m, "person"),
             "Victim": lambda m: self.count_type_citizens(m, "victim"),
