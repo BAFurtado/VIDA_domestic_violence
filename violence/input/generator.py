@@ -1,12 +1,11 @@
 # Later replace by self.model.random
+from collections import defaultdict
+
 import numpy as np
 import pandas as pd
-from collections import defaultdict
 
 import violence.input.geography as geo
 import violence.input.population as pop
-
-
 
 """ 
     Objective is to have data on population, age, gender and qualification.

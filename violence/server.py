@@ -1,12 +1,11 @@
 import numpy as np
-
 from mesa.visualization.ModularVisualization import ModularServer
-from mesa.visualization.modules import CanvasGrid, ChartModule
 from mesa.visualization.UserParam import UserSettableParameter
+from mesa.visualization.modules import CanvasGrid, ChartModule
 
 from violence.agents import Person, Family
-from violence.model import Home
 from violence.input.generator import metropolis
+from violence.model import Home
 
 # dark grey
 ADULT = "#757575"

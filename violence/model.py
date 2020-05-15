@@ -12,6 +12,7 @@ if __name__ == '__main__':
     os.chdir('/home/furtadobb/MyModels/home_violence/')
 
 import numpy as np
+import pandas as pd
 from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
@@ -184,7 +185,13 @@ class Home(Model):
 
 if __name__ == '__main__':
     # Bernardo's debugging
-    my_model = Home()
-    for i in range(10):
-        my_model.step()
-    # my_model.run_model()
+    # Running all metropolis
+    from violence.input.generator import metropolis
+    output = pd.DataFrame(columns=['metropolis', 'stress'])
+    for metro in metropolis:
+        home = Home(metro=metro)
+        for i in range(10):
+            home.step()
+        model_df = home.datacollector.get_model_vars_dataframe()
+        output.loc[output.shape[0]] = [metro, model_df.loc[9, 'Stress']]
+    output.to_csv('output.csv', sep=';', index=False)
