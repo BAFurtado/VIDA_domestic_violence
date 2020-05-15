@@ -20,6 +20,7 @@ from mesa.datacollection import DataCollector
 from violence.agents import Person, Family
 from violence.schedule import RandomActivationByBreed
 from violence.input import generator
+from violence.input.generator import metropolis
 
 
 class Home(Model):
@@ -183,10 +184,8 @@ class Home(Model):
             print('Final number People: ', self.schedule.get_breed_count(Person))
 
 
-if __name__ == '__main__':
-    # Bernardo's debugging
-    # Running all metropolis
-    from violence.input.generator import metropolis
+def generate_output():
+    # Running for all metropolis
     output = pd.DataFrame(columns=['metropolis', 'stress'])
     for metro in metropolis:
         home = Home(metro=metro)
@@ -195,3 +194,13 @@ if __name__ == '__main__':
         model_df = home.datacollector.get_model_vars_dataframe()
         output.loc[output.shape[0]] = [metro, model_df.loc[9, 'Stress']]
     output.to_csv('output.csv', sep=';', index=False)
+
+
+if __name__ == '__main__':
+    # Bernardo's debugging
+    generate_output()
+    # metro = 'CURITIBA'
+    # home = Home(metro=metro)
+    # for i in range(5):
+    #     home.step()
+    pass

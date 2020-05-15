@@ -8,11 +8,11 @@ simulate the main processes and drivers within this system**." (Malleson, Heppen
 We developed the model on top of [https://github.com/projectmesa/mesa] mesa wolf_sheep example
 We thank David Massa e all the contributors of the mesa project. 
 
-**Alan Rafael Dill**
-
 **Lígia Mori Madeira**
 
 **Bernardo Alves Furtado**
+
+**Alan Rafael Dill**
 
 We are considering two models (see the other one at github.com/bafurtado/armas: 
 
