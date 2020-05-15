@@ -96,7 +96,7 @@ class Person(Agent):
         else:
             tmp += 1 - (self.years_study / (self.model.model_scale ** (1 / 3))) * HIGH
         # Hypothesis 2: # Higher incidence of attack by male between 15-29 years old
-        if 15 > self.age > 29:
+        if 18 > self.age > 29:
             tmp *= HIGH
         # Hypothesis 3: Ethnicity influences victimization, likelihood increases 30% when spouse is black
         # This stress indicator will only update for married males
@@ -138,6 +138,7 @@ class Person(Agent):
         # TODO: implement dissuasion, ethnicity
         # TODO: check two scenarios
         pass
+
 
 class Family(Agent):
     """
