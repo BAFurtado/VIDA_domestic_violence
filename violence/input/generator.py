@@ -6,6 +6,8 @@ from collections import defaultdict
 import violence.input.geography as geo
 import violence.input.population as pop
 
+
+
 """ 
     Objective is to have data on population, age, gender and qualification.
     Geography class provides the list of IBGE's AREAS DE PONDERAÇÃO (APs) for a given metropolis input.
@@ -15,34 +17,16 @@ import violence.input.population as pop
     Population gives me 
     
     Possible metropolis include the following ACPs:
-    
-    # STATE    -       ACPs
-    # ------------------------
-    # "AM"     -      "MANAUS"
-    # "PA"     -      "BELEM"
-    # "AP"     -      "MACAPA"
-    # "MA"     -      "SAO LUIS", "TERESINA"
-    # "PI"     -      "TERESINA"
-    # "CE"     -      "FORTALEZA", "CRAJUBAR" - CRAJUBAR refers to JUAZEIRO DO NORTE - CRATO - BARBALHA
-    # "RN"     -      "NATAL"
-    # "PB"     -      "JOAO PESSOA", "CAMPINA GRANDE"
-    # "PE"     -      "RECIFE", "PETROLINA - JUAZEIRO"
-    # "AL"     -      "MACEIO"
-    # "SE"     -      "ARACAJU"
-    # "BA"     -      "SALVADOR", "FEIRA DE SANTANA", "ILHEUS - ITABUNA", "PETROLINA - JUAZEIRO"
-    # "MG"     -      "BELO HORIZONTE", "JUIZ DE FORA", "IPATINGA", "UBERLANDIA"
-    # "ES"     -      "VITORIA"
-    # "RJ"     -      "VOLTA REDONDA - BARRA MANSA", "RIO DE JANEIRO", "CAMPOS DOS GOYTACAZES"
-    # "SP"     -      "SAO PAULO", "CAMPINAS", "SOROCABA", "SAO JOSE DO RIO PRETO", "SANTOS", "JUNDIAI",
-    #                 "SAO JOSE DOS CAMPOS", "RIBEIRAO PRETO"
-    # "PR"     -      "CURITIBA" "LONDRINA", "MARINGA"
-    # "SC"     -      "JOINVILLE", "FLORIANOPOLIS"
-    # "RS"     -      "PORTO ALEGRE", "NOVO HAMBURGO - SAO LEOPOLDO", "CAXIAS DO SUL", "PELOTAS - RIO GRANDE"
-    # "MS"     -      "CAMPO GRANDE"
-    # "MT"     -      "CUIABA"
-    # "GO"     -      "GOIANIA", "BRASILIA"
-    # "DF"     -      "BRASILIA"
 """
+
+metropolis = ["MANAUS", "BELEM", "MACAPA", "SAO LUIS", "TERESINA", "FORTALEZA", "CRAJUBAR", "NATAL", "JOAO PESSOA",
+              "CAMPINA GRANDE", "RECIFE", "PETROLINA - JUAZEIRO", "MACEIO", "ARACAJU", "SALVADOR", "FEIRA DE SANTANA",
+              "ILHEUS - ITABUNA", "PETROLINA - JUAZEIRO", "BELO HORIZONTE", "JUIZ DE FORA", "IPATINGA", "UBERLANDIA",
+              "VITORIA", "VOLTA REDONDA - BARRA MANSA", "RIO DE JANEIRO", "CAMPOS DOS GOYTACAZES", "SAO PAULO",
+              "CAMPINAS", "SOROCABA", "SAO JOSE DO RIO PRETO", "SANTOS", "JUNDIAI", "SAO JOSE DOS CAMPOS",
+              "RIBEIRAO PRETO", "CURITIBA" "LONDRINA", "MARINGA", "JOINVILLE", "FLORIANOPOLIS", "PORTO ALEGRE",
+              "NOVO HAMBURGO - SAO LEOPOLDO", "CAXIAS DO SUL", "PELOTAS - RIO GRANDE", "CAMPO GRANDE", "CUIABA",
+              "GOIANIA", "BRASILIA"]
 
 
 def quali_table(params):

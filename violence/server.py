@@ -6,7 +6,7 @@ from mesa.visualization.UserParam import UserSettableParameter
 
 from violence.agents import Person, Family
 from violence.model import Home
-
+from violence.input.generator import metropolis
 
 # dark grey
 ADULT = "#757575"
@@ -68,7 +68,9 @@ model_params = {"model_scale": UserSettableParameter('slider', 'Model Scale', 10
                 "chance_changing_working_status": UserSettableParameter('slider', 'Chance of Changing Working Status',
                                                                         0.05, 0.05, 1.0, 0.05),
                 "pct_change_wage": UserSettableParameter('slider', 'Percentage of Changing Wage Chance',
-                                                         0.05, 0.05, 1.0, 0.05)
+                                                         0.05, 0.05, 1.0, 0.05),
+                "metro": UserSettableParameter('choice', 'Metropolis to sample population', 'BRASILIA',
+                                               choices=metropolis)
                 }
 
 server = ModularServer(Home, [canvas_element, chart_element, another_chart], "Home Violence", model_params)

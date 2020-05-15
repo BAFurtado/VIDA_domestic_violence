@@ -21,14 +21,6 @@ from violence.schedule import RandomActivationByBreed
 from violence.input import generator
 
 
-# Parameters to choose metropolitan region
-# More details available at input/population
-metro = 'BELEM'
-prms = dict()
-prms['PROCESSING_ACPS'] = [metro]
-prms['MEMBERS_PER_FAMILY'] = 2.5
-
-
 class Home(Model):
     """
     A Home Violence Simulation Model
@@ -39,6 +31,7 @@ class Home(Model):
 
     def __init__(self, height=40, width=40,
                  initial_families=400,
+                 metro='BRASILIA',
                  gender_stress=.8,
                  under_influence=.1,
                  has_gun=.5,
@@ -54,7 +47,9 @@ class Home(Model):
         # Set parameters
         self.height = height
         self.width = width
+
         self.initial_families = initial_families
+        self.metro = metro
 
         self.gender_stress = gender_stress
         self.under_influence = under_influence
@@ -76,9 +71,14 @@ class Home(Model):
             "Stress": lambda m: self.count_stress(m)}
         self.datacollector = DataCollector(model_reporters=model_reporters)
 
-        # Create people:
-        prms['INITIAL_FAMILIES'] = self.initial_families
-        people, families = generator.main(params=prms)
+        # Create people ---------------------------------------------------
+        # Parameters to choose metropolitan region
+        # More details available at input/population
+        params = dict()
+        params['PROCESSING_ACPS'] = [self.metro]
+        params['MEMBERS_PER_FAMILY'] = 2.5
+        params['INITIAL_FAMILIES'] = self.initial_families
+        people, families = generator.main(params=params)
         # General random data for each individual
         n = sum([len(f) for f in families])
         working = np.random.choice([True, False], n, p=[self.is_working_pct, 1 - self.is_working_pct])
@@ -187,4 +187,4 @@ if __name__ == '__main__':
     my_model = Home()
     for i in range(10):
         my_model.step()
-    my_model.run_model()
+    # my_model.run_model()
