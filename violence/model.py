@@ -17,6 +17,7 @@ from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 
+
 from violence.agents import Person, Family
 from violence.schedule import RandomActivationByBreed
 from violence.input import generator
@@ -198,9 +199,16 @@ def generate_output():
 
 if __name__ == '__main__':
     # Bernardo's debugging
-    generate_output()
-    # metro = 'CURITIBA'
-    # home = Home(metro=metro)
-    # for i in range(5):
-    #     home.step()
+    # generate_output()
+
+    # To generate a number of runs of a metro, before BatchRunner
+    # otp = pd.DataFrame(columns=['metropolis', 'stress'])
+    # metro = 'JOINVILLE'
+    # for i in range(20):
+    #     home = Home(metro=metro)
+    #     for j in range(10):
+    #         home.step()
+    #     model_df = home.datacollector.get_model_vars_dataframe()
+    #     otp.loc[otp.shape[0]] = [metro, model_df.loc[9, 'Stress']]
+    # otp.to_csv('joinville.csv', sep=';', index=False)
     pass

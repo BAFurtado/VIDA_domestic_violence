@@ -78,8 +78,8 @@ class Person(Agent):
         # Before updating stress, check whether conditions have changed
         self.step_change()
 
-        # Update stress based on gender, wage level, hours at violence, family size and history of violence
-        # Check new table of influences
+        # Update stress based on gender, wage level, hours at home, family size and history of violence
+        # Check new table of influences at README.md
         # Wage influences neighborhood_quality and house_size
         # Gender
         tmp = self.model.gender_stress if self.gender == 'male' else 1 - self.model.gender_stress
@@ -135,7 +135,7 @@ class Person(Agent):
             self.spouse.got_attacked += 1
 
     def trigger_call_help(self):
-        # TODO: implement dissuasion, ethnicity
+        # TODO: implement dissuasion
         # TODO: check two scenarios
         pass
 
