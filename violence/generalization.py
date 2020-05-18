@@ -1,6 +1,6 @@
 import os
 if __name__ == '__main__':
-    os.chdir('/home/furtadobb/MyModels/home_violence/')
+    os.chdir('..')
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,7 +30,7 @@ def main(parameters, iterations=50):
         "Person": lambda m: m.count_type_citizens(m, "person"),
         "Aggressor": lambda m: m.count_type_citizens(m, "aggressor"),
         "Stress": lambda m: m.count_stress(m)}
-    batch_run = BatchRunner(model.Home, parameters, max_steps=10, iterations=iterations,
+    batch_run = BatchRunner(model.Home, variable_parameters=parameters, max_steps=10, iterations=iterations,
                             model_reporters=model_reporters)
     batch_run.run_all()
 
@@ -39,18 +39,21 @@ def main(parameters, iterations=50):
 
 
 if __name__ == '__main__':
-    subdivisions = 2
+    # Number of runs = iterations * subdivisions ** num_parameters
+    subdivisions = 4
     # Remember to use BatchRunnerMP
     # Remember to save figures and database
-    params = {'gender_stress': np.linspace(.1, .9, subdivisions),
-              'under_influence': np.linspace(.01, .5, subdivisions),
-              'has_gun': np.linspace(.1, .9, subdivisions),
-              'is_working_pct': np.linspace(.1, .9, subdivisions),
-              'chance_changing_working_status': np.linspace(.01, .5, subdivisions),
-              'pct_change_wage': np.linspace(.01, .5, subdivisions)}
-              #'metro': metropolis}
-    df = main(params, iterations=2)
+    params = {#'gender_stress': np.linspace(.1, .9, subdivisions),
+    #           'under_influence': np.linspace(.01, .5, subdivisions),
+    #           'has_gun': np.linspace(.1, .9, subdivisions),
+    #           'is_working_pct': np.linspace(.1, .9, subdivisions),
+    #           'chance_changing_working_status': np.linspace(.01, .5, subdivisions),
+    #           'pct_change_wage': np.linspace(.01, .5, subdivisions)}
+               'metro': metropolis}
+    df = main(params, iterations=20)
     df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
+    df.to_csv('output_metropolis.csv', sep=';', index=False)
     for each in params.keys():
         plot(df, each, "Stress")
         plot(df, each, "aggressor_pct")
+

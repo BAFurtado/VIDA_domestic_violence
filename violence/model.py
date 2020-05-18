@@ -9,7 +9,7 @@ Directly adapted from mesa example which is inspired by the model found in NetLo
 """
 import os
 if __name__ == '__main__':
-    os.chdir('/home/furtadobb/MyModels/home_violence/')
+    os.chdir('..')
 
 import numpy as np
 import pandas as pd
@@ -33,7 +33,7 @@ class Home(Model):
     description = 'A model for simulating the victim aggressor interaction mediated by presence of violence.'
 
     def __init__(self, height=40, width=40,
-                 initial_families=400,
+                 initial_families=1000,
                  metro='BRASILIA',
                  gender_stress=.8,
                  under_influence=.1,
@@ -81,6 +81,7 @@ class Home(Model):
         params['PROCESSING_ACPS'] = [self.metro]
         params['MEMBERS_PER_FAMILY'] = 2.5
         params['INITIAL_FAMILIES'] = self.initial_families
+
         people, families = generator.main(params=params)
         # General random data for each individual
         n = sum([len(f) for f in families])
