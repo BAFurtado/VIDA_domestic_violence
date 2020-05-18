@@ -1,6 +1,6 @@
 import os
 if __name__ == '__main__':
-    os.chdir('..')
+    os.chdir('/home/furtadobb/MyModels/home_violence/')
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -39,21 +39,22 @@ def main(parameters, iterations=50):
 
 
 if __name__ == '__main__':
-    # Number of runs = iterations * subdivisions ** num_parameters
+    """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
+        120 * 8 ** 1
+    """
+    iterations = 120
     subdivisions = 4
-    # Remember to use BatchRunnerMP
-    # Remember to save figures and database
-    params = {#'gender_stress': np.linspace(.1, .9, subdivisions),
-    #           'under_influence': np.linspace(.01, .5, subdivisions),
-    #           'has_gun': np.linspace(.1, .9, subdivisions),
-    #           'is_working_pct': np.linspace(.1, .9, subdivisions),
-    #           'chance_changing_working_status': np.linspace(.01, .5, subdivisions),
-    #           'pct_change_wage': np.linspace(.01, .5, subdivisions)}
-               'metro': metropolis}
-    df = main(params, iterations=20)
+    num_parameters = 6
+    params = {'gender_stress': np.linspace(.1, .9, subdivisions)} #,
+              # 'under_influence': np.linspace(.01, .5, subdivisions),
+              # 'has_gun': np.linspace(.1, .9, subdivisions),
+              # 'is_working_pct': np.linspace(.1, .9, subdivisions),
+              # 'chance_changing_working_status': np.linspace(.01, .5, subdivisions),
+              # 'pct_change_wage': np.linspace(.01, .5, subdivisions)}
+              #'metro': metropolis}
+    df = main(params, iterations=120)
     df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
-    df.to_csv('output_metropolis.csv', sep=';', index=False)
+    df.to_csv(f'output_{iterations}_{subdivisions}_{num_parameters}.csv', sep=';', index=False)
     for each in params.keys():
         plot(df, each, "Stress")
         plot(df, each, "aggressor_pct")
-
