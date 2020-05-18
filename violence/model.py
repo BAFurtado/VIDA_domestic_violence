@@ -33,7 +33,7 @@ class Home(Model):
     description = 'A model for simulating the victim aggressor interaction mediated by presence of violence.'
 
     def __init__(self, height=40, width=40,
-                 initial_families=400,
+                 initial_families=2000,
                  metro='BRASILIA',
                  gender_stress=.8,
                  under_influence=.1,
