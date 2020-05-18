@@ -1,15 +1,10 @@
 """
-A simple victim x aggressor encounter model
-================================
-Directly adapted from mesa example which is inspired by the model found in NetLogo:
-    Wilensky, U. (1997). NetLogo Wolf Sheep Predation model.
-    http://ccl.northwestern.edu/netlogo/models/GunsPredation.
-    Center for Connected Learning and Computer-Based Modeling,
-    Northwestern University, Evanston, IL.
+A simple violence model, based on attacker and victim charateristics and stay-at-home time.
+
 """
 import os
 if __name__ == '__main__':
-    os.chdir('/home/furtadobb/MyModels/home_violence/')
+    os.chdir('..')
 
 import numpy as np
 import pandas as pd

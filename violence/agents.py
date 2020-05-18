@@ -74,6 +74,7 @@ class Person(Agent):
         agent.spouse = self
 
     def update_stress(self):
+        # TODO: 1. mulher trabalho e mulher salario
         # Although all adults stress is updated, only 'males' are aggressors
         # Before updating stress, check whether conditions have changed
         self.step_change()
@@ -103,6 +104,12 @@ class Person(Agent):
         if self.spouse is not None:
             if self.spouse.color == 'preta':
                 tmp *= 1.3
+            # Hypothesis 4: relevance of women participating in the labor market
+            if not self.spouse.is_working:
+                # Increases -- level HIGH -- when spouse is NOT working
+                # TODO: Find working data by gender by metropolis
+                tmp += 1 * HIGH
+
         # Home permanence
         tmp += self.hours_home * MEDIUM
         # History of assault. This stress indicator updates only for those 'male' attackers who already have a history
