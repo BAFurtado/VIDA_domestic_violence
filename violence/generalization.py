@@ -38,14 +38,14 @@ if __name__ == '__main__':
     """
     iterates = 120
     subdivisions = 8
-    num_parameters = 6
-    params = {'gender_stress': np.linspace(.1, .9, subdivisions)} #,
-              # 'under_influence': np.linspace(.01, .5, subdivisions),
-              # 'has_gun': np.linspace(.1, .9, subdivisions),
-              # 'is_working_pct': np.linspace(.1, .9, subdivisions),
-              # 'chance_changing_working_status': np.linspace(.01, .5, subdivisions),
-              # 'pct_change_wage': np.linspace(.01, .5, subdivisions)}
-              # 'metro': metropolis}
+
+    params = {'gender_stress': np.linspace(.1, .9, subdivisions)}
+    params = {'under_influence': np.linspace(.01, .5, subdivisions)}
+    params = {'has_gun': np.linspace(.1, .9, subdivisions)}
+    params = {'is_working_pct': np.linspace(.1, .9, subdivisions)}
+    params = {'chance_changing_working_status': np.linspace(.01, .5, subdivisions)}
+    params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
+    params = {'metro': metropolis}
     df = main(params, iterations=iterates)
     df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
-    df.to_csv(f'output_{iterates}_{subdivisions}_{num_parameters}.csv', sep=';', index=False)
+    df.to_csv(f'output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)
