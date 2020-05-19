@@ -1,8 +1,5 @@
 from mesa.agent import Agent
 
-
-ITEM_SPECIFIC_ADJUSTMENT = 10
-
 HIGH = 10
 MEDIUM = 5
 LOW = 1
@@ -82,7 +79,8 @@ class Person(Agent):
         # Check new table of influences at README.md
         # Wage influences neighborhood_quality and house_size
         # Gender
-        tmp = self.model.gender_stress if self.gender == 'male' else 1 - self.model.gender_stress
+        # We fixed gender stress for females in .2
+        tmp = self.model.gender_stress if self.gender == 'male' else .2
         # Salary
         tmp += (1 - self.wage) * HIGH
         # Neighborhood quality
@@ -92,9 +90,9 @@ class Person(Agent):
 
         # Hypothesis 1: # Education Education less than 6, likelihood increases by 60%
         if self.years_study < 6:
-            tmp += 1 - (self.years_study / (self.model.model_scale ** (1/3))) * 1.6 * HIGH
+            tmp += (1 - (self.years_study / 10)) * 1.6 * HIGH
         else:
-            tmp += 1 - (self.years_study / (self.model.model_scale ** (1 / 3))) * HIGH
+            tmp += (1 - (self.years_study / 10)) * HIGH
         # Hypothesis 2: # Higher incidence of attack by male between 15-29 years old
         if 18 > self.age > 29:
             tmp *= HIGH
@@ -112,7 +110,7 @@ class Person(Agent):
         # Home permanence
         tmp += self.hours_home * MEDIUM
         # History of assault. This stress indicator updates only for those 'male' attackers who already have a history
-        tmp += self.assaulted / (self.model.model_scale ** (1/3)) * HIGH
+        tmp += self.assaulted / 10 * HIGH
         # Access to weapon
         tmp += 1 * HIGH if self.has_gun else 0
         # Chemical dependence
@@ -173,19 +171,3 @@ class Family(Agent):
             stress += agent.stress
             self.family_wage += agent.wage
         self.context_stress = stress / len(self.members)
-
-
-if __name__ == '__main__':
-    # Bernardo's debugging model
-    from violence.model import Home
-    m1 = Home()
-    bob = m1.schedule.agents[0]
-    maria = m1.schedule.agents[1]
-    f1 = Family(m1.next_id(), m1, (1, 1))
-    f1.add_agent(bob)
-    f1.add_agent(maria)
-    bob.assign_spouse(maria)
-    bob.update_stress()
-    bob.trigger_violence()
-    bob.stress = 1
-    bob.trigger_violence()

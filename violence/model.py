@@ -1,5 +1,5 @@
 """
-A simple violence model, based on attacker and victim charateristics and stay-at-home time.
+A simple violence model, based on attacker and victim characteristics and stay-at-home time.
 
 """
 import os
@@ -198,7 +198,7 @@ if __name__ == '__main__':
 
     home = Home()
     for i in range(10):
-        home.step
+        home.step()
     model_df = home.datacollector.get_model_vars_dataframe()
 
     # To generate a number of runs of a metro, before BatchRunner
