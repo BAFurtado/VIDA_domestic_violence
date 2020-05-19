@@ -19,13 +19,17 @@ from violence.input.generator import metropolis
 #     pct_change_wage = .05,
 
 
-def main(parameters, iterations=50):
+def main(parameters, iterations=50, max_steps=None):
     model_reporters = {
         "Person": lambda m: m.count_type_citizens(m, "person"),
         "Aggressor": lambda m: m.count_type_citizens(m, "aggressor"),
         "Stress": lambda m: m.count_stress(m)}
-    batch_run = BatchRunner(model.Home, variable_parameters=parameters, max_steps=10, iterations=iterations,
-                            model_reporters=model_reporters)
+    if not max_steps:
+        batch_run = BatchRunner(model.Home, variable_parameters=parameters, max_steps=10, iterations=iterations,
+                                model_reporters=model_reporters)
+    else:
+        batch_run = BatchRunner(model.Home, max_steps=max_steps, iterations=iterations, model_reporters=model_reporters)
+
     batch_run.run_all()
 
     batch_df = batch_run.get_model_vars_dataframe()
@@ -46,6 +50,14 @@ if __name__ == '__main__':
     params = {'chance_changing_working_status': np.linspace(.01, .5, subdivisions)}
     params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
     params = {'metro': metropolis}
+    params = {'quarantine': [False, True]}
+    params = {'dissuasion': [False, True]}
+    # Max steps
+    for each in np.linspace(10, 200, subdivisions):
+        df = main(iterations=iterates, max_steps=int(each))
+        df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
+        df.to_csv(f'output_{iterates}_{subdivisions}_{each}.csv', sep=';', index=False)
+
     df = main(params, iterations=iterates)
     df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
-    df.to_csv(f'output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)
+    df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)

@@ -51,18 +51,20 @@ def plot(data, group_col, plot_col):
 
 
 def another_plot(data, col_interest, col_aggregate):
-    # TODO: borda legenda, siglas, borda grafico, hue choice
+    # TODO: Border, Legend, Abbvr. Ticks
+    fig, ax = plt.subplots()
     data = data.groupby(by=col_aggregate).agg('median').reset_index()
     data = data.sort_values(by=[col_interest])
     data[col_interest].plot(kind='bar', legend=col_aggregate, ylim=[min(data[col_interest]), max(data[col_interest])])
-    fig = sns.barplot(data=data, x=col_aggregate, y=col_interest, hue=None)
+    sns.palplot(sns.color_palette("Blues"))
+    fig = sns.barplot(data=data, x=col_aggregate, y=col_interest)
     fig.plot()
     plt.show()
 
 
 if __name__ == '__main__':
-    # df = pd.read_csv('output/output_metropolis.csv', sep=';')
-    df3 = pd.read_csv('output/bundled_together.csv', sep=';')
-    plot(df3, 'gender_stress', "aggressor_pct")
+    # df3 = pd.read_csv('output/bundled_together.csv', sep=';')
+    # plot(df3, 'gender_stress', "aggressor_pct")
 
-    # another_plot(df, 'aggressor_pct', 'metro')
+    df = pd.read_csv('output/output_metropolis.csv', sep=';')
+    another_plot(df, 'aggressor_pct', 'metro')
