@@ -69,7 +69,8 @@ model_params = {"model_scale": UserSettableParameter('slider', 'Model Scale', 10
                 "pct_change_wage": UserSettableParameter('slider', 'Percentage of Changing Wage Chance',
                                                          0.05, 0.05, 1.0, 0.05),
                 "metro": UserSettableParameter('choice', 'Metropolis to sample population', 'BRASILIA',
-                                               choices=metropolis)
+                                               choices=metropolis),
+                "quarantine": UserSettableParameter('choice', 'Quarantine', False, choices=[False, True])
                 }
 
 server = ModularServer(Home, [canvas_element, chart_element, another_chart], "Home Violence", model_params)

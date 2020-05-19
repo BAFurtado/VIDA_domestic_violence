@@ -36,7 +36,8 @@ class Home(Model):
                  is_working_pct=.8,
                  chance_changing_working_status=.05,
                  pct_change_wage=.05,
-                 model_scale=1000):
+                 model_scale=1000,
+                 quarantine=False):
         """
         A violence violence model of Brazilian metropolis
 
@@ -56,6 +57,7 @@ class Home(Model):
         self.chance_changing_working_status = chance_changing_working_status
         self.pct_change_wage = pct_change_wage
         self.model_scale = model_scale
+        self.quarantine = quarantine
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)

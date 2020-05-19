@@ -108,7 +108,10 @@ class Person(Agent):
                 tmp += 1 * HIGH
 
         # Home permanence
-        tmp += self.hours_home * MEDIUM
+        if not self.model.quarantine:
+            tmp += self.hours_home * MEDIUM
+        else:
+            tmp += 1 * MEDIUM
         # History of assault. This stress indicator updates only for those 'male' attackers who already have a history
         tmp += self.assaulted / 10 * HIGH
         # Access to weapon
