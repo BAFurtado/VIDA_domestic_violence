@@ -50,13 +50,13 @@ class Person(Agent):
         """
         A model step.
         """
+        self.update_stress()
+
         # Check and execute: if male, if adult, if got a victim at violence
         if self.gender == 'male':
             if self.age > 18:
                 if self.spouse is not None:
                     self.trigger_violence()
-
-        self.update_stress()
 
     def step_change(self):
         # How conditions that cause stress change?
@@ -74,7 +74,6 @@ class Person(Agent):
         agent.spouse = self
 
     def update_stress(self):
-        # TODO: 1. mulher trabalho e mulher salario
         # Although all adults stress is updated, only 'males' are aggressors
         # Before updating stress, check whether conditions have changed
         self.step_change()
@@ -126,8 +125,6 @@ class Person(Agent):
         """
         Uses self stress and family context to incur in probability of becoming violent
         """
-        self.update_stress()
-
         # First time offender get registered in the system and changes class as an Aggressor and a Victim
         if self.assaulted == 0:
             if self.stress > self.random.random():

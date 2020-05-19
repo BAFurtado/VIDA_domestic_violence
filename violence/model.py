@@ -32,7 +32,7 @@ class Home(Model):
                  metro='BRASILIA',
                  gender_stress=.8,
                  under_influence=.1,
-                 has_gun=.5,
+                 has_gun=.1,
                  is_working_pct=.8,
                  chance_changing_working_status=.05,
                  pct_change_wage=.05,
@@ -82,7 +82,7 @@ class Home(Model):
         working = np.random.choice([True, False], n, p=[self.is_working_pct, 1 - self.is_working_pct])
         influence = np.random.choice([True, False], n, p=[self.under_influence, 1 - self.under_influence])
         gun = np.random.choice([True, False], n, p=[self.has_gun, 1 - self.has_gun])
-        w = np.random.beta(2, 5, n)
+        wage = np.random.beta(2, 5, n)
         i = 0
         for fam in families:
             # 1. Create a family.
@@ -108,7 +108,7 @@ class Home(Model):
                              years_study=person.years_study,
                              # End of sampling
                              is_working=working[i],
-                             reserve_wage=w[i],
+                             reserve_wage=wage[i],
                              under_influence=influence[i],
                              has_gun=gun[i])
                 # Marrying
@@ -195,6 +195,11 @@ def generate_output():
 if __name__ == '__main__':
     # Bernardo's debugging
     # generate_output()
+
+    home = Home()
+    for i in range(10):
+        home.step
+    model_df = home.datacollector.get_model_vars_dataframe()
 
     # To generate a number of runs of a metro, before BatchRunner
     # otp = pd.DataFrame(columns=['metropolis', 'stress'])
