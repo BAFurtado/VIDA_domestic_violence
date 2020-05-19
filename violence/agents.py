@@ -14,8 +14,7 @@ class Person(Agent):
     def __init__(self, unique_id, model, pos, gender='male', age=25, color='negra',
                  years_study=6, has_gun=False, is_working=False,
                  wage=0, reserve_wage=.5, under_influence=False, address=None,
-                 category='person', denounce=False, condemnation=False,
-                 knowledge_protection=False, knowledge_condemnation=False):
+                 category='person', denounce=False, protection=False, condemnation=False):
         super().__init__(unique_id, model)
         self.pos = pos
         self.gender = gender
@@ -39,9 +38,8 @@ class Person(Agent):
         self.category = category
         # Measures of dissuasion
         self.denounce = denounce
+        self.protection = protection
         self.condemnation = condemnation
-        self.knowledge_protection = knowledge_protection
-        self.knowledge_condemnation = knowledge_condemnation
 
     def step(self):
         """
@@ -54,6 +52,14 @@ class Person(Agent):
             if self.age > 18:
                 if self.spouse is not None:
                     self.trigger_violence()
+        else:
+            # Check if model is running with dissuasion policies implemented
+            if self.model.dissuasion:
+                # If married adult female
+                if self.age > 18:
+                    if self.spouse is not None:
+                        # Implementation of possible dissuasion
+                        self.trigger_call_help()
 
     def step_change(self):
         # How conditions that cause stress change?
@@ -118,6 +124,16 @@ class Person(Agent):
         tmp += 1 * HIGH if self.has_gun else 0
         # Chemical dependence
         tmp += 1 * self.model.random.random() * HIGH if self.under_influence else 0
+
+        # Dissuasion implementation as a decreasing factor of stress indicator
+        if self.spouse is not None:
+            if self.spouse.denounce:
+                tmp -= 1
+            if self.spouse.protection:
+                tmp -= 1 * MEDIUM
+            if self.spouse.condemnation:
+                tmp -= 1 * HIGH
+
         # General effect adjustment
         tmp /= self.model.model_scale
         self.stress = tmp
@@ -140,9 +156,18 @@ class Person(Agent):
             self.spouse.got_attacked += 1
 
     def trigger_call_help(self):
-        # TODO: implement dissuasion
-        # TODO: check two scenarios
-        pass
+        if self.assaulted > 0:
+            # Victim will denounce for sure after 10 assaults
+            if (self.assaulted / 10) > self.model.random.random():
+                self.denounce = True
+            if self.denounce:
+                if (self.assaulted / 5) > self.model.random.random():
+                    self.protection = True
+            if self.denounce and self.protection:
+                # TODO: Check, introduce one more model parameter: likelihood condemnation, or not?
+                # Now, implemented as a half chance.
+                if .5 > self.model.random.random():
+                    self.condemnation = True
 
 
 class Family(Agent):
