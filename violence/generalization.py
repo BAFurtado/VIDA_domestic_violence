@@ -1,6 +1,6 @@
 import os
 if __name__ == '__main__':
-    os.chdir('/home/furtadobb/MyModels/home_violence/')
+    os.chdir('..')
 
 import pandas as pd
 import seaborn as sns
@@ -55,24 +55,24 @@ if __name__ == '__main__':
     """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
         120 * 8 ** 1
     """
-    # iterates = 120
-    # subdivisions = 4
-    # num_parameters = 6
-    # params = {'gender_stress': np.linspace(.1, .9, subdivisions)} #,
-    #           # 'under_influence': np.linspace(.01, .5, subdivisions),
-    #           # 'has_gun': np.linspace(.1, .9, subdivisions),
-    #           # 'is_working_pct': np.linspace(.1, .9, subdivisions),
-    #           # 'chance_changing_working_status': np.linspace(.01, .5, subdivisions),
-    #           # 'pct_change_wage': np.linspace(.01, .5, subdivisions)}
-    #           #'metro': metropolis}
-    # df = main(params, iterations=120)
-    # df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
-    # df.to_csv(f'output_{iterates}_{subdivisions}_{num_parameters}.csv', sep=';', index=False)
-    # for each in params.keys():
-    #     plot(df, each, "Stress")
-    #     plot(df, each, "aggressor_pct")
+    iterates = 120
+    subdivisions = 8
+    num_parameters = 6
+    params = {'gender_stress': np.linspace(.1, .9, subdivisions)} #,
+              # 'under_influence': np.linspace(.01, .5, subdivisions),
+              # 'has_gun': np.linspace(.1, .9, subdivisions),
+              # 'is_working_pct': np.linspace(.1, .9, subdivisions),
+              # 'chance_changing_working_status': np.linspace(.01, .5, subdivisions),
+              # 'pct_change_wage': np.linspace(.01, .5, subdivisions)}
+              #'metro': metropolis}
+    df = main(params, iterations=iterates)
+    df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
+    df.to_csv(f'output_{iterates}_{subdivisions}_{num_parameters}.csv', sep=';', index=False)
+    for each in params.keys():
+        # plot(df, each, "Stress")
+        plot(df, each, "aggressor_pct")
 
-    df = pd.read_csv('output/output_metropolis.csv', sep=';')
-    another_plot(df, 'aggressor_pct', 'metro')
+    # df = pd.read_csv('output/output_metropolis.csv', sep=';')
+    # another_plot(df, 'aggressor_pct', 'metro')
 
 

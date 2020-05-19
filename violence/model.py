@@ -189,7 +189,7 @@ def generate_output():
             home.step()
         model_df = home.datacollector.get_model_vars_dataframe()
         output.loc[output.shape[0]] = [metro, model_df.loc[9, 'Stress']]
-    output.to_csv('output.csv', sep=';', index=False)
+    output.to_csv('input/output.csv', sep=';', index=False)
 
 
 if __name__ == '__main__':
