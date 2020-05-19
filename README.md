@@ -14,7 +14,7 @@ We thank David Massa e all the contributors of the mesa project.
 
 **Alan Rafael Dill**
 
-We are considering two models (see the other one at github.com/bafurtado/armas: 
+We are considering two models (see the other one at github.com/bafurtado/armas): 
 
 ### 1. Home violence model
 

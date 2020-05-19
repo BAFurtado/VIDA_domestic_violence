@@ -2,10 +2,7 @@ import os
 if __name__ == '__main__':
     os.chdir('..')
 
-import pandas as pd
-import seaborn as sns
 import numpy as np
-import matplotlib.pyplot as plt
 
 from mesa.batchrunner import BatchRunner
 from violence import model
@@ -20,22 +17,6 @@ from violence.input.generator import metropolis
 #     is_working_pct = .8,
 #     chance_changing_working_status = .05,
 #     pct_change_wage = .05,
-
-
-def plot(data, group_col, plot_col):
-    data = data.groupby(group_col).agg('median').reset_index()
-    data.plot(x=group_col, y=plot_col)
-    plt.show()
-
-
-def another_plot(data, col_interest, col_aggregate):
-    # TODO: borda legenda, siglas, borda grafico, hue choice
-    data = data.groupby(by=col_aggregate).agg('median').reset_index()
-    data = data.sort_values(by=[col_interest])
-    data[col_interest].plot(kind='bar', legend=col_aggregate, ylim=[min(data[col_interest]), max(data[col_interest])])
-    fig = sns.barplot(data=data, x=col_aggregate, y=col_interest, hue=None)
-    #fig.plot()
-    plt.show()
 
 
 def main(parameters, iterations=50):
@@ -64,15 +45,7 @@ if __name__ == '__main__':
               # 'is_working_pct': np.linspace(.1, .9, subdivisions),
               # 'chance_changing_working_status': np.linspace(.01, .5, subdivisions),
               # 'pct_change_wage': np.linspace(.01, .5, subdivisions)}
-              #'metro': metropolis}
+              # 'metro': metropolis}
     df = main(params, iterations=iterates)
     df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
     df.to_csv(f'output_{iterates}_{subdivisions}_{num_parameters}.csv', sep=';', index=False)
-    for each in params.keys():
-        # plot(df, each, "Stress")
-        plot(df, each, "aggressor_pct")
-
-    # df = pd.read_csv('output/output_metropolis.csv', sep=';')
-    # another_plot(df, 'aggressor_pct', 'metro')
-
-
