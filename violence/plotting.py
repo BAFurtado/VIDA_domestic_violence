@@ -1,5 +1,5 @@
 import os
-
+import re
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -9,7 +9,17 @@ if __name__ == '__main__':
 
 
 def summary():
-    pass
+    files = os.listdir('output/')
+    for file in files:
+        data = pd.read_csv(os.path.join('output', file), sep=';')
+        try:
+            group_col = re.findall("\['(.*)'\]", file)[0]
+            data = data.groupby(group_col).agg('median').reset_index()
+            print(data[[group_col, 'aggressor_pct']].head(8))
+        except IndexError:
+            num_steps = int(re.findall("_(.*).", file)[0].split('.')[0].split('_')[-1])
+            print(f'Número steps {num_steps}')
+            print(data.loc[num_steps - 1, 'Stress'])
 
 
 def generic(name, ax, x_label, y_label, title, legend):
@@ -70,5 +80,7 @@ if __name__ == '__main__':
     # df3 = pd.read_csv('output/bundled_together.csv', sep=';')
     # plot(df3, 'gender_stress', "aggressor_pct")
 
-    df = pd.read_csv('output/output_metropolis.csv', sep=';')
-    another_plot(df, 'aggressor_pct', 'metro')
+    # df = pd.read_csv('output/output_metropolis.csv', sep=';')
+    # another_plot(df, 'aggressor_pct', 'metro')
+
+    summary()
