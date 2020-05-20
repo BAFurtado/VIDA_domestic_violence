@@ -72,11 +72,12 @@ def another_plot(data, col_interest, col_aggregate):
 
     ax = sns.barplot(x="metro", y="aggressor_pct", data=data, palette="Blues_d", ax=ax)
     ax.set_xticklabels(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
-    ax.axes.set_title("Percentage of aggressors by metropolis", fontsize=10)
-    ax.set_xlabel("metropolis", fontsize=10)
-    ax.set_ylabel("Perc. Aggressors", fontsize=8)
+    ax.axes.set_title("Percentual de agressores por RMs", fontsize=10)
+    ax.set_xlabel("Metropolis", fontsize=10)
+    ax.set_ylabel("Percentual Agressores", fontsize=8)
     ax.tick_params(labelsize=6)
     plt.ylim(min(data[col_interest]) - .0005, max(data[col_interest]))
+    plt.savefig('output/metropolis.png', transparent=True, bbox_inches='tight', dpi=240)
     plt.show()
 
 
