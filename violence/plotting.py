@@ -15,7 +15,7 @@ def summary():
         try:
             group_col = re.findall("\['(.*)'\]", file)[0]
             data = data.groupby(group_col).agg('median').reset_index()
-            print(data.head())
+            print(data[[group_col, 'aggressor_pct']].head(8))
         except IndexError:
             num_steps = int(re.findall("_(.*).", file)[0].split('.')[0].split('_')[-1])
             print(f'Número steps {num_steps}')
