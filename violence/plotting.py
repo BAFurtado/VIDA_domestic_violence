@@ -8,6 +8,10 @@ if __name__ == '__main__':
     os.chdir('..')
 
 
+def summary():
+    pass
+
+
 def generic(name, ax, x_label, y_label, title, legend):
     # Histograms
     # legend = ['sanctioned', 'not sanctioned', 'proposed']
