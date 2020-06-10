@@ -38,7 +38,8 @@ class Home(Model):
                  pct_change_wage=.05,
                  model_scale=1000,
                  quarantine=False,
-                 dissuasion=False):
+                 dissuasion=False,
+                 data_year=2000):
         """
         A violence violence model of Brazilian metropolis
 
@@ -60,6 +61,7 @@ class Home(Model):
         self.model_scale = model_scale
         self.quarantine = quarantine
         self.dissuasion = dissuasion
+        self.data_year = data_year
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
@@ -80,6 +82,7 @@ class Home(Model):
         params['PROCESSING_ACPS'] = [self.metro]
         params['MEMBERS_PER_FAMILY'] = 2.5
         params['INITIAL_FAMILIES'] = self.initial_families
+        params['DATA_YEAR'] = self.data_year
         people, families = generator.main(params=params)
         # General random data for each individual
         n = sum([len(f) for f in families])

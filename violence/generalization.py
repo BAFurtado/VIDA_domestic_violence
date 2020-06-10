@@ -43,7 +43,7 @@ if __name__ == '__main__':
     iterates = 200
     subdivisions = 8
 
-    # params = {'gender_stress': np.linspace(.1, .9, subdivisions)}
+    params = {'gender_stress': np.linspace(.1, .9, subdivisions)}
     # params = {'under_influence': np.linspace(.01, .5, subdivisions)}
     # params = {'has_gun': np.linspace(.1, .9, subdivisions)}
     # params = {'is_working_pct': np.linspace(.1, .9, subdivisions)}
@@ -53,13 +53,13 @@ if __name__ == '__main__':
     # params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
     # params = {'metro': metropolis}
     # # Max steps
-    for each in np.linspace(10, 200, 5):
-        home = model.Home()
-        for i in range(int(each)):
-            home.step()
-        model_df = home.datacollector.get_model_vars_dataframe()
-        model_df.to_csv(f'output/output_{iterates}_{5}_{each}.csv', sep=';', index=False)
+    # for each in np.linspace(10, 200, 5):
+    #     home = model.Home()
+    #     for i in range(int(each)):
+    #         home.step()
+    #     model_df = home.datacollector.get_model_vars_dataframe()
+    #     model_df.to_csv(f'output/output_{iterates}_{5}_{each}.csv', sep=';', index=False)
     #
-    # df = main(params, iterations=iterates)
-    # df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
-    # df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)
+    df = main(params, iterations=iterates)
+    df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
+    df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)
