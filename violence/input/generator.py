@@ -32,8 +32,8 @@ def quali_table(params):
     """ Provide list of municipality codes for a metropolitan region and
     return a table with APs codes and percentage of qualification by years of study
     """
-    my_geo = geo.Geography(params)
-    mun_codes = [str(value) for value in my_geo.mun_codes]
+    my_geo = geo.list_mun_codes(params)
+    mun_codes = [str(value) for value in my_geo]
     # Load qualifications data 2000, combining municipal-level with AP-level
     quali_aps = pd.read_csv(f"violence/input/{params['DATA_YEAR']}/quali_aps.csv", sep=';')
     quali_aps.AREAP = quali_aps.AREAP.astype(str)
@@ -138,9 +138,7 @@ def main(params):
     params['SIMPLIFY_POP_EVOLUTION'] = False
     params['LIST_NEW_AGE_GROUPS'] = [6, 12, 17, 25, 35, 45, 65, 100]
 
-    my_geo = geo.Geography(params)
-    # TODO: geo is here just to provide mun_codes, really?
-    cod = [value for value in my_geo.mun_codes]
+    cod = geo.list_mun_codes(params)
     pop = pd.read_csv(f"violence/input/{params['DATA_YEAR']}/num_people_age_gender_AP.csv", sep=';')
     people = filter_pop(pop, cod).copy()
     people.loc[:, 'PROP'] = people.num_people / people.num_people.sum()
