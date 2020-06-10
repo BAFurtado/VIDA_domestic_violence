@@ -1,3 +1,6 @@
+import os
+if __name__ == '__main__':
+    os.chdir('../..')
 import pandas as pd
 
 
@@ -59,8 +62,9 @@ class Geography:
 
 
 if __name__ == '__main__':
+    """ Erase everything, just return a list of mun_codes for a given metropolis"""
     p = dict()
-    p['PROCESSING_ACPS'] = ['BRASILIA']
+    p['PROCESSING_ACPS'] = ['SALVADOR']
     my_geo = Geography(p)
 
 

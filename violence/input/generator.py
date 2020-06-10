@@ -42,6 +42,7 @@ def quali_table(params):
 
 
 def generate_people(params, df, col):
+    # TODO: adjust for varying MEMBERS_PER_FAMILY per AREAP
     num_people = int(params['INITIAL_FAMILIES'] * params['MEMBERS_PER_FAMILY'])
     indexes = np.random.choice(df.index, num_people, p=df[col])
     people = df[df.index.isin(indexes)]
@@ -61,7 +62,6 @@ def adjust_instruction_2010(study):
 
 
 def add_qualification(people, qualification, _2010=False):
-    # TODO: reconfigure for new years of study division
     # Restricting schooling to possible attainable years of study, given age of person
     for i in people.index:
         age = people.loc[i, 'age']
@@ -139,6 +139,7 @@ def main(params):
     params['LIST_NEW_AGE_GROUPS'] = [6, 12, 17, 25, 35, 45, 65, 100]
 
     my_geo = geo.Geography(params)
+    # TODO: geo is here just to provide mun_codes, really?
     cod = [value for value in my_geo.mun_codes]
     pop = pd.read_csv(f"violence/input/{params['DATA_YEAR']}/num_people_age_gender_AP.csv", sep=';')
     people = filter_pop(pop, cod).copy()
