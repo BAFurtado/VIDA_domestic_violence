@@ -3,7 +3,7 @@ from collections import defaultdict
 
 import numpy as np
 import pandas as pd
-
+import random
 import violence.input.geography as geo
 import violence.input.population as population
 
@@ -51,7 +51,17 @@ def generate_people(params, df, col):
     return people
 
 
-def add_qualification(people, qualification):
+def adjust_instruction_2010(study):
+    template = {1: random.randint(1, 8),
+                2: random.randint(9, 11),
+                3: random.randint(12, 15),
+                4: random.randint(16, 17),
+                5: random.randint(1, 17)}
+    return template[study]
+
+
+def add_qualification(people, qualification, _2010=False):
+    # TODO: reconfigure for new years of study division
     # Restricting schooling to possible attainable years of study, given age of person
     for i in people.index:
         age = people.loc[i, 'age']
@@ -62,6 +72,8 @@ def add_qualification(people, qualification):
             study = np.random.choice(qualification.loc[qualification['AREAP'] == str(people.loc[i, 'AREAP']), 'qual'],
                                      p=qualification.loc[qualification['AREAP'] == str(people.loc[i, 'AREAP']),
                                                          'perc_qual_AP'])
+            if _2010:
+                study = adjust_instruction_2010(study)
             if study <= max(0, age - 6):
                 people.loc[i, 'years_study'] = study
                 break
@@ -133,7 +145,7 @@ def main(params):
     people.loc[:, 'PROP'] = people.num_people / people.num_people.sum()
     qt = quali_table(params)
     people = generate_people(params, people, 'PROP')
-    people = add_qualification(people, qt)
+    people = add_qualification(people, qt, True if params['DATA_YEAR'] == 2010 else False)
     people = add_etnias(people, population.etnias)
     # families = None
     families = sort_into_families(people)

@@ -39,7 +39,7 @@ class Home(Model):
                  model_scale=1000,
                  quarantine=False,
                  dissuasion=False,
-                 data_year=2000):
+                 data_year=2010):
         """
         A violence violence model of Brazilian metropolis
 
