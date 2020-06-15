@@ -48,8 +48,12 @@ def quali_table(params):
 
 
 def generate_people(params, df, col):
-    # TODO: adjust for varying MEMBERS_PER_FAMILY per AREAP
-    num_people = int(params['INITIAL_FAMILIES'] * params['MEMBERS_PER_FAMILY'])
+    if params['DATA_YEAR'] == 2000:
+        num_people = int(params['INITIAL_FAMILIES'] * params['MEMBERS_PER_FAMILY'])
+    elif params['DATA_YEAR'] == 2010:
+        avg_num = population.wage_family_data
+        # TODO CONTINUE HERE
+        num_people = int(params['INITIAL_FAMILIES'] * params['MEMBERS_PER_FAMILY'])
     indexes = np.random.choice(df.index, num_people, p=df[col])
     people = df[df.index.isin(indexes)]
     people = people[['AREAP', 'gender', 'age']]
