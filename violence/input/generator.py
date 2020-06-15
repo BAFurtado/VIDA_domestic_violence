@@ -91,13 +91,29 @@ def add_etnias(people, year=2000):
         etnias = population.etnias2000
         to_add = np.random.choice(list(etnias['cor']), len(people), p=list(etnias['PROP']/100))
         people.loc[:, 'cor'] = to_add
-    else:
+    elif year == 2010:
         # It was necessary to correct the percentage of colors to sum 1. Rounding was giving an error of around .1%
         etnias = population.etnias2010
         for each in set(people.AREAP):
-            to_add = np.random.choice(list(etnias[etnias.AREAP == each]['cor']), len(people[people.AREAP == each]),
+            to_add = np.random.choice(list(etnias[etnias.AREAP == each]['cor']),
+                                      len(people[people.AREAP == each]),
                                       p=list(etnias[etnias.AREAP == each]['PROP']))
             people.loc[people[people.AREAP == each].index, 'cor'] = to_add
+    return people
+
+
+def add_wage(people, year=2000):
+    if year == 2000:
+        to_add = np.random.beta(2, 5, len(people))
+        people.loc[:, 'wage'] = to_add
+    elif year == 2010:
+        wage = population.wage_family_data
+        for each in set(people.AREAP):
+            to_add = np.random.normal(loc=wage[wage.AREAP == each]['avg_wage'],
+                                      scale=wage[wage.AREAP == each]['std_wage'],
+                                      size=len(people[people.AREAP == each]))
+            people.loc[people[people.AREAP == each].index, 'wage'] = to_add
+        people['wage'] = (people.wage - people.wage.min()) / (people.wage.max() - people.wage.min())
     return people
 
 
@@ -156,6 +172,7 @@ def main(params):
     people = generate_people(params, people, 'PROP')
     people = add_qualification(people, qt, True if params['DATA_YEAR'] == 2010 else False)
     people = add_etnias(people, params['DATA_YEAR'])
+    people = add_wage(people, params['DATA_YEAR'])
     # families = None
     families = sort_into_families(people)
     return people, families
