@@ -1,11 +1,15 @@
 # Later replace by self.model.random
-from collections import defaultdict
+
 import os
 if __name__ == '__main__':
     os.chdir('../..')
+
+
 import numpy as np
 import pandas as pd
 import random
+
+from collections import defaultdict
 import violence.input.geography as geo
 import violence.input.population as population
 
@@ -92,8 +96,8 @@ def add_etnias(people, year=2000):
         etnias = population.etnias2010
         for each in set(people.AREAP):
             to_add = np.random.choice(list(etnias[etnias.AREAP == each]['cor']), len(people[people.AREAP == each]),
-                                          p=list(etnias[etnias.AREAP == each]['PROP']))
-            people[people.AREAP == each].loc[:, 'cor'] = to_add
+                                      p=list(etnias[etnias.AREAP == each]['PROP']))
+            people.loc[people[people.AREAP == each].index, 'cor'] = to_add
     return people
 
 
@@ -143,11 +147,6 @@ def main(params):
 
         Returns DataFrame and indexes of grouped families by APs (weighting areas from IBGE)
         """
-
-    # Parameters to run Geography that do not change
-    params['PERCENTAGE_ACTUAL_POP'] = .005
-    params['SIMPLIFY_POP_EVOLUTION'] = False
-    params['LIST_NEW_AGE_GROUPS'] = [6, 12, 17, 25, 35, 45, 65, 100]
 
     cod = geo.list_mun_codes(params)
     pop = pd.read_csv(f"violence/input/{params['DATA_YEAR']}/num_people_age_gender_AP.csv", sep=';')
