@@ -1,6 +1,8 @@
 # Later replace by self.model.random
 from collections import defaultdict
-
+import os
+if __name__ == '__main__':
+    os.chdir('../..')
 import numpy as np
 import pandas as pd
 import random
@@ -80,9 +82,18 @@ def add_qualification(people, qualification, _2010=False):
     return people
 
 
-def add_etnias(people, etnias):
-    to_add = np.random.choice(list(etnias['cor']), len(people), p=list(etnias['PROP']/100))
-    people.loc[:, 'cor'] = to_add
+def add_etnias(people, year=2000):
+    if year == 2000:
+        etnias = population.etnias2000
+        to_add = np.random.choice(list(etnias['cor']), len(people), p=list(etnias['PROP']/100))
+        people.loc[:, 'cor'] = to_add
+    else:
+        # It was necessary to correct the percentage of colors to sum 1. Rounding was giving an error of around .1%
+        etnias = population.etnias2010
+        for each in set(people.AREAP):
+            to_add = np.random.choice(list(etnias[etnias.AREAP == each]['cor']), len(people[people.AREAP == each]),
+                                          p=list(etnias[etnias.AREAP == each]['PROP']))
+            people[people.AREAP == each].loc[:, 'cor'] = to_add
     return people
 
 
@@ -145,7 +156,7 @@ def main(params):
     qt = quali_table(params)
     people = generate_people(params, people, 'PROP')
     people = add_qualification(people, qt, True if params['DATA_YEAR'] == 2010 else False)
-    people = add_etnias(people, population.etnias)
+    people = add_etnias(people, params['DATA_YEAR'])
     # families = None
     families = sort_into_families(people)
     return people, families
@@ -159,4 +170,5 @@ if __name__ == '__main__':
     # Parameters for this model
     prms['MEMBERS_PER_FAMILY'] = 2.5
     prms['INITIAL_FAMILIES'] = 500
+    prms['DATA_YEAR'] = 2010
     ppl, fams = main(prms)
