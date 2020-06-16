@@ -201,10 +201,13 @@ class Family(Agent):
         self.context_stress = 0
         self.members = dict()
         self.family_wage = 0
+        self.address = None
 
     def add_agent(self, agent):
         self.members[agent.unique_id] = agent
         agent.family = self
+        if self.address is None:
+            self.address = agent.address
 
     def step(self):
         """

@@ -6,7 +6,7 @@ the occurrence of crimes and motivations behind it. ... **explore the potential 
 simulate the main processes and drivers within this system**." (Malleson, Heppenstall, See, 2009).  
 
 We developed the model on top of [https://github.com/projectmesa/mesa] mesa wolf_sheep example
-We thank David Massa e all the contributors of the mesa project. 
+We thank Jackie Kazil, David Massa and all the contributors of the mesa project. 
 
 **Lígia Mori Madeira**
 

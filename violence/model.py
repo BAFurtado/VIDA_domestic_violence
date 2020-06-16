@@ -62,6 +62,7 @@ class Home(Model):
         self.quarantine = quarantine
         self.dissuasion = dissuasion
         self.data_year = data_year
+        self.neighborhood_stress = dict()
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
@@ -139,6 +140,7 @@ class Home(Model):
         self.datacollector.collect(self)
 
     def step(self):
+        self.update_neighborhood_stress()
         self.schedule.step()
         # collect data
         self.datacollector.collect(self)
@@ -150,6 +152,18 @@ class Home(Model):
         # New condition to stop the model
         if self.schedule.get_breed_count(Person) == 0:
             self.running = False
+
+    def update_neighborhood_stress(self):
+        # Start from scratch every step
+        self.neighborhood_stress = dict()
+        counter = dict()
+        for agent in self.schedule.agents:
+            if isinstance(agent, Family):
+                self.neighborhood_stress[agent.address] = self.neighborhood_stress.get(agent.address, 0) + \
+                                                          agent.context_stress
+                counter[agent.address] = counter.get(agent.address, 0) + 1
+        for key in self.neighborhood_stress.keys():
+            self.neighborhood_stress[key] = self.neighborhood_stress[key] / counter[key]
 
     @staticmethod
     def count_type_citizens(model, condition):
