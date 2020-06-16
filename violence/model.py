@@ -164,6 +164,7 @@ class Home(Model):
                 counter[agent.address] = counter.get(agent.address, 0) + 1
         for key in self.neighborhood_stress.keys():
             self.neighborhood_stress[key] = self.neighborhood_stress[key] / counter[key]
+            # print(f'This neighborhood {key} stress levels is at {self.neighborhood_stress[key]}')
 
     @staticmethod
     def count_type_citizens(model, condition):
