@@ -89,7 +89,6 @@ class Home(Model):
         working = np.random.choice([True, False], n, p=[self.is_working_pct, 1 - self.is_working_pct])
         influence = np.random.choice([True, False], n, p=[self.under_influence, 1 - self.under_influence])
         gun = np.random.choice([True, False], n, p=[self.has_gun, 1 - self.has_gun])
-        wage = np.random.beta(2, 5, n)
         i = 0
         for fam in families:
             # 1. Create a family.
@@ -113,9 +112,9 @@ class Home(Model):
                              color=person.cor,
                              address=person.AREAP,
                              years_study=person.years_study,
+                             reserve_wage=person.wage,
                              # End of sampling
                              is_working=working[i],
-                             reserve_wage=wage[i],
                              under_influence=influence[i],
                              has_gun=gun[i])
                 # Marrying
@@ -204,7 +203,7 @@ if __name__ == '__main__':
     # generate_output()
 
     home = Home()
-    for i in range(10):
+    for j in range(10):
         home.step()
     model_df = home.datacollector.get_model_vars_dataframe()
 
@@ -218,4 +217,3 @@ if __name__ == '__main__':
     #     model_df = home.datacollector.get_model_vars_dataframe()
     #     otp.loc[otp.shape[0]] = [metro, model_df.loc[9, 'Stress']]
     # otp.to_csv('joinville.csv', sep=';', index=False)
-    pass

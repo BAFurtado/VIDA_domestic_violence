@@ -14,7 +14,7 @@ class Person(Agent):
     def __init__(self, unique_id, model, pos, gender='male', age=25, color='negra',
                  years_study=6, has_gun=False, is_working=False,
                  wage=0, reserve_wage=.5, under_influence=False, address=None,
-                 category='person', denounce=False, protection=False, condemnation=False):
+                 category='person', denounce=0, protection=False, condemnation=False):
         super().__init__(unique_id, model)
         self.pos = pos
         self.gender = gender
@@ -37,6 +37,7 @@ class Person(Agent):
         self.stress = 0
         self.category = category
         # Measures of dissuasion
+        self.denounce_group = 0
         self.denounce = denounce
         self.protection = protection
         self.condemnation = condemnation
@@ -108,10 +109,10 @@ class Person(Agent):
             if self.spouse.color == 'preta':
                 tmp *= 1.3
             # Hypothesis 4: relevance of women participating in the labor market
-            if not self.spouse.is_working:
-                # Increases -- level HIGH -- when spouse is NOT working
+            if self.spouse.is_working:
+                # Increases -- level HIGH -- when spouse WORKS
                 # TODO: Find working data by gender by metropolis
-                tmp += 1 * HIGH
+                tmp += 1 * MEDIUM
 
         # Home permanence
         if not self.model.quarantine:
@@ -121,16 +122,16 @@ class Person(Agent):
         # History of assault. This stress indicator updates only for those 'male' attackers who already have a history
         tmp += self.assaulted / 10 * HIGH
         # Access to weapon
-        tmp += 1 * HIGH if self.has_gun else 0
+        tmp += 1 * HIGH * HIGH if self.has_gun else 0
         # Chemical dependence
         tmp += 1 * self.model.random.random() * HIGH if self.under_influence else 0
 
         # Dissuasion implementation as a decreasing factor of stress indicator
         if self.spouse is not None:
             if self.spouse.denounce:
-                tmp -= 1
-            if self.spouse.protection:
                 tmp -= 1 * MEDIUM
+            if self.spouse.protection:
+                tmp -= 1 * HIGH
             if self.spouse.condemnation:
                 tmp -= 1 * HIGH
 
@@ -156,18 +157,37 @@ class Person(Agent):
             self.spouse.got_attacked += 1
 
     def trigger_call_help(self):
-        if self.assaulted > 0:
-            # Victim will denounce for sure after 10 assaults
-            if (self.assaulted / 10) > self.model.random.random():
+        if self.assaulted == 1:
+            # Data [REFERENCE] suggests that:
+            # 1/3 never reports violence; 1/3 reports at the very first time; 1/4 reports on third event
+            # First time offenders are assigned in one of these three groups (1: never, 2: first time,
+            # 3: on cumulative events)
+            if not self.model.quarantine:
+                self.denounce_group = self.model.random.choice([1, 2, 3])
+            else:
+                # When quarantined, via lack of support from networks, first time reports decrease,
+                # with increases in NEVER reporting or reporting only with cumulative events
+                self.denounce_group = self.model.random.choices([1, 2, 3], weights=[5/12, 1/6, 5/12])
+            if self.denounce_group == 1:
+                self.denounce = False
+            elif self.denounce_group == 2:
                 self.denounce = True
-            if self.denounce:
-                if (self.assaulted / 5) > self.model.random.random():
-                    self.protection = True
-            if self.denounce and self.protection:
-                # TODO: Check, introduce one more model parameter: likelihood condemnation, or not?
-                # Now, implemented as a half chance.
-                if .5 > self.model.random.random():
-                    self.condemnation = True
+            else:
+                self.denounce = self.model.random.choices([True, False], weights=[1/3, 2/3])
+        elif self.assaulted > 1 and self.denounce is False and self.denounce_group == 3:
+            # Other attempts of denouncing when belonging to cumulative group
+            if not self.model.quarantine:
+                self.denounce = self.model.random.choices([True, False], weights=[1/3, 2/3])
+            else:
+                self.denounce = self.model.random.choices([True, False], weights=[1/4, 3/4])
+        if self.denounce:
+            # TODO: Check, introduce one more model parameter: likelihood condemnation/protection?
+            # Now, implemented as a half chance for both
+            if self.model.random.random() > .5:
+                self.protection = True
+        if self.denounce and self.protection:
+            if self.model.random.random() > .5:
+                self.condemnation = True
 
 
 class Family(Agent):

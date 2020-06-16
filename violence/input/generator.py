@@ -117,6 +117,7 @@ def add_wage(people, year=2000):
                                       scale=wage[wage.AREAP == each]['std_wage'],
                                       size=len(people[people.AREAP == each]))
             people.loc[people[people.AREAP == each].index, 'wage'] = to_add
+        # Need to normalize data. When it comes from the beta distribution (2000), value is already between 0 and 1.
         people['wage'] = (people.wage - people.wage.min()) / (people.wage.max() - people.wage.min())
     return people
 
