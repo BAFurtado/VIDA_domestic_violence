@@ -47,15 +47,15 @@ def quali_table(params):
     return selected_quali
 
 
-def generate_people(params, df, col):
+def generate_people(params, ppl, col):
     if params['DATA_YEAR'] == 2000:
         num_people = int(params['INITIAL_FAMILIES'] * params['MEMBERS_PER_FAMILY'])
     elif params['DATA_YEAR'] == 2010:
-        avg_num = population.wage_family_data
-        # TODO CONTINUE HERE
-        num_people = int(params['INITIAL_FAMILIES'] * params['MEMBERS_PER_FAMILY'])
-    indexes = np.random.choice(df.index, num_people, p=df[col])
-    people = df[df.index.isin(indexes)]
+        data = population.wage_family_data
+        avg_num = data[data.AREAP.apply(lambda x: x in ppl.AREAP.unique())].avg_num_people.mean()
+        num_people = int(params['INITIAL_FAMILIES'] * avg_num)
+    indexes = np.random.choice(ppl.index, num_people, p=ppl[col])
+    people = ppl[ppl.index.isin(indexes)]
     people = people[['AREAP', 'gender', 'age']]
     people.loc[people['gender'] == 1, 'gender'] = 'female'
     people.loc[people['gender'] == 2, 'gender'] = 'male'
