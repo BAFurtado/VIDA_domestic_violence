@@ -14,7 +14,7 @@ class Person(Agent):
     def __init__(self, unique_id, model, pos, gender='male', age=25, color='negra',
                  years_study=6, has_gun=False, is_working=False,
                  wage=0, reserve_wage=.5, under_influence=False, address=None,
-                 category='person', denounce=0, protection=False, condemnation=False):
+                 category='person', denounce=False, protection=False, condemnation=False):
         super().__init__(unique_id, model)
         self.pos = pos
         self.gender = gender
@@ -143,7 +143,7 @@ class Person(Agent):
         """
         Uses self stress and family context to incur in probability of becoming violent
         """
-        # First time offender get registered in the system and changes class as an Aggressor and a Victim
+        # First time offender get registered in the system and changes category into an Aggressor and a Victim
         if self.assaulted == 0:
             if self.stress > self.random.random():
                 self.category = 'aggressor'
@@ -157,7 +157,7 @@ class Person(Agent):
             self.spouse.got_attacked += 1
 
     def trigger_call_help(self):
-        if self.assaulted == 1:
+        if self.got_attacked == 1:
             # Data [REFERENCE] suggests that:
             # 1/3 never reports violence; 1/3 reports at the very first time; 1/4 reports on third event
             # First time offenders are assigned in one of these three groups (1: never, 2: first time,
@@ -167,19 +167,19 @@ class Person(Agent):
             else:
                 # When quarantined, via lack of support from networks, first time reports decrease,
                 # with increases in NEVER reporting or reporting only with cumulative events
-                self.denounce_group = self.model.random.choices([1, 2, 3], weights=[5/12, 1/6, 5/12])
+                self.denounce_group = self.model.random.choices([1, 2, 3], weights=[5/12, 1/6, 5/12])[0]
             if self.denounce_group == 1:
                 self.denounce = False
             elif self.denounce_group == 2:
                 self.denounce = True
             else:
-                self.denounce = self.model.random.choices([True, False], weights=[1/3, 2/3])
-        elif self.assaulted > 1 and self.denounce is False and self.denounce_group == 3:
+                self.denounce = self.model.random.choices([True, False], weights=[1/3, 2/3])[0]
+        elif self.got_attacked > 1 and self.denounce is False and self.denounce_group == 3:
             # Other attempts of denouncing when belonging to cumulative group
             if not self.model.quarantine:
-                self.denounce = self.model.random.choices([True, False], weights=[1/3, 2/3])
+                self.denounce = self.model.random.choices([True, False], weights=[1/3, 2/3])[0]
             else:
-                self.denounce = self.model.random.choices([True, False], weights=[1/4, 3/4])
+                self.denounce = self.model.random.choices([True, False], weights=[1/4, 3/4])[0]
         if self.denounce:
             # TODO: Check, introduce one more model parameter: likelihood condemnation/protection?
             # Now, implemented as a half chance for both

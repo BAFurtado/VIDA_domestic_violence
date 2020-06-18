@@ -28,7 +28,7 @@ class Home(Model):
     description = 'A model for simulating the victim aggressor interaction mediated by presence of violence.'
 
     def __init__(self, height=40, width=40,
-                 initial_families=10000,
+                 initial_families=1000,
                  metro='BRASILIA',
                  gender_stress=.8,
                  under_influence=.1,
@@ -36,9 +36,9 @@ class Home(Model):
                  is_working_pct=.8,
                  chance_changing_working_status=.05,
                  pct_change_wage=.05,
-                 model_scale=100000,
+                 model_scale=1000,
                  quarantine=False,
-                 dissuasion=False,
+                 dissuasion=True,
                  data_year=2010):
         """
         A violence violence model of Brazilian metropolis
@@ -71,7 +71,7 @@ class Home(Model):
         # Then server is going to collect info using the keys in model_reporters dictionary
         model_reporters = {
             "Denounce": lambda m: self.count_type_citizens(m, 'denounce'),
-            "Assault": lambda m: self.count_type_citizens(m, 'assault'),
+            "Got attacked": lambda m: self.count_type_citizens(m, 'got_attacked'),
             "Stress": lambda m: self.count_stress(m)}
         self.datacollector = DataCollector(model_reporters=model_reporters)
 
@@ -175,8 +175,8 @@ class Home(Model):
             if isinstance(agent, Person):
                 if 'denounce' == condition:
                     count += agent.denounce
-                elif 'assault' == condition:
-                    count += agent.assaulted
+                elif 'got_attacked' == condition:
+                    count += agent.got_attacked
         return count
 
     @staticmethod

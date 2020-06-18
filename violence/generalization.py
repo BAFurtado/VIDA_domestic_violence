@@ -57,10 +57,11 @@ if __name__ == '__main__':
     #     home = model.Home()
     #     for i in range(int(each)):
     #         home.step()
-          # print([self.schedule.time, self.schedule.get_breed_count(Person)])
+
     #     model_df = home.datacollector.get_model_vars_dataframe()
     #     model_df.to_csv(f'output/output_{iterates}_{5}_{each}.csv', sep=';', index=False)
     #
+    # print([self.schedule.time, self.schedule.get_breed_count(Person)])
     df = main(params, iterations=iterates)
     df.loc[:, 'aggressor_pct'] = df['Aggressor'] / df['Person']
     df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)
