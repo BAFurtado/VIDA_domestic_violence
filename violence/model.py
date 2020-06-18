@@ -28,7 +28,7 @@ class Home(Model):
     description = 'A model for simulating the victim aggressor interaction mediated by presence of violence.'
 
     def __init__(self, height=40, width=40,
-                 initial_families=2000,
+                 initial_families=10000,
                  metro='BRASILIA',
                  gender_stress=.8,
                  under_influence=.1,
@@ -36,7 +36,7 @@ class Home(Model):
                  is_working_pct=.8,
                  chance_changing_working_status=.05,
                  pct_change_wage=.05,
-                 model_scale=1000,
+                 model_scale=100000,
                  quarantine=False,
                  dissuasion=False,
                  data_year=2010):
@@ -70,9 +70,8 @@ class Home(Model):
         # Then another function may iterate over each 'agent in model.schedule.agents'
         # Then server is going to collect info using the keys in model_reporters dictionary
         model_reporters = {
-            "Person": lambda m: self.count_type_citizens(m, "person"),
-            "Victim": lambda m: self.count_type_citizens(m, "victim"),
-            "Aggressor": lambda m: self.count_type_citizens(m, "aggressor"),
+            "Denounce": lambda m: self.count_type_citizens(m, 'denounce'),
+            "Assault": lambda m: self.count_type_citizens(m, 'assault'),
             "Stress": lambda m: self.count_stress(m)}
         self.datacollector = DataCollector(model_reporters=model_reporters)
 
@@ -174,8 +173,10 @@ class Home(Model):
         count = 0
         for agent in model.schedule.agents:
             if isinstance(agent, Person):
-                if agent.category == condition:
-                    count += 1
+                if 'denounce' == condition:
+                    count += agent.denounce
+                elif 'assault' == condition:
+                    count += agent.assaulted
         return count
 
     @staticmethod

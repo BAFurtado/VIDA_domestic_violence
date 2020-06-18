@@ -54,11 +54,15 @@ def generate_people(params, ppl, col):
         data = population.wage_family_data
         avg_num = data[data.AREAP.apply(lambda x: x in ppl.AREAP.unique())].avg_num_people.mean()
         num_people = int(params['INITIAL_FAMILIES'] * avg_num)
-    indexes = np.random.choice(ppl.index, num_people, p=ppl[col])
-    people = ppl[ppl.index.isin(indexes)]
+    indexes = np.random.choice(ppl.index, size=num_people, p=ppl[col])
+
+    people = ppl.reindex(indexes).reset_index()
     people = people[['AREAP', 'gender', 'age']]
+    # for i, idx in enumerate(indexes):
+    #     people.loc[i] = ppl.loc[idx]
     people.loc[people['gender'] == 1, 'gender'] = 'female'
     people.loc[people['gender'] == 2, 'gender'] = 'male'
+    people.AREAP = people.AREAP.astype(int)
     return people
 
 
@@ -190,6 +194,6 @@ if __name__ == '__main__':
     prms['PROCESSING_ACPS'] = [metro]
     # Parameters for this model
     prms['MEMBERS_PER_FAMILY'] = 2.5
-    prms['INITIAL_FAMILIES'] = 500
+    prms['INITIAL_FAMILIES'] = 10000
     prms['DATA_YEAR'] = 2010
     ppl, fams = main(prms)
