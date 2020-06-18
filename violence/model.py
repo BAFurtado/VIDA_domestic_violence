@@ -72,6 +72,7 @@ class Home(Model):
         model_reporters = {
             "Denounce": lambda m: self.count_type_citizens(m, 'denounce'),
             "Got attacked": lambda m: self.count_type_citizens(m, 'got_attacked'),
+            "Females": lambda m: self.count_type_citizens(m, 'female'),
             "Stress": lambda m: self.count_stress(m)}
         self.datacollector = DataCollector(model_reporters=model_reporters)
 
@@ -177,6 +178,10 @@ class Home(Model):
                     count += agent.denounce
                 elif 'got_attacked' == condition:
                     count += agent.got_attacked
+                elif 'female' == condition:
+                    if agent.category == 'female':
+                        if agent.age > 18:
+                            count += 1
         return count
 
     @staticmethod

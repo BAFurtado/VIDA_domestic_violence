@@ -55,9 +55,8 @@ def home_violence_portrayal(agent):
 
 
 canvas_element = CanvasGrid(home_violence_portrayal, 40, 40, 480, 480)
-chart_element = ChartModule([{"Label": "Person", "Color": ADULT},
-                             {"Label": "Aggressor", "Color": AGGRESSOR},
-                             {"Label": "Victim", "Color": VICTIM}])
+chart_element = ChartModule([{"Label": "Got attacked", "Color": AGGRESSOR},
+                             {"Label": "Denounce", "Color": VICTIM}])
 another_chart = ChartModule([{"Label": "Stress", "Color": AGGRESSOR}])
 
 model_params = {"model_scale": UserSettableParameter('slider', 'Model Scale', 1000, 100, 2000),
@@ -71,7 +70,7 @@ model_params = {"model_scale": UserSettableParameter('slider', 'Model Scale', 10
                 "metro": UserSettableParameter('choice', 'Metropolis to sample population', 'BRASILIA',
                                                choices=metropolis),
                 "quarantine": UserSettableParameter('choice', 'Quarantine', False, choices=[False, True]),
-                "dissuasion": UserSettableParameter('choice', 'Dissuasion Policies', False, choices=[False, True]),
+                "dissuasion": UserSettableParameter('choice', 'Dissuasion Policies', True, choices=[False, True]),
                 "data_year": UserSettableParameter('choice', 'Population Generation Data (year)', 2010,
                                                    choices=[2000, 2010])
                 }
