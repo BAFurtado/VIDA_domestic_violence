@@ -40,8 +40,8 @@ if __name__ == '__main__':
     """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
         120 * 8 ** 1
     """
-    iterates = 200
-    subdivisions = 8
+    iterates = 10
+    subdivisions = 2
 
     params = {'gender_stress': np.linspace(.1, .9, subdivisions)}
     params = {'under_influence': np.linspace(.01, .5, subdivisions)}
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
     params = {'metro': metropolis}
     # # Max steps
-    for each in np.linspace(10, 200, 5):
+    for each in np.linspace(10, 200, 2):
         home = model.Home()
         for i in range(int(each)):
             home.step()
