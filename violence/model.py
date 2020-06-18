@@ -179,7 +179,7 @@ class Home(Model):
                 elif 'got_attacked' == condition:
                     count += agent.got_attacked
                 elif 'female' == condition:
-                    if agent.category == 'female':
+                    if agent.gender == 'female':
                         if agent.age > 18:
                             count += 1
         return count
