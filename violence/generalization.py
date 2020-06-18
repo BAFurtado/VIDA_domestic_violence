@@ -21,8 +21,9 @@ from violence.input.generator import metropolis
 
 def main(parameters, iterations=50, max_steps=None):
     model_reporters = {
-        "Person": lambda m: m.count_type_citizens(m, "person"),
-        "Aggressor": lambda m: m.count_type_citizens(m, "aggressor"),
+        "Denounce": lambda m: m.count_type_citizens(m, 'denounce'),
+        "Got attacked": lambda m: m.count_type_citizens(m, 'got_attacked'),
+        "Females": lambda m: m.count_type_citizens(m, 'female'),
         "Stress": lambda m: m.count_stress(m)}
     if not max_steps:
         batch_run = BatchRunner(model.Home, variable_parameters=parameters, max_steps=10, iterations=iterations,
