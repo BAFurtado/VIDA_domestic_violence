@@ -41,8 +41,8 @@ if __name__ == '__main__':
     """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
         120 * 8 ** 1
     """
-    iterates = 10
-    subdivisions = 2
+    iterates = 200
+    subdivisions = 8
 
     # params = {'gender_stress': np.linspace(.1, .9, subdivisions)}
     # params = {'under_influence': np.linspace(.01, .5, subdivisions)}
@@ -55,14 +55,15 @@ if __name__ == '__main__':
     # params = {'metro': metropolis}
     # # Max steps
     df = pd.DataFrame()
-    for j in range(iterates):
+    for each in range(iterates):
         home = model.Home()
         for i in range(int(10)):
             home.step()
         model_df = home.datacollector.get_model_vars_dataframe()
-        model_df.loc[:, 'run'] = j
+        model_df.loc[:, 'run'] = each
         df = df.append(model_df)
-    model_df.to_csv(f'output/output_{iterates}_{5}_{10}.csv', sep=';', index=False)
+
+    df.to_csv(f'output/output_{iterates}_{10}.csv', sep=';', index=False)
     #
     # print([self.schedule.time, self.schedule.get_breed_count(Person)])
     # df = main(params, iterations=iterates)
