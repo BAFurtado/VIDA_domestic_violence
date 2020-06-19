@@ -223,6 +223,7 @@ if __name__ == '__main__':
     # Bernardo's debugging
     # generate_output()
 
+
     home = Home()
     for j in range(10):
         home.step()

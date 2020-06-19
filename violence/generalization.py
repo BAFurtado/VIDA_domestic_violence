@@ -3,7 +3,7 @@ if __name__ == '__main__':
     os.chdir('..')
 
 import numpy as np
-
+import pandas as pd
 from mesa.batchrunner import BatchRunner
 from violence import model
 from violence.input.generator import metropolis
@@ -44,24 +44,26 @@ if __name__ == '__main__':
     iterates = 10
     subdivisions = 2
 
-    params = {'gender_stress': np.linspace(.1, .9, subdivisions)}
-    params = {'under_influence': np.linspace(.01, .5, subdivisions)}
-    params = {'has_gun': np.linspace(.1, .9, subdivisions)}
-    params = {'is_working_pct': np.linspace(.1, .9, subdivisions)}
-    params = {'chance_changing_working_status': np.linspace(.01, .5, subdivisions)}
-    params = {'quarantine': [False, True]}
-    params = {'dissuasion': [False, True]}
-    params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
-    params = {'metro': metropolis}
+    # params = {'gender_stress': np.linspace(.1, .9, subdivisions)}
+    # params = {'under_influence': np.linspace(.01, .5, subdivisions)}
+    # params = {'has_gun': np.linspace(.1, .9, subdivisions)}
+    # params = {'is_working_pct': np.linspace(.1, .9, subdivisions)}
+    # params = {'chance_changing_working_status': np.linspace(.01, .5, subdivisions)}
+    # params = {'quarantine': [False, True]}
+    # params = {'dissuasion': [False, True]}
+    # params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
+    # params = {'metro': metropolis}
     # # Max steps
-    for each in np.linspace(10, 200, 2):
+    df = pd.DataFrame()
+    for j in range(iterates):
         home = model.Home()
-        for i in range(int(each)):
+        for i in range(int(10)):
             home.step()
-
         model_df = home.datacollector.get_model_vars_dataframe()
-        model_df.to_csv(f'output/output_{iterates}_{5}_{each}.csv', sep=';', index=False)
+        model_df.loc[:, 'run'] = j
+        df = df.append(model_df)
+    model_df.to_csv(f'output/output_{iterates}_{5}_{10}.csv', sep=';', index=False)
     #
     # print([self.schedule.time, self.schedule.get_breed_count(Person)])
-    df = main(params, iterations=iterates)
-    df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)
+    # df = main(params, iterations=iterates)
+    # df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)

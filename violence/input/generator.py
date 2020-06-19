@@ -56,13 +56,13 @@ def generate_people(params, ppl, col):
         num_people = int(params['INITIAL_FAMILIES'] * avg_num)
     indexes = np.random.choice(ppl.index, size=num_people, p=ppl[col])
 
-    people = ppl.reindex(indexes).reset_index()
+    people = ppl.reindex(indexes).reset_index(drop=True)
     people = people[['AREAP', 'gender', 'age']]
     # for i, idx in enumerate(indexes):
     #     people.loc[i] = ppl.loc[idx]
     people.loc[people['gender'] == 1, 'gender'] = 'female'
     people.loc[people['gender'] == 2, 'gender'] = 'male'
-    people.AREAP = people.AREAP.astype(int)
+    # people.AREAP = people.AREAP.astype(int)
     return people
 
 
