@@ -13,15 +13,17 @@ def many_runs_output():
     runs = len(o)
 
     o.loc[:, 'Denounce per female'] = o.loc[:, 'Denounce'] / o.loc[:, 'Females'] * model_scale
-    print(f"1. For {runs} runs, denounces per {model_scale} female is {o['Denounce per female'].mean()}")
+    print(f"1. For {runs} runs, denounces per hundred {model_scale} female is {o['Denounce per female'].mean():.2f}")
+    print(f"2. For {runs} runs the attacks per hundred {model_scale} female is {o['Got attacked'].mean():.2f}")
 
 
 def percentage(data, flag='Got attacked', flag2='dissuasion'):
-    perc = (data.loc[True, flag] - data.loc[False, flag]) / data.loc[True, flag] * 100
+    idx = 0 if flag == 'Got attacked' else 1
+    perc = (data.iloc[-1, idx] - data.iloc[0, idx]) / data.iloc[-1, idx] * 100
     print(f"Percentual {flag} with {flag2} {perc:.2f}%")
 
 
-def true_false_output(flag='dissuassion'):
+def results(flag='dissuassion'):
     print(flag.title())
     o = pd.read_csv(f"output_200_8_dict_keys(['{flag}']).csv", sep=';')
     o.loc[:, 'Denounce per female'] = o.loc[:, 'Denounce'] / o.loc[:, 'Females'] * model_scale
@@ -33,8 +35,9 @@ def true_false_output(flag='dissuassion'):
 
 def main():
     many_runs_output()
-    true_false_output('dissuasion')
-    true_false_output('quarantine')
+    for each in ['dissuasion', 'quarantine', 'gender_stress', 'has_gun', 'is_working_pct', 'pct_change_wage',
+                 'under_influence', 'chance_changing_working_status']:
+        results(each)
 
 
 if __name__ == '__main__':
