@@ -2,6 +2,7 @@ import os
 if __name__ == '__main__':
     os.chdir('..')
 
+import pickle
 import numpy as np
 import pandas as pd
 from mesa.batchrunner import BatchRunner
@@ -52,19 +53,19 @@ if __name__ == '__main__':
     # params = {'quarantine': [False, True]}
     # params = {'dissuasion': [False, True]}
     # params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
-    # params = {'metro': metropolis}
+    params = {'metro': metropolis}
     # # Max steps
-    df = pd.DataFrame()
-    for each in range(iterates):
-        home = model.Home()
-        for i in range(int(10)):
-            home.step()
-        model_df = home.datacollector.get_model_vars_dataframe()
-        model_df.loc[:, 'run'] = each
-        df = df.append(model_df)
-
-    df.to_csv(f'output/output_{iterates}_{10}.csv', sep=';', index=False)
+    # df = pd.DataFrame()
+    # for each in range(iterates):
+    #     home = model.Home()
+    #     for i in range(int(10)):
+    #         home.step()
+    #     model_df = home.datacollector.get_model_vars_dataframe()
+    #     model_df.loc[:, 'run'] = each
+    #     df = df.append(model_df)
+    #
+    # df.to_csv(f'output/output_{iterates}_{10}.csv', sep=';', index=False)
     #
     # print([self.schedule.time, self.schedule.get_breed_count(Person)])
-    # df = main(params, iterations=iterates)
-    # df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)
+    df = main(params, iterations=iterates)
+    df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)

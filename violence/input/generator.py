@@ -188,12 +188,12 @@ def main(params):
 
 
 if __name__ == '__main__':
-    metro = 'BRASILIA'
+    metro = 'CAMPINAS'
     # Necessary parameters to generate data
     prms = dict()
     prms['PROCESSING_ACPS'] = [metro]
     # Parameters for this model
     prms['MEMBERS_PER_FAMILY'] = 2.5
-    prms['INITIAL_FAMILIES'] = 10000
+    prms['INITIAL_FAMILIES'] = 1000
     prms['DATA_YEAR'] = 2010
     ppl, fams = main(prms)
