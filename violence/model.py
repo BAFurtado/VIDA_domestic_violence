@@ -8,10 +8,10 @@ if __name__ == '__main__':
 
 import numpy as np
 import pandas as pd
+
 from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
-
 
 from violence.agents import Person, Family
 from violence.schedule import RandomActivationByBreed
@@ -222,8 +222,6 @@ def generate_output():
 if __name__ == '__main__':
     # Bernardo's debugging
     # generate_output()
-
-
     home = Home()
     for j in range(10):
         home.step()

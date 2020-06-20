@@ -5,6 +5,8 @@ if __name__ == '__main__':
 import pickle
 import numpy as np
 import pandas as pd
+
+
 from mesa.batchrunner import BatchRunner
 from violence import model
 from violence.input.generator import metropolis
