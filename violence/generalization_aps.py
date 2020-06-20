@@ -34,11 +34,12 @@ def main(metro='BRASILIA', iterates=200, steps=10):
         df.loc[:, 'run'] = each
         data = data.append(df)
     data = data.groupby('index').agg('mean')
+    data = data.reset_index()
     data = data.rename(columns={'index': 'AREAP'})
     data = data[['AREAP', 'attacked', 'denounce']]
-    data.to_csv(f'output/output_{iterates}_{metro}', sep=';', index=False)
+    data.to_csv(f'output/output_{iterates}_{metro}.csv', sep=';', index=False)
     return data
 
 
 if __name__ == '__main__':
-    d = main(metro='BRASILIA', iterates=5)
+    d = main(metro='BRASILIA', iterates=10)
