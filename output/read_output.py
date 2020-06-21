@@ -8,13 +8,16 @@ model_scale = 1000
 
 # Standard run for 200 times
 def many_runs_output():
+    # Read raw data
     o = pd.read_csv('output_200_10.csv', sep=';')
+    # Restrict to step 10 output of the model
     o = o[(o.index + 1) % 11 == 0]
     runs = len(o)
-
+    # Get numbers by 100,000 females
+    o.loc[:, 'Attacks per female'] = o.loc[:, 'Got attacked'] / o.loc[:, 'Females'] * model_scale
     o.loc[:, 'Denounce per female'] = o.loc[:, 'Denounce'] / o.loc[:, 'Females'] * model_scale
     print(f"1. For {runs} runs, denounces per hundred {model_scale} female is {o['Denounce per female'].mean():.2f}")
-    print(f"2. For {runs} runs the attacks per hundred {model_scale} female is {o['Got attacked'].mean():.2f}")
+    print(f"2. For {runs} runs attacks per hundred {model_scale} female is {o['Attacks per female'].mean():.2f}")
 
 
 def percentage(data, flag='Attacks per female', flag2='dissuasion'):
@@ -23,7 +26,7 @@ def percentage(data, flag='Attacks per female', flag2='dissuasion'):
     print(f"Percentual {flag} with {flag2} {perc:.2f}%")
 
 
-def results(flag='dissuassion'):
+def results(flag='dissuasion'):
     print(flag.title())
     o = pd.read_csv(f"output_200_8_dict_keys(['{flag}']).csv", sep=';')
     o.loc[:, 'Attacks per female'] = o.loc[:, 'Got attacked'] / o.loc[:, 'Females'] * model_scale
