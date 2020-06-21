@@ -17,8 +17,8 @@ def many_runs_output():
     print(f"2. For {runs} runs the attacks per hundred {model_scale} female is {o['Got attacked'].mean():.2f}")
 
 
-def percentage(data, flag='Got attacked', flag2='dissuasion'):
-    idx = 0 if flag == 'Got attacked' else 1
+def percentage(data, flag='Attacks per female', flag2='dissuasion'):
+    idx = 0 if flag == 'Attacks per female' else 1
     perc = (data.iloc[-1, idx] - data.iloc[0, idx]) / data.iloc[-1, idx] * 100
     print(f"Percentual {flag} with {flag2} {perc:.2f}%")
 
@@ -26,10 +26,11 @@ def percentage(data, flag='Got attacked', flag2='dissuasion'):
 def results(flag='dissuassion'):
     print(flag.title())
     o = pd.read_csv(f"output_200_8_dict_keys(['{flag}']).csv", sep=';')
+    o.loc[:, 'Attacks per female'] = o.loc[:, 'Got attacked'] / o.loc[:, 'Females'] * model_scale
     o.loc[:, 'Denounce per female'] = o.loc[:, 'Denounce'] / o.loc[:, 'Females'] * model_scale
-    o = o.groupby(flag).agg('mean')[['Got attacked', 'Denounce per female']]
+    o = o.groupby(flag).agg('mean')[['Attacks per female', 'Denounce per female']]
     print(o)
-    percentage(o, 'Got attacked', flag)
+    percentage(o, 'Attacks per female', flag)
     percentage(o, 'Denounce per female', flag)
 
 

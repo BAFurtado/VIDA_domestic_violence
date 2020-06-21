@@ -3,6 +3,7 @@ import re
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from matplotlib.ticker import FormatStrFormatter
 
 if __name__ == '__main__':
     os.chdir('..')
@@ -67,14 +68,15 @@ def plot(data, group_col, plot_col):
 def another_plot(data, col_interest, col_aggregate):
     fig, ax = plt.subplots()
     ax = set_proper_ticks(ax)
-    data = data.groupby(by=col_aggregate).agg('median').reset_index()
+    data = data.groupby(by=col_aggregate).agg('mean').reset_index()
     data = data.sort_values(by=[col_interest])
 
-    ax = sns.barplot(x="metro", y="aggressor_pct", data=data, palette="Blues_d", ax=ax)
+    ax = sns.barplot(x="metro", y="Attacks per female", data=data, palette="Blues_d", ax=ax)
     ax.set_xticklabels(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
-    ax.axes.set_title("Percentual de agressores por RMs", fontsize=10)
-    ax.set_xlabel("Metropolis", fontsize=10)
-    ax.set_ylabel("Percentual Agressores", fontsize=8)
+    ax.axes.set_title("Notificações simuladas médias de ataques por cem mil mulheres por ACPs", fontsize=10)
+    ax.set_xlabel("Metropolis", fontsize=9)
+    ax.set_ylabel("Agressões por cem mil mulheres", fontsize=8)
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
     ax.tick_params(labelsize=6)
     plt.ylim(min(data[col_interest]) - .0005, max(data[col_interest]))
     plt.savefig('output/metropolis.png', transparent=True, bbox_inches='tight', dpi=240)
@@ -85,7 +87,7 @@ if __name__ == '__main__':
     # df3 = pd.read_csv('output/bundled_together.csv', sep=';')
     # plot(df3, 'gender_stress', "aggressor_pct")
 
-    df = pd.read_csv("output/output_200_8_dict_keys(['metro']).csv", sep=';')
-    another_plot(df, 'aggressor_pct', 'metro')
+    df = pd.read_csv("output/output_200_dict_keys(['metro']).csv", sep=';')
+    another_plot(df, 'Attacks per female', 'metro')
 
     # summary()

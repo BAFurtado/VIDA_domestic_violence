@@ -33,15 +33,15 @@ def main(metro='BRASILIA', iterates=500, steps=10):
         df_females = pd.DataFrame.from_dict(females, orient='index', columns=['females'])
         df = pd.merge(df_attack, df_denounce, right_index=True, left_index=True)
         df = df.merge(df_females, right_index=True, left_index=True)
-        df.loc[:, 'attacks_per_female'] = df.loc[:, 'attacked'] / df.loc[:, 'females']
-        df.loc[:, 'denounces_per_females'] = df.loc[:, 'denounce'] / df.loc[:, 'females']
+        df.loc[:, 'Attacks per female'] = df.loc[:, 'attacked'] / df.loc[:, 'females'] * home.model_scale
+        df.loc[:, 'Denounces per female'] = df.loc[:, 'denounce'] / df.loc[:, 'females'] * home.model_scale
         df = df.reset_index()
         df.loc[:, 'run'] = each
         data = data.append(df)
     data = data.groupby('index').agg('mean')
     data = data.reset_index()
     data = data.rename(columns={'index': 'AREAP'})
-    data = data[['AREAP', 'attacked', 'denounce', 'females', 'attacks_per_female', 'denounces_per_females']]
+    data = data[['AREAP', 'attacked', 'denounce', 'females', 'Attacks per female', 'Denounces per female']]
     data.to_csv(f'output/output_{iterates}_{metro}.csv', sep=';', index=False)
     return data
 
