@@ -2,14 +2,19 @@ import os
 if __name__ == '__main__':
     os.chdir('..')
 
-import pickle
-import numpy as np
-import pandas as pd
-
-
 from mesa.batchrunner import BatchRunner
 from violence import model
 from violence.input.generator import metropolis
+
+# Manual multiprocessing
+# metropolis = metropolis[:6]
+# metropolis = metropolis[6:12]
+# metropolis = metropolis[12:18]
+# metropolis = metropolis[18:24]
+# metropolis = metropolis[24:30]
+# metropolis = metropolis[30:36]
+# metropolis = metropolis[36:42]
+metropolis = metropolis[42:]
 
 # With the BatchRunner
 # ___________ parameters to change:
@@ -70,4 +75,4 @@ if __name__ == '__main__':
     #
     # print([self.schedule.time, self.schedule.get_breed_count(Person)])
     df = main(params, iterations=iterates)
-    df.to_csv(f'output/output_{iterates}_{subdivisions}_{params.keys()}.csv', sep=';', index=False)
+    df.to_csv(f'output/output_{iterates}_{metropolis[0]}_{params.keys()}.csv', sep=';', index=False)
