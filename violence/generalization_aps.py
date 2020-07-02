@@ -9,7 +9,7 @@ from violence.agents import Person
 from violence import model
 
 
-def main(metro='BRASILIA', iterates=500, steps=10):
+def main(metro='BRASILIA', iterates=200, steps=10):
     """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
         120 * 8 ** 1
     """

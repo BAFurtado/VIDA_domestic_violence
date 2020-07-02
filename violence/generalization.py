@@ -14,7 +14,7 @@ from violence.input.generator import metropolis
 # metropolis = metropolis[24:30]
 # metropolis = metropolis[30:36]
 # metropolis = metropolis[36:42]
-metropolis = metropolis[42:]
+# metropolis = metropolis[42:]
 
 # With the BatchRunner
 # ___________ parameters to change:
@@ -57,10 +57,9 @@ if __name__ == '__main__':
     # params = {'has_gun': np.linspace(.1, .9, subdivisions)}
     # params = {'is_working_pct': np.linspace(.1, .9, subdivisions)}
     # params = {'chance_changing_working_status': np.linspace(.01, .5, subdivisions)}
-    # params = {'quarantine': [False, True]}
-    # params = {'dissuasion': [False, True]}
+    params = {'quarantine': [False, True], 'dissuasion': [False, True]}
     # params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
-    params = {'metro': metropolis}
+    # params = {'metro': metropolis}
     # # Max steps
     # df = pd.DataFrame()
     # for each in range(iterates):
@@ -75,4 +74,4 @@ if __name__ == '__main__':
     #
     # print([self.schedule.time, self.schedule.get_breed_count(Person)])
     df = main(params, iterations=iterates)
-    df.to_csv(f'output/output_{iterates}_{metropolis[0]}_{params.keys()}.csv', sep=';', index=False)
+    df.to_csv(f'output/output_{iterates}_BRASILIA_TFTF_{params.keys()}.csv', sep=';', index=False)
