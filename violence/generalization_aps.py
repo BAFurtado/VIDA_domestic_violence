@@ -13,8 +13,8 @@ def main(metro='BRASILIA', iterates=200, steps=10):
     """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
         120 * 8 ** 1
     """
-    data = pd.DataFrame(columns=['index', 'attacked', 'denounce', 'females', 'attacks_per_female',
-                                 'denounces_per_females']).astype(int)
+    data = pd.DataFrame(columns=['index', 'attacked', 'denounce', 'females', 'Attacks per female',
+                                 'Denounces per female']).astype(int)
     # Run each metropolis a number of times
     for each in range(iterates):
         # For each model. Instantiate a model and move up to steps
