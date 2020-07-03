@@ -49,3 +49,4 @@ def main(metro='BRASILIA', iterates=200, steps=10):
 if __name__ == '__main__':
     d = main(metro='BRASILIA')
     p = main(metro='PORTO ALEGRE')
+

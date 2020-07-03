@@ -7,15 +7,16 @@ model_scale = 1000
 
 
 # Standard run for 200 times
-def many_runs_output():
+def many_runs_output(path='output_200_10.csv'):
     # Read raw data
-    o = pd.read_csv('output_200_10.csv', sep=';')
+    o = pd.read_csv(path, sep=';')
     # Restrict to step 10 output of the model
     o = o[(o.index + 1) % 11 == 0]
     runs = len(o)
     # Get numbers by 100,000 females
     o.loc[:, 'Attacks per female'] = o.loc[:, 'Got attacked'] / o.loc[:, 'Females'] * model_scale
     o.loc[:, 'Denounce per female'] = o.loc[:, 'Denounce'] / o.loc[:, 'Females'] * model_scale
+    print(f"Dissuasion: {path.split('_')[-2]}, Quarantine: {path.split('_')[-1].split('.')[0]}")
     print(f"1. For {runs} runs, denounces per hundred {model_scale} female is {o['Denounce per female'].mean():.2f}")
     print(f"2. For {runs} runs attacks per hundred {model_scale} female is {o['Attacks per female'].mean():.2f}")
 
@@ -45,4 +46,10 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    # For Policy tests
+    for p in ['output_200_False_False.csv',
+              'output_200_False_True.csv',
+              'output_200_True_False.csv',
+              'output_200_True_True.csv']:
+        many_runs_output(p)
