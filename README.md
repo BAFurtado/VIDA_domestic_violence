@@ -1,12 +1,4 @@
-#### Análise crimininalidade e violência com modelos baseados em agentes -- ABMs
-
-"Traditionally, researchers have employed statistical methods to model crime. However, these approaches
-are limited by being unable to model individual actions and behaviour. ... [a model should] attempt to model
-the occurrence of crimes and motivations behind it. ... **explore the potential of the model to realistically
-simulate the main processes and drivers within this system**." (Malleson, Heppenstall, See, 2009).  
-
-We developed the model on top of [https://github.com/projectmesa/mesa] mesa wolf_sheep example
-We thank Jackie Kazil, David Massa and all the contributors of the mesa project. 
+# VIDA: Simulando VIolência DomésticA em Tempos de Quarentena
 
 **Lígia Mori Madeira**
 
@@ -14,28 +6,39 @@ We thank Jackie Kazil, David Massa and all the contributors of the mesa project.
 
 **Alan Rafael Dill**
 
-We are considering two models (see the other one at github.com/bafurtado/armas): 
+"Traditionally, researchers have employed statistical methods to model crime. However, these approaches
+are limited by being unable to model individual actions and behaviour. ... [a model should] attempt to model
+the occurrence of crimes and motivations behind it. ... **explore the potential of the model to realistically
+simulate the main processes and drivers within this system**." (Malleson, Heppenstall, See, 2009).  
 
-### 1. Home violence model
+We developed the model on top of [https://github.com/projectmesa/mesa] mesa.
+We thank Jackie Kazil, David Massa and all the contributors of the mesa project. 
 
-An exploratory **stay-at-home-COVID-increased-violence** model. *Under construction*
+# [VIDA video explicativo -- 4 minutos](https://www.youtube.com/watch?v=14r831iPbbM&feature=youtu.be])  
 
-See folder `home_violence`
+## Objetivos
 
-1. A partir de um indicador de **stress** dos agentes, baseados em fatores tais como: gênero, histórico de agressões
-salário, horas em casa e número de membros na família; maior probabilidade de agressão.
-2. Entidades: pessoas (adultos, crianças, famílias)
-3. Alterações nos estados: trabalha/não trabalho, salário (0, 1), número de horas em casa
-4. Perguntas: 
+1. Ilustrar –- por meio de um **Modelo Baseado em Agentes** -– situações de violência doméstica
+antes e depois da pandemia, reproduzindo os principais achados da literatura
 
-4.1 Em que medida o aumento do número de dias em casa aumenta a violência doméstica e os feminicídios?
+2. Contribuir com o entendimento dos fatores preponderantes e a adequação de medidas
+de dissuasão
 
-4.2 Em que medida o não acesso à rede de proteção amplia a violência doméstica e os feminicídios?
+3. ... empiricamente considerando as
+diversidades das RMs brasileiras.
 
-![Influential factors](violence/table.png)
+## Resultados
 
-### To run the models:
-#### Para rodar os modelos, desde a instalação inicial
+![Baseline](prt.png)
+
+![Comparação entre metrópoles](text/metropolis.png)
+
+![Intrametropolitano -- Porto Alegre](text/Attacks_poa2.png)
+
+![Intrametropolitano -- Brasília](text/BSB_attacks2.png)
+
+# To run the model:
+## Instalação inicial
 
 1. Preferencialmente, download e instale Python, via [https://www.anaconda.com/distribution] conda. 
 No mínimo, tenha Pyton3 instalado
@@ -48,7 +51,7 @@ clone esse repositório:
     1. `git clone https://github.com/BAFurtado/home_violence.git`  
     2. `pip install mesa`
     
-#### To actually run
+## Para rodar o modelo
 5. Utilize o comando `cd` para que o Terminal esteja no diretorio correto: 
     1. `cd home_violence`
     2. Type `mesa runserver` e pronto. Se tudo foi instalado, o browser se abrirá automaticamente. 

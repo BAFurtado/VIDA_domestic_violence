@@ -36,6 +36,7 @@ def main(parameters, iterations=50, max_steps=None):
         "Females": lambda m: m.count_type_citizens(m, 'female'),
         "Stress": lambda m: m.count_stress(m)}
     if not max_steps:
+        print('running_here')
         batch_run = BatchRunner(model.Home, variable_parameters=parameters, max_steps=10, iterations=iterations,
                                 model_reporters=model_reporters)
     else:
@@ -69,9 +70,9 @@ if __name__ == '__main__':
     # dfqf = main2(dissuasion=False, quarantine=False)
     # dfqt = main2(dissuasion=False, quarantine=True)
     # dtqf = main2(dissuasion=True, quarantine=False)
-    dtqt = main2(dissuasion=True, quarantine=True)
+    # dtqt = main2(dissuasion=True, quarantine=True)
 
-    # iterates = 200
+    iterates = 3
     # subdivisions = 8
 
     # params = {'gender_stress': np.linspace(.1, .9, subdivisions)}
@@ -79,12 +80,12 @@ if __name__ == '__main__':
     # params = {'has_gun': np.linspace(.1, .9, subdivisions)}
     # params = {'is_working_pct': np.linspace(.1, .9, subdivisions)}
     # params = {'chance_changing_working_status': np.linspace(.01, .5, subdivisions)}
-
+    params = {'quarantine': [True, False], 'dissuasion': [True, False]}
     # params = {'pct_change_wage': np.linspace(.01, .5, subdivisions)}
     # params = {'metro': metropolis}
     # # Max steps
 
     #
     # print([self.schedule.time, self.schedule.get_breed_count(Person)])
-    # df = main(params, iterations=iterates)
-    # df.to_csv(f'output/output_{iterates}_BRASILIA_TFTF_{params.keys()}.csv', sep=';', index=False)
+    df = main(params, iterations=iterates)
+    df.to_csv(f'output/output_{iterates}_BRASILIA_TFTF_{params.keys()}.csv', sep=';', index=False)
