@@ -1,5 +1,7 @@
 # VIDA: Simulando VIolência DomésticA em Tempos de Quarentena
 
+(in press at Ipea Editorial)
+
 **Lígia Mori Madeira**
 
 **Bernardo Alves Furtado**
