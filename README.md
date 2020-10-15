@@ -33,11 +33,11 @@ diversidades das RMs brasileiras.
 
 ![Baseline](prt.png)
 
-![Comparação entre metrópoles](text/metropolis.png)
+![Comparação entre metrópoles](metropolis.png)
 
-![Intrametropolitano -- Porto Alegre](text/Attacks_poa2.png)
+![Intrametropolitano -- Porto Alegre](Attacks_poa2.png)
 
-![Intrametropolitano -- Brasília](text/BSB_attacks2.png)
+![Intrametropolitano -- Brasília](BSB_attacks2.png)
 
 # To run the model:
 ## Instalação inicial
