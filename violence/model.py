@@ -220,7 +220,7 @@ def generate_output():
 
 
 if __name__ == '__main__':
-    # Bernardo's debugging
+    # my debugging
     # generate_output()
     home = Home()
     for j in range(10):

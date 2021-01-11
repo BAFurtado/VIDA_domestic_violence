@@ -33,11 +33,7 @@ gender, and race data at the intraurban level (census sectors).
 # VIDA: Simulando VIolência DomésticA em Tempos de Quarentena
 (in press at Ipea Editorial -- Discussion Paper)
 
-**Lígia Mori Madeira**
-
-**Bernardo Alves Furtado**
-
-**Alan Rafael Dill**
+**anonymized during review**
 
 "Traditionally, researchers have employed statistical methods to model crime. However, these approaches
 are limited by being unable to model individual actions and behaviour. ... [a model should] attempt to model
