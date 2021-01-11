@@ -73,13 +73,14 @@ def another_plot(data, col_interest, col_aggregate):
 
     ax = sns.barplot(x="metro", y="Attacks per female", data=data, palette="Blues_d", ax=ax)
     ax.set_xticklabels(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
-    ax.axes.set_title("Notificações simuladas médias de ataques por cem mil mulheres por ACPs", fontsize=10)
-    ax.set_xlabel("Metropolis", fontsize=9)
-    ax.set_ylabel("Agressões por cem mil mulheres", fontsize=8)
+    # ax.axes.set_title("Notificações simuladas médias de ataques por cem mil mulheres por ACPs", fontsize=10)
+    ax.set_xlabel("Brazilian metropolises", fontsize=9)
+    ax.set_ylabel("Cases per 100,000 women", fontsize=8)
     ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
     ax.tick_params(labelsize=6)
     plt.ylim(min(data[col_interest]) - .0005, max(data[col_interest]))
-    plt.savefig('output/metropolis.png', transparent=True, bbox_inches='tight', dpi=240)
+    plt.savefig('output/metropolis.png', transparent=True, bbox_inches='tight', dpi=360, width=800)
+    plt.savefig('output/figura2_EPS.eps', format='eps', transparent=True, bbox_inches='tight', dpi=360)
     plt.show()
 
 

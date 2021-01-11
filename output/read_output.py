@@ -46,10 +46,10 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     # For Policy tests
-    for p in ['output_200_False_False.csv',
-              'output_200_False_True.csv',
-              'output_200_True_False.csv',
-              'output_200_True_True.csv']:
-        many_runs_output(p)
+    # for p in ['output_200_False_False.csv',
+    #           'output_200_False_True.csv',
+    #           'output_200_True_False.csv',
+    #           'output_200_True_True.csv']:
+    #     many_runs_output(p)

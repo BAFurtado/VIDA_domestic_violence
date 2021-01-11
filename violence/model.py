@@ -25,7 +25,7 @@ class Home(Model):
     """
 
     verbose = True  # Print-monitoring
-    description = 'A model for simulating the victim aggressor interaction mediated by presence of violence.'
+    description = 'A model for simulating the victim aggressor interaction.'
 
     def __init__(self, height=40, width=40,
                  initial_families=1000,
@@ -41,7 +41,7 @@ class Home(Model):
                  dissuasion=True,
                  data_year=2010):
         """
-        A violence violence model of Brazilian metropolis
+        A violence model of Brazilian metropolis
 
         """
         super().__init__()
