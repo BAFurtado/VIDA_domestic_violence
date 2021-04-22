@@ -61,7 +61,7 @@ Fiona==1.8.13.post1
 geobr==0.1.6
 geopandas==0.7.0
 idna==2.9
-Jinja2==2.11.2
+jinja2>=2.11.3
 jinja2-time==0.2.0
 kiwisolver==1.2.0
 MarkupSafe==1.1.1
