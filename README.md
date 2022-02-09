@@ -1,23 +1,10 @@
 # VIDA: A simulation model of domestic VIolence in times of social DistAncing
 
-[submitted and available at arXiv]
+###Published at JASSS
 
-**Abstract**: Violence against women occurs predominantly in the family and domestic context. The COVID-19
-pandemic led Brazil to recommend and, at times, impose social distancing, with the partial closure of economic
-activities, schools, and restrictions on events and public services. Preliminary evidence shows that intense co-
-existence increases domestic violence, while social distancing measures may have prevented access to public
-services and networks, information, and help. We propose an agent-based model (ABM), called VIDA, to illus-
-trate and examine multi-causal factors that influence events that generate violence. A central part of the model
-is the multi-causal stress indicator, created as a probability trigger of domestic violence occurring within the
-family environment. Two experimental design tests were performed: (a) absence or presence of the deterrence
-system of domestic violence against women and measures to increase social distancing. VIDA presents com-
-parative results for metropolitan regions and neighbourhoods considered in the experiments. Results suggest
-that social distancing measures, particularly those encouraging staying at home, may have increased domestic
-violence against women by about 10%. VIDA suggests further that more populated areas have comparatively
-fewer cases per hundred thousand women than less populous capitals or rural areas of urban concentrations.
-This paper contributes to the literature by formalising, to the best of our knowledge, the first model of domestic
-violence through agent-based modelling, using empirical detailed socioeconomic, demographic, educational,
-gender, and race data at the intraurban level (census sectors).
+###  https://www.jasss.org/24/4/1.html
+
+**Abstract**: Violence against women occurs predominantly in the family and domestic context. The COVID-19 pandemic has led Brazil to recommend and at times, impose social distancing, with the partial closure of economic activities, schools, and restrictions on events and public services. Preliminary evidence shows that intense coexistence increases domestic violence, while social distancing measures may have prevented access to public services and networks, information, and help. We propose an agent-based model (ABM), called VIDA, to formalize and illustrate a multitude of factors that influence events which could trigger violence. A central part of the model is the construction of a stress indicator, created as a probability trigger of domestic violence occurring within the family environment. Having a formal model that replicates observed patterns of violence based on internal familial characteristics enables us to experiment with altering dynamics. We first tested the (a) absence or presence of the deterrence system of domestic violence against women and then (b) the existence of measures to increase social distancing. VIDA presents comparative results for metropolitan regions and neighborhoods considered in the experiments. Results suggest that social distancing measures, particularly those encouraging staying at home, may have increased domestic violence against women by about 10%. VIDA suggests further that more populated areas have comparatively fewer cases per hundred thousand women than less populous capitals or rural areas of urban concentrations. This paper contributes to the literature by formalizing, to the best of our knowledge, the first model of domestic violence through agent-based modeling, using empirical detailed socioeconomic, demographic, educational, gender, and race data at the intraurban (census sectors) and household level. 
 
 ## Results
 
