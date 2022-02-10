@@ -1,15 +1,14 @@
-import os
-if __name__ == '__main__':
-    os.chdir('..')
+
+import pickle
 
 import pandas as pd
 from collections import defaultdict
 
-from violence.agents import Person
-from violence import model
+from agents import Person
+import model
 
 
-def main(metro='BRASILIA', iterates=200, steps=10):
+def main(metro='BRASILIA', iterates=500, steps=10):
     """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
         120 * 8 ** 1
     """
@@ -47,6 +46,8 @@ def main(metro='BRASILIA', iterates=200, steps=10):
 
 
 if __name__ == '__main__':
-    d = main(metro='BRASILIA')
-    p = main(metro='PORTO ALEGRE')
-
+    out = dict()
+    for metro in ['BRASILIA', 'PORTO ALEGRE', 'CURITIBA', 'BELO HORIZONTE', 'RECIFE', 'VITORIA', 'RIO DE JANEIRO']:
+        out[metro] = main(metro=metro)
+    with open('output/results.json', 'wb') as h:
+        pickle.dump(out, h)

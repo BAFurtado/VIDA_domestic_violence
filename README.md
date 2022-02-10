@@ -1,6 +1,21 @@
+### Phase2 init
+
+New experts are joining the project to comment on observed metropolitan domestic violence vis-à-vis simulated for 
+new regions!
+
+We have updated output data with new Metropolitan Regions:
+ 
+* BELO HORIZONTE
+* BRASILIA
+* PORTO ALEGRE
+* VITÓRIA
+* RECIFE
+* CURITIBA
+* RIO DE JANEIRO
+
 # VIDA: A simulation model of domestic VIolence in times of social DistAncing
 
-###Published at JASSS
+### Published at JASSS
 
 ###  https://www.jasss.org/24/4/1.html
 
@@ -18,9 +33,14 @@
 
 
 # VIDA: Simulando VIolência DomésticA em Tempos de Quarentena
-(in press at Ipea Editorial -- Discussion Paper)
 
-**anonymized during review**
+Discusstion paper 2633 in Portuguese
+
+Lígia Mori Madeira
+Bernardo Alves Furtado (code)
+Alan Dill
+
+https://www.ipea.gov.br/portal/index.php?option=com_content&view=article&id=37625&Itemid=457
 
 "Traditionally, researchers have employed statistical methods to model crime. However, these approaches
 are limited by being unable to model individual actions and behaviour. ... [a model should] attempt to model
@@ -54,15 +74,16 @@ Universitários tem acesso à versão profissional, basta cadastro com e-mail in
 3. Donwload e instale [https://git-scm.com/downloads] [GIT].
 4. Com todos funcionando, vá até o Terminal do PyCharm (ou command line com acesso a Python) e usando o Git, 
 clone esse repositório:
-    1. `git clone https://github.com/BAFurtado/home_violence.git`  
-    2. `pip install mesa`
+    1. `git clone https://github.com/BAFurtado/VIDA_home_violence.git`  
+    2. `conda install mesa`
     
 ## Para rodar o modelo
-5. Utilize o comando `cd` para que o Terminal esteja no diretorio correto: 
-    1. `cd home_violence`
-    2. Type `mesa runserver` e pronto. Se tudo foi instalado, o browser se abrirá automaticamente. 
-    3. Altere os parâmetros como quiser.
-    4. Clique em `Reset` no último botão à direita, na barra preta ao alto.
-    5. Clique em `Start`, à esquerda do `Reset'
+
+### requires mesa
+
+1. To run generalization_aps (many metro regions), run 
+
+`python "violence/generalization_aps.py"`
+
     
 Enjoy modeling!

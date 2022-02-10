@@ -10,8 +10,8 @@ import pandas as pd
 import random
 
 from collections import defaultdict
-import violence.input.geography as geo
-import violence.input.population as population
+import input.geography as geo
+import input.population as population
 
 """ 
     Objective is to have data on population, age, gender and qualification.

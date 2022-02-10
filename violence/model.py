@@ -2,21 +2,19 @@
 A simple violence model, based on attacker and victim characteristics and stay-at-home time.
 
 """
-import os
-if __name__ == '__main__':
-    os.chdir('..')
 
 import numpy as np
 import pandas as pd
 
 from mesa import Model
+
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 
-from violence.agents import Person, Family
-from violence.schedule import RandomActivationByBreed
-from violence.input import generator
-from violence.input.generator import metropolis
+from agents import Person, Family
+from schedule import RandomActivationByBreed
+from input import generator
+from input.generator import metropolis
 
 
 class Home(Model):
