@@ -17,17 +17,15 @@ names = {'BRASILIA': {'name': 'Brasília',
          'VITORIA': {'name': 'Vitória',
                      'code': '32'},
          'RIO DE JANEIRO': {'name': 'Rio de Janeiro',
-                            'code': '21'},
+                            'code': '33'},
          'RECIFE': {'name': 'Recife',
-                    'code': '26'}}
+                    'code': '26'},
+         'PORTO ALEGRE': {'name': 'Porto Alegre',
+                          'code': '43'}
+         }
 
 
-def plot_maps(shape, data, col, leg=True, title='title'):
-    # Read simulation data
-    data = pd.read_csv(os.path.join('../output', data), sep=';')
-    # Merge data with shapefile
-    shape = pd.merge(shape, data)
-
+def plot_maps(shape, col, leg=True, title='title'):
     fig, ax = plt.subplots()
     shape.plot(column=col,
                legend=leg,
@@ -41,18 +39,32 @@ def plot_maps(shape, data, col, leg=True, title='title'):
     ax.set_title(title)
     ax.set_axis_off()
     plt.tight_layout()
+    plt.savefig(f'data/{title}.png', dpi=300)
     plt.show()
 
 
-if __name__ == '__main__':
+def prepair_data(plot=False):
+    shapes, files = list(), list()
     # rms is a list of data to send over to merge along the shape and plot
-    rms = list()
     for file in os.listdir('../output'):
         if '500' in file:
-            rms.append(file)
+            files.append(file)
     for rm in names:
         shps = gpd.read_file(f"../../censo2010/data/areas/{names[rm]['code']}_all_muns.shp")
-        for f in rms:
-            if rm in f:
-                plot_maps(shps, f, 'Attacks per female')
+        for file in files:
+            if rm in file:
+                # Read simulation data
+                data = pd.read_csv(os.path.join('../output', file), sep=';')
+                data.to_excel(f'data/{rm}.xlsx')
+                # Merge data with shapefile
+                shape = pd.merge(shps, data)
+                shapes.append(shape)
+                if plot:
+                    plot_maps(shape, 'Attacks per female', title=names[rm]['name'])
                 break
+    return shapes, files
+
+
+if __name__ == '__main__':
+    p = True
+    shp, fs = prepair_data(plot=p)
