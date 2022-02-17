@@ -25,7 +25,7 @@ names = {'BRASILIA': {'name': 'Brasília',
          }
 
 
-def plot_maps(shape, col, leg=True, title='title'):
+def plot_maps(shape, boundaries, col, leg=True, title='title'):
     fig, ax = plt.subplots()
     shape.plot(column=col,
                legend=leg,
@@ -44,6 +44,7 @@ def plot_maps(shape, col, leg=True, title='title'):
 
 
 def prepair_data(plot=False):
+    brasil = gpd.read_file("../../PolicySpace2/input/shapes/mun_ACPS_ibge_2014_latlong_wgs1984_fixed.shp")
     shapes, files = list(), list()
     # rms is a list of data to send over to merge along the shape and plot
     for file in os.listdir('../output'):
@@ -51,6 +52,8 @@ def prepair_data(plot=False):
             files.append(file)
     for rm in names:
         shps = gpd.read_file(f"../../censo2010/data/areas/{names[rm]['code']}_all_muns.shp")
+        if rm == 'BRASILIA':
+            shps.append(gpd.read_file(f"../../censo2010/data/areas/52_all_muns.shp"))
         for file in files:
             if rm in file:
                 # Read simulation data
@@ -58,9 +61,13 @@ def prepair_data(plot=False):
                 data.to_excel(f'data/{rm}.xlsx')
                 # Merge data with shapefile
                 shape = pd.merge(shps, data)
+                shape.to_file(f'data/{rm}.shp')
                 shapes.append(shape)
+                # Municipalities boundaries
+                muns = data.AREAP.astype(str).str[:7]
+                rm_subset = brasil[brasil.CD_GEOCMU.isin(muns)]
                 if plot:
-                    plot_maps(shape, 'Attacks per female', title=names[rm]['name'])
+                    plot_maps(shape, rm_subset, 'Attacks per female', title=names[rm]['name'])
                 break
     return shapes, files
 
