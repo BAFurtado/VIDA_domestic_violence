@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import geopandas as gpd
 import pandas as pd
 
+from matplotlib import cm
+
 
 names = {'BRASILIA': {'name': 'Brasília',
                       'code': '53'},
@@ -27,15 +29,17 @@ names = {'BRASILIA': {'name': 'Brasília',
 
 def plot_maps(shape, boundaries, col, leg=True, title='title'):
     fig, ax = plt.subplots()
+    cmap_reversed = cm.get_cmap('inferno_r')
     shape.plot(column=col,
                legend=leg,
                ax=ax,
                scheme='quantiles',
-               cmap='inferno',
+               cmap=cmap_reversed,
                # missing_kwds={'color': 'lightgrey'},
                legend_kwds={'fmt': '{:,.0f}', 'frameon': False}
                )
-    shape.boundary.plot(ax=ax, color='white', linewidth=.5, edgecolor='grey')
+    shape.boundary.plot(ax=ax, color='white', linewidth=.3, edgecolor='grey')
+    boundaries.boundary.plot(ax=ax, color='black', linewidth=1, edgecolor='grey', alpha=.7, label='')
     ax.set_title(title)
     ax.set_axis_off()
     plt.tight_layout()
@@ -53,7 +57,7 @@ def prepair_data(plot=False):
     for rm in names:
         shps = gpd.read_file(f"../../censo2010/data/areas/{names[rm]['code']}_all_muns.shp")
         if rm == 'BRASILIA':
-            shps.append(gpd.read_file(f"../../censo2010/data/areas/52_all_muns.shp"))
+            shps = shps.append(gpd.read_file(f"../../censo2010/data/areas/52_all_muns.shp"))
         for file in files:
             if rm in file:
                 # Read simulation data
@@ -61,7 +65,7 @@ def prepair_data(plot=False):
                 data.to_excel(f'data/{rm}.xlsx')
                 # Merge data with shapefile
                 shape = pd.merge(shps, data)
-                shape.to_file(f'data/{rm}.shp')
+                # shape.to_file(f'data/{rm}.shp')
                 shapes.append(shape)
                 # Municipalities boundaries
                 muns = data.AREAP.astype(str).str[:7]
