@@ -29,12 +29,13 @@ names = {'BRASILIA': {'name': 'Brasília',
 
 def plot_maps(shape, boundaries, col, leg=True, title='title'):
     fig, ax = plt.subplots()
-    cmap_reversed = cm.get_cmap('inferno_r')
+    cmap_reversed = cm.get_cmap('viridis_r')
     shape.plot(column=col,
                legend=leg,
                ax=ax,
                scheme='quantiles',
                cmap=cmap_reversed,
+               alpha=.5,
                # missing_kwds={'color': 'lightgrey'},
                legend_kwds={'fmt': '{:,.0f}', 'frameon': False}
                )
@@ -49,7 +50,7 @@ def plot_maps(shape, boundaries, col, leg=True, title='title'):
 
 def prepair_data(plot=False):
     brasil = gpd.read_file("../../PolicySpace2/input/shapes/mun_ACPS_ibge_2014_latlong_wgs1984_fixed.shp")
-    shapes, files = list(), list()
+    files = list()
     # rms is a list of data to send over to merge along the shape and plot
     for file in os.listdir('../output'):
         if '500' in file:
@@ -62,20 +63,25 @@ def prepair_data(plot=False):
             if rm in file:
                 # Read simulation data
                 data = pd.read_csv(os.path.join('../output', file), sep=';')
-                data.to_excel(f'data/{rm}.xlsx')
+                data = data[['AREAP', 'females', 'Attacks per female', 'Denounces per female']]
                 # Merge data with shapefile
                 shape = pd.merge(shps, data)
-                # shape.to_file(f'data/{rm}.shp')
-                shapes.append(shape)
+                shape = shape.rename(columns={'Attacks per female': 'ataque_fem',
+                                              'Denounces per female': 'denunc_fem'})
+                shape.to_file(f'data/{rm}.shp')
+                # To save file
+                data.loc[:, 'AREAP'] = data['AREAP'].astype(str)
+                data.to_excel(f'data/{rm}.xlsx')
+
                 # Municipalities boundaries
                 muns = data.AREAP.astype(str).str[:7]
                 rm_subset = brasil[brasil.CD_GEOCMU.isin(muns)]
                 if plot:
-                    plot_maps(shape, rm_subset, 'Attacks per female', title=names[rm]['name'])
+                    plot_maps(shape, rm_subset, 'ataque_fem', title=names[rm]['name'])
                 break
-    return shapes, files
+    return files
 
 
 if __name__ == '__main__':
     p = True
-    shp, fs = prepair_data(plot=p)
+    fs = prepair_data(plot=p)
