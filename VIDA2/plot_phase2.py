@@ -41,6 +41,10 @@ def plot_maps(shape, boundaries, col, leg=True, title='title'):
                )
     shape.boundary.plot(ax=ax, color='white', linewidth=.3, edgecolor='grey')
     boundaries.boundary.plot(ax=ax, color='black', linewidth=1, edgecolor='grey', alpha=.7, label='')
+    boundaries.apply(lambda x: ax.annotate(text=x['NM_MUNICIP'],
+                                           xy=x.geometry.centroid.coords[0],
+                                           ha='center',
+                                           fontsize=9), axis=1)
     ax.set_title(title)
     ax.set_axis_off()
     plt.tight_layout()
