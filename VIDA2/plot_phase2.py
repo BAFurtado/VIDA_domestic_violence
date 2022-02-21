@@ -9,7 +9,6 @@ import pandas as pd
 
 from matplotlib import cm
 
-
 names = {'BRASILIA': {'name': 'Brasília',
                       'code': '53'},
          'CURITIBA': {'name': 'Curitiba',
@@ -23,7 +22,13 @@ names = {'BRASILIA': {'name': 'Brasília',
          'RECIFE': {'name': 'Recife',
                     'code': '26'},
          'PORTO ALEGRE': {'name': 'Porto Alegre',
-                          'code': '43'}
+                          'code': '43'},
+         'FORTALEZA': {'name': 'Fortaleza',
+                       'code': '23'},
+         'GOIANIA': {'name': 'Goiânia',
+                     'code': '52'},
+         'SAO PAULO': {'name': 'São Paulo',
+                       'code': '35'}
          }
 
 
