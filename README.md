@@ -12,6 +12,9 @@ We have updated output data with new Metropolitan Regions:
 * RECIFE
 * CURITIBA
 * RIO DE JANEIRO
+* SAO PAULO
+* FORTALEZA
+* GOIANIA
 
 # VIDA: A simulation model of domestic VIolence in times of social DistAncing
 
