@@ -53,7 +53,7 @@ def plot_maps(shape, boundaries, col, leg=True, title='title'):
     boundaries.apply(lambda x: ax.annotate(text=x['NM_MUNICIP'],
                                            xy=x.geometry.centroid.coords[0],
                                            ha='center',
-                                           fontsize=9), axis=1)
+                                           fontsize=7), axis=1)
     ax.set_title(title)
     ax.set_axis_off()
     plt.tight_layout()
@@ -63,6 +63,7 @@ def plot_maps(shape, boundaries, col, leg=True, title='title'):
 
 def prepair_data(plot=False):
     brasil = gpd.read_file("../../PolicySpace2/input/shapes/mun_ACPS_ibge_2014_latlong_wgs1984_fixed.shp")
+    brasil = brasil.to_crs('EPSG:4674')
     files = list()
     # rms is a list of data to send over to merge along the shape and plot
     for file in os.listdir('../output'):
@@ -92,9 +93,9 @@ def prepair_data(plot=False):
                 if plot:
                     plot_maps(shape, rm_subset, 'ataque_fem', title=names[rm]['name'])
                 break
-    return files
+    return shps, files
 
 
 if __name__ == '__main__':
     p = True
-    fs = prepair_data(plot=p)
+    sps, fs = prepair_data(plot=p)
