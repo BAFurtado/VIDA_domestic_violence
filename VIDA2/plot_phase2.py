@@ -28,7 +28,11 @@ names = {'BRASILIA': {'name': 'Brasília',
          'GOIANIA': {'name': 'Goiânia',
                      'code': '52'},
          'SAO PAULO': {'name': 'São Paulo',
-                       'code': '35'}
+                       'code': '35'},
+         'SALVADOR': {'name': 'Salvador',
+                      'code': '29'},
+         'PORTO VELHO': {'name': 'Porto Velho',
+                         'code': '11'},
          }
 
 
