@@ -39,6 +39,12 @@ names = {'BRASILIA': {'name': 'Brasília',
 def plot_maps(shape, boundaries, col, leg=True, title='title'):
     fig, ax = plt.subplots()
     cmap_reversed = cm.get_cmap('viridis_r')
+
+    boundaries.boundary.plot(ax=ax, color='black', linewidth=1, edgecolor='grey', alpha=.7, label='')
+    boundaries.apply(lambda x: ax.annotate(text=x['NM_MUNICIP'],
+                                           xy=x.geometry.centroid.coords[0],
+                                           ha='center',
+                                           fontsize=7), axis=1)
     shape.plot(column=col,
                legend=leg,
                ax=ax,
@@ -46,14 +52,9 @@ def plot_maps(shape, boundaries, col, leg=True, title='title'):
                cmap=cmap_reversed,
                alpha=.5,
                # missing_kwds={'color': 'lightgrey'},
-               legend_kwds={'fmt': '{:,.0f}', 'frameon': False}
+               legend_kwds={'fmt': '{:,.0f}', 'frameon': False, 'loc': 'best', 'framealpha': 1}
                )
     shape.boundary.plot(ax=ax, color='white', linewidth=.3, edgecolor='grey')
-    boundaries.boundary.plot(ax=ax, color='black', linewidth=1, edgecolor='grey', alpha=.7, label='')
-    boundaries.apply(lambda x: ax.annotate(text=x['NM_MUNICIP'],
-                                           xy=x.geometry.centroid.coords[0],
-                                           ha='center',
-                                           fontsize=7), axis=1)
     ax.set_title(title)
     ax.set_axis_off()
     plt.tight_layout()
@@ -73,6 +74,9 @@ def prepair_data(plot=False):
         shps = gpd.read_file(f"../../censo2010/data/areas/{names[rm]['code']}_all_muns.shp")
         if rm == 'BRASILIA':
             shps = shps.append(gpd.read_file(f"../../censo2010/data/areas/52_all_muns.shp"))
+        if rm == 'PORTO VELHO':
+            ro = gpd.read_file('data/RO_Municipios_2020.shp')
+            ro = ro.to_crs('EPSG:4674')
         for file in files:
             if rm in file:
                 # Read simulation data
@@ -89,7 +93,12 @@ def prepair_data(plot=False):
 
                 # Municipalities boundaries
                 muns = data.AREAP.astype(str).str[:7]
-                rm_subset = brasil[brasil.CD_GEOCMU.isin(muns)]
+                if rm == 'PORTO VELHO':
+                    ro = ro.rename(columns={'NM_MUN': 'NM_MUNICIP'})
+                    rm_subset = ro[ro.CD_MUN.isin(muns)]
+
+                else:
+                    rm_subset = brasil[brasil.CD_GEOCMU.isin(muns)]
                 if plot:
                     plot_maps(shape, rm_subset, 'ataque_fem', title=names[rm]['name'])
                 break
