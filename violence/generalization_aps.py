@@ -47,7 +47,7 @@ def main(metro='BRASILIA', iterates=500, steps=10):
 
 if __name__ == '__main__':
     out = dict()
-    for metro in ['FORTALEZA', 'GOIANIA', 'SAO PAULO']:
+    for metro in ['PORTO VELHO']:
         out[metro] = main(metro=metro)
     with open('output/results.json', 'wb') as h:
         pickle.dump(out, h)
