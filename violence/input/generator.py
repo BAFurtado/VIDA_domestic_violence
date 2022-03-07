@@ -31,7 +31,7 @@ metropolis = ["MANAUS", "BELEM", "MACAPA", "SAO LUIS", "TERESINA", "FORTALEZA", 
               "CAMPINAS", "SOROCABA", "SAO JOSE DO RIO PRETO", "SANTOS", "JUNDIAI", "SAO JOSE DOS CAMPOS",
               "RIBEIRAO PRETO", "CURITIBA", "LONDRINA", "MARINGA", "JOINVILLE", "FLORIANOPOLIS", "PORTO ALEGRE",
               "NOVO HAMBURGO - SAO LEOPOLDO", "CAXIAS DO SUL", "PELOTAS - RIO GRANDE", "CAMPO GRANDE", "CUIABA",
-              "GOIANIA", "BRASILIA"]
+              "GOIANIA", "BRASILIA", "PORTO VELHO", 'JI-PARANA']
 
 
 def quali_table(params):
@@ -188,7 +188,7 @@ def main(params):
 
 
 if __name__ == '__main__':
-    metro = 'CAMPINAS'
+    metro = 'JI-PARANA'
     # Necessary parameters to generate data
     prms = dict()
     prms['PROCESSING_ACPS'] = [metro]
