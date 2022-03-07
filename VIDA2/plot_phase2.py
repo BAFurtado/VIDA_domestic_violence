@@ -33,6 +33,8 @@ names = {'BRASILIA': {'name': 'Brasília',
                       'code': '29'},
          'PORTO VELHO': {'name': 'Porto Velho',
                          'code': '11'},
+         'JI-PARANA': {'name': 'Ji-Paraná',
+                       'code': '11'}
          }
 
 
