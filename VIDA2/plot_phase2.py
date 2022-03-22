@@ -34,7 +34,9 @@ names = {'BRASILIA': {'name': 'Brasília',
          'PORTO VELHO': {'name': 'Porto Velho',
                          'code': '11'},
          'JI-PARANA': {'name': 'Ji-Paraná',
-                       'code': '11'}
+                       'code': '11'},
+         'CAMPO GRANDE': {'name': 'Campo Grande',
+                          'code': '50'}
          }
 
 
@@ -64,13 +66,13 @@ def plot_maps(shape, boundaries, col, leg=True, title='title'):
     plt.show()
 
 
-def prepair_data(plot=False):
+def prepair_data(plot=False, runs='2000'):
     brasil = gpd.read_file("../../PolicySpace2/input/shapes/mun_ACPS_ibge_2014_latlong_wgs1984_fixed.shp")
     brasil = brasil.to_crs('EPSG:4674')
     files = list()
     # rms is a list of data to send over to merge along the shape and plot
     for file in os.listdir('../output'):
-        if '500' in file:
+        if runs in file:
             files.append(file)
     for rm in names:
         shps = gpd.read_file(f"../../censo2010/data/areas/{names[rm]['code']}_all_muns.shp")
@@ -108,5 +110,5 @@ def prepair_data(plot=False):
 
 
 if __name__ == '__main__':
-    p = True
+    p = False
     sps, fs = prepair_data(plot=p)
