@@ -8,7 +8,7 @@ from agents import Person
 import model
 
 
-def main(metro='BRASILIA', iterates=500, steps=10):
+def main(metro='BRASILIA', iterates=2000, steps=10):
     """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
         120 * 8 ** 1
     """
@@ -47,7 +47,8 @@ def main(metro='BRASILIA', iterates=500, steps=10):
 
 if __name__ == '__main__':
     out = dict()
-    for metro in ['JI-PARANA']:
-        out[metro] = main(metro=metro)
+    metropolis = ["CAMPO GRANDE"]
+    for m in metropolis:
+        out[m] = main(metro=m)
     # with open('output/results.json', 'wb') as h:
     #     pickle.dump(out, h)
