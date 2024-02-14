@@ -87,6 +87,13 @@ class Person(Agent):
         # Wage influences neighborhood_quality and house_size
         # Gender
         # We fixed gender stress for females in .2
+
+        # Update stress memory of each agent. This is applied only if the agent has recorded stress memory.
+        if self.stress == 0:
+            tmp = self.gender_stess
+        else:
+            tmp = self.stress * (1 + self.stress)
+
         tmp = self.model.gender_stress if self.gender == 'male' else .2
         # Salary
         tmp += (1 - self.wage) * HIGH
