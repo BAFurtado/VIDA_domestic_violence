@@ -169,27 +169,17 @@ class Home(Model):
         """
         Helper method to count agents by Type.
         """
-        count = 0
-        for agent in model.schedule.agents:
-            if isinstance(agent, Person):
-                if 'denounce' == condition:
-                    count += agent.denounce
-                elif 'got_attacked' == condition:
-                    count += agent.got_attacked
-                elif 'female' == condition:
-                    if agent.gender == 'female':
-                        if agent.age > 18:
-                            count += 1
-        return count
+        # iterator for removed and used numpy's sum to count the number of agents meeting the established conditions
+        return     np.sum({ 'denounce':     (model.schedule.agents.data['denounce']),
+                            'got_attacked': (model.schedule.agents.data['got_attacked']),
+                            'female':       (model.schedule.agents.data['gender'] == 'female') \
+                            & (model.schedule.agents.data['age'] > 18) }[condition])
 
     @staticmethod
     def count_stress(model):
-        count, size = 0, 0
-        for agent in model.schedule.agents:
-            if isinstance(agent, Family):
-                count += agent.context_stress
-                size += 1
-        return count / size
+        # Creation of mask to obtain agents from the 'family' category and performs the average with context_stress
+        return np.mean(model.schedule.agents.data['context_stress'] * \
+                      (model.schedule.agents.data['category'] == 'family'))
 
     def run_model(self, step_count=200):
 

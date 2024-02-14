@@ -40,7 +40,8 @@ def main(metro='BRASILIA', iterates=2000, steps=10):
     data = data.groupby('index').agg('mean')
     data = data.reset_index()
     data = data.rename(columns={'index': 'AREAP'})
-    data = data[['AREAP', 'attacked', 'denounce', 'females', 'Attacks per female', 'Denounces per female']]
+    # Using filter method from DataFrame object makes more readable
+    data = data.filter(['AREAP', 'attacked', 'denounce', 'females', 'Attacks per female', 'Denounces per female'])
     data.to_csv(f'output/output_{iterates}_{metro}.csv', sep=';', index=False)
     return data
 

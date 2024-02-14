@@ -1,9 +1,5 @@
 from mesa.agent import Agent
-
-HIGH = 10
-MEDIUM = 5
-LOW = 1
-
+from configurations import *
 
 class Person(Agent):
     """
@@ -86,58 +82,67 @@ class Person(Agent):
         # Check new table of influences at README.md
         # Wage influences neighborhood_quality and house_size
         # Gender
-        # We fixed gender stress for females in .2
-        tmp = self.model.gender_stress if self.gender == 'male' else .2
+        # We fixed gender stress for females in .2 (Old tmp variable initialization)
+        # tmp = self.model.gender_stress if self.gender == 'male' else .2
+
+        # New tmp variable initialization
+        # Using a variable name that makes it more readble and explicit (tmp ~ stress_level)
+        if not self.stress:
+            stress_level = self.gender_stress
+        else:
+            self.stress *= (1 + self.stress)
+            return
+        
         # Salary
-        tmp += (1 - self.wage) * HIGH
+        stress_level += (1 - self.wage) * HIGH
         # Neighborhood quality
-        tmp += -self.family.family_wage * MEDIUM
+        stress_level += -self.family.family_wage * MEDIUM
         # House size: higher the wage or smaller the wage per person, less contribution to stress
-        tmp += 1 - (self.family.family_wage / self.num_members_family) * MEDIUM
+        stress_level += 1 - (self.family.family_wage / self.num_members_family) * MEDIUM
 
         # Hypothesis 1: # Education Education less than 6, likelihood increases by 60%
         if self.years_study < 6:
-            tmp += (1 - (self.years_study / 10)) * 1.6 * HIGH
+            stress_level += (1 - (self.years_study / 10)) * 1.6 * HIGH
         else:
-            tmp += (1 - (self.years_study / 10)) * HIGH
+            stress_level += (1 - (self.years_study / 10)) * HIGH
         # Hypothesis 2: # Higher incidence of attack by male between 15-29 years old
         if 18 > self.age > 29:
-            tmp *= HIGH
+            stress_level *= HIGH
         # Hypothesis 3: Ethnicity influences victimization, likelihood increases 30% when spouse is black
         # This stress indicator will only update for married males
         if self.spouse is not None:
             if self.spouse.color == 'preta':
-                tmp *= 1.3
+                stress_level *= 1.3
             # Hypothesis 4: relevance of women participating in the labor market
             if self.spouse.is_working:
                 # Increases -- level HIGH -- when spouse WORKS
                 # TODO: Find working data by gender by metropolis
-                tmp += 1 * MEDIUM
+                stress_level += 1 * MEDIUM
 
         # Home permanence
         if not self.model.quarantine:
-            tmp += self.hours_home * MEDIUM
+            stress_level += self.hours_home * MEDIUM
         else:
-            tmp += 1 * MEDIUM
+            stress_level += 1 * MEDIUM
         # History of assault. This stress indicator updates only for those 'male' attackers who already have a history
-        tmp += self.assaulted / 10 * HIGH
+        stress_level += self.assaulted / 10 * HIGH
         # Access to weapon
-        tmp += 1 * HIGH * HIGH if self.has_gun else 0
+        stress_level += 1 * HIGH * HIGH if self.has_gun else 0
         # Chemical dependence
-        tmp += 1 * self.model.random.random() * HIGH if self.under_influence else 0
+        stress_level += 1 * self.model.random.random() * HIGH if self.under_influence else 0
 
         # Dissuasion implementation as a decreasing factor of stress indicator
         if self.spouse is not None:
             if self.spouse.denounce:
-                tmp -= 1 * MEDIUM
+                stress_level -= 1 * MEDIUM
             if self.spouse.protection:
-                tmp -= 1 * HIGH
+                stress_level -= 1 * HIGH
             if self.spouse.condemnation:
-                tmp -= 1 * HIGH
+                stress_level -= 1 * HIGH
 
         # General effect adjustment
-        tmp /= self.model.model_scale
-        self.stress = tmp
+        stress_level /= self.model.model_scale
+        self.stress = stress_level
 
     def trigger_violence(self):
         """
