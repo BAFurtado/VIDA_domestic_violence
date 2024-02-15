@@ -82,12 +82,19 @@ class Person(Agent):
         # Before updating stress, check whether conditions have changed
         self.step_change()
 
+        # desafio
+
+        if self.stress == 0:
+            tmp = self.gender_stress
+        else:
+            tmp = self.stress * (1 + self.stress)
+
         # Update stress based on gender, wage level, hours at home, family size and history of violence
         # Check new table of influences at README.md
         # Wage influences neighborhood_quality and house_size
         # Gender
         # We fixed gender stress for females in .2
-        tmp = self.model.gender_stress if self.gender == 'male' else .2
+        tmp += self.model.gender_stress if self.gender == 'male' else .2
         # Salary
         tmp += (1 - self.wage) * HIGH
         # Neighborhood quality
@@ -167,19 +174,19 @@ class Person(Agent):
             else:
                 # When quarantined, via lack of support from networks, first time reports decrease,
                 # with increases in NEVER reporting or reporting only with cumulative events
-                self.denounce_group = self.model.random.choices([1, 2, 3], weights=[5/12, 1/6, 5/12])[0]
+                self.denounce_group = self.model.random.choices([1, 2, 3], weights=[5 / 12, 1 / 6, 5 / 12])[0]
             if self.denounce_group == 1:
                 self.denounce = False
             elif self.denounce_group == 2:
                 self.denounce = True
             else:
-                self.denounce = self.model.random.choices([True, False], weights=[1/3, 2/3])[0]
+                self.denounce = self.model.random.choices([True, False], weights=[1 / 3, 2 / 3])[0]
         elif self.got_attacked > 1 and self.denounce is False and self.denounce_group == 3:
             # Other attempts of denouncing when belonging to cumulative group
             if not self.model.quarantine:
-                self.denounce = self.model.random.choices([True, False], weights=[1/3, 2/3])[0]
+                self.denounce = self.model.random.choices([True, False], weights=[1 / 3, 2 / 3])[0]
             else:
-                self.denounce = self.model.random.choices([True, False], weights=[1/4, 3/4])[0]
+                self.denounce = self.model.random.choices([True, False], weights=[1 / 4, 3 / 4])[0]
         if self.denounce:
             # TODO: Check, introduce one more model parameter: likelihood condemnation/protection?
             # Now, implemented as a half chance for both
