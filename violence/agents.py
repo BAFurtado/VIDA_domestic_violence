@@ -82,6 +82,12 @@ class Person(Agent):
         # Before updating stress, check whether conditions have changed
         self.step_change()
 
+        # Update stress based in gender stress
+        if self.stress == 0:
+            tmp = self.gender_stress
+        else:
+            tmp *= (1 + self.stress)
+
         # Update stress based on gender, wage level, hours at home, family size and history of violence
         # Check new table of influences at README.md
         # Wage influences neighborhood_quality and house_size
