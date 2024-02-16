@@ -60,6 +60,7 @@ def generate_people(params, ppl, col):
     people = people[['AREAP', 'gender', 'age']]
     # for i, idx in enumerate(indexes):
     #     people.loc[i] = ppl.loc[idx]
+    people['gender'] = people['gender'].astype(str)
     people.loc[people['gender'] == 1, 'gender'] = 'female'
     people.loc[people['gender'] == 2, 'gender'] = 'male'
     # people.AREAP = people.AREAP.astype(int)

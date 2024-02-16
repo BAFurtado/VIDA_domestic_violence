@@ -189,7 +189,8 @@ class Home(Model):
             if isinstance(agent, Family):
                 count += agent.context_stress
                 size += 1
-        return count / size
+        if size:
+            return count / size
 
     def run_model(self, step_count=200):
 
