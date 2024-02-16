@@ -30,12 +30,11 @@ def main(metro='BRASILIA', iterates=2000, steps=10):
         df_attack = pd.DataFrame.from_dict(attacked, orient='index', columns=['attacked'])
         df_denounce = pd.DataFrame.from_dict(denounced, orient='index', columns=['denounce'])
         df_females = pd.DataFrame.from_dict(females, orient='index', columns=['females'])
-        df = pd.merge(df_attack, df_denounce, right_index=True, left_index=True)
-        df = df.merge(df_females, right_index=True, left_index=True)
+        df = pd.concat([df_attack, df_denounce, df_females], axis=1).fillna(0)
         df.loc[:, 'Attacks per female'] = df.loc[:, 'attacked'] / df.loc[:, 'females'] * home.model_scale
         df.loc[:, 'Denounces per female'] = df.loc[:, 'denounce'] / df.loc[:, 'females'] * home.model_scale
         df = df.reset_index()
-        df.loc[:, 'run'] = each
+        df['run'] = each
         data = data.append(df)
     data = data.groupby('index').agg('mean')
     data = data.reset_index()
