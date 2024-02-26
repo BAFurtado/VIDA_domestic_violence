@@ -2,20 +2,17 @@
 A simple violence model, based on attacker and victim characteristics and stay-at-home time.
 
 """
-
 import numpy as np
 import pandas as pd
 
-from mesa import Model
-
+from mesa       import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 
-from agents import Person, Family
-from schedule import RandomActivationByBreed
-from input import generator
+from agents     import Person, Family
+from schedule   import RandomActivationByBreed
+from input      import generator
 from input.generator import metropolis
-
 
 class Home(Model):
     """
@@ -26,18 +23,19 @@ class Home(Model):
     description = 'A model for simulating the victim aggressor interaction.'
 
     def __init__(self, height=40, width=40,
-                 initial_families=1000,
-                 metro='BRASILIA',
-                 gender_stress=.8,
-                 under_influence=.1,
-                 has_gun=.1,
-                 is_working_pct=.8,
-                 chance_changing_working_status=.05,
-                 pct_change_wage=.05,
-                 model_scale=1000,
-                 quarantine=False,
-                 dissuasion=True,
-                 data_year=2010):
+                 initial_families               =  1000,
+                 metro                          = 'BRASILIA',
+                 gender_stress                  = .8,
+                 under_influence                = .1,
+                 has_gun                        = .1,
+                 is_working_pct                 = .8,
+                 chance_changing_working_status = .05,
+                 pct_change_wage                = .05,
+                 model_scale                    = 1000,
+                 quarantine                     = False,
+                 dissuasion                     = True,
+                 data_year                      = 2010
+                 ):
         """
         A violence model of Brazilian metropolis
 
@@ -165,21 +163,25 @@ class Home(Model):
             # print(f'This neighborhood {key} stress levels is at {self.neighborhood_stress[key]}')
 
     @staticmethod
-    def count_type_citizens(model, condition):
+    def count_type_citizens(model: Model, condition):
         """
         Helper method to count agents by Type.
         """
-        # iterator for removed and used numpy's sum to count the number of agents meeting the established conditions
-        return     np.sum({ 'denounce':     (model.schedule.agents.data['denounce']),
-                            'got_attacked': (model.schedule.agents.data['got_attacked']),
-                            'female':       (model.schedule.agents.data['gender'] == 'female') \
-                            & (model.schedule.agents.data['age'] > 18) }[condition])
+        func_set = {
+            'denounce':     lambda agent: agent.denounce,
+            'got_attacked': lambda agent: agent.got_attacked,
+            'female':       lambda agent: 1 if agent.gender == 'female' and agent.age > 18 else 0
+        } 
+        return np.sum([ func_set[condition](agent) if isinstance(agent, Person) else 0 
+                        for agent in model.schedule.agents ])
 
     @staticmethod
     def count_stress(model):
-        # Creation of mask to obtain agents from the 'family' category and performs the average with context_stress
-        return np.mean(model.schedule.agents.data['context_stress'] * \
-                      (model.schedule.agents.data['category'] == 'family'))
+        """
+        Return the mean of the context_stress
+        """
+        return np.mean([ agent.context_stress for agent in model.schedule.agents
+                         if isinstance(agent, Family) ]) if model.schedule.agents.__len__() else 0
 
     def run_model(self, step_count=200):
 
@@ -187,7 +189,7 @@ class Home(Model):
             print('Initial number of people: ', self.schedule.get_breed_count(Person))
 
         # Steps are not being set here, but on superclass. Changes should be made in the step function above!
-        for i in range(step_count):
+        for _ in range(step_count):
             self.step()
 
         if self.verbose:
@@ -200,7 +202,7 @@ def generate_output():
     output = pd.DataFrame(columns=['metropolis', 'stress'])
     for metro in metropolis:
         home = Home(metro=metro)
-        for i in range(10):
+        for _ in range(10):
             home.step()
         model_df = home.datacollector.get_model_vars_dataframe()
         output.loc[output.shape[0]] = [metro, model_df.loc[9, 'Stress']]
