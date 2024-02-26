@@ -58,6 +58,7 @@ def generate_people(params, ppl, col):
 
     people = ppl.reindex(indexes).reset_index(drop=True)
     people = people[['AREAP', 'gender', 'age']]
+    #people['gender'] = people['gender'].astype(str)
     # for i, idx in enumerate(indexes):
     #     people.loc[i] = ppl.loc[idx]
     people.loc[people['gender'] == 1, 'gender'] = 'female'

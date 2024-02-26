@@ -5,7 +5,10 @@ from agents import Person
 import model
 
 def merge_df(*dataFrames) -> pd.DataFrame:
-    return pd.merge(*dataFrames, right_index=True, left_index=True)
+    merged = dataFrames[0]
+    for df in dataFrames[1:]:
+        merged = merged.merge(df, left_index=True, right_index=True)
+    return merged
 
 def main(metro='BRASILIA', iterates=5, steps=10):
     """ Be careful. Number of runs = iterations * subdivisions ** num_parameters 
@@ -46,7 +49,7 @@ def main(metro='BRASILIA', iterates=5, steps=10):
         df_denounce = pd.DataFrame.from_dict(denounced, orient='index', columns=['denounce'])
         df_females  = pd.DataFrame.from_dict(females, orient='index', columns=['females'])
 
-        # Merge Dataframes
+        #Merge Dataframes
         df          = merge_df(df_attack, df_denounce, df_females) 
         # df = pd.merge(df_attack, df_denounce, right_index=True, left_index=True)
         # df = df.merge(df_females, right_index=True, left_index=True)

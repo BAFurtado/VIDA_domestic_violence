@@ -14,8 +14,6 @@ def test_assigned_spouse():
                         (np.random.randint(9),np.random.randint(9)))
     assert isinstance(main.assign_spouse(main), Person)
 
-def test_count_type_citizens():
-    pass
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
