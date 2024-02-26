@@ -1,7 +1,5 @@
 from collections import defaultdict
-
-from mesa.time import RandomActivation
-
+from mesa.time   import RandomActivation
 
 class RandomActivationByBreed(RandomActivation):
     """
@@ -26,7 +24,7 @@ class RandomActivationByBreed(RandomActivation):
             agent: An Agent to be added to the schedule.
         """
 
-        self._agents[agent.unique_id] = agent
+        #self._agents[agent.unique_id] = agent
         agent_class = type(agent)
         self.agents_by_breed[agent_class][agent.unique_id] = agent
 

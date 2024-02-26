@@ -1,21 +1,3 @@
-### Phase2 init
-
-New experts are joining the project to comment on observed metropolitan domestic violence vis-à-vis simulated for 
-new regions!
-
-We have updated output data with new Metropolitan Regions:
- 
-* BELO HORIZONTE
-* BRASILIA
-* PORTO ALEGRE
-* VITÓRIA
-* RECIFE
-* CURITIBA
-* RIO DE JANEIRO
-* SAO PAULO
-* FORTALEZA
-* GOIANIA
-
 # VIDA: A simulation model of domestic VIolence in times of social DistAncing
 
 ### Published at JASSS
@@ -26,14 +8,17 @@ We have updated output data with new Metropolitan Regions:
 
 ## Results
 
-![Experimental design: deterrence system and social distancing](tab3.png)
+![Experimental design: deterrence system and social distancing](./figures/tab3.png)
+Figure 1: Experimental design: deterrence system and social distancing
 
-![Comparison among Brazilian metropolitan regions](fig1.png)
+![Comparison among Brazilian metropolitan regions](./figures/fig1.png)
+Figure 2: Comparison among Brazilian metropolitan regions
 
-![Intrametropolitan comparison -- Porto Alegre](fig2.png)
+![Intrametropolitan comparison -- Porto Alegre](./figures/fig2.png)
+Figure 3: Intrametropolitan comparison (Porto Alegre - RS)
 
-![Intrametropolitan comparison -- Brasília](fig3.png)
-
+![Intrametropolitan comparison -- Brasília](./figures/fig3.png)
+Figure 4: Intrametropolitan comparison (Brasília - DF)
 
 # VIDA: Simulando VIolência DomésticA em Tempos de Quarentena
 
@@ -53,7 +38,7 @@ simulate the main processes and drivers within this system**." (Malleson, Heppen
 We developed the model on top of [https://github.com/projectmesa/mesa] mesa.
 We thank Jackie Kazil, David Massa and all the contributors of the mesa project. 
 
-# [VIDA video explicativo -- 4 minutos](https://www.youtube.com/watch?v=14r831iPbbM&feature=youtu.be])  
+# [Projeto VIDA (vídeo explicativo)](https://www.youtube.com/watch?v=14r831iPbbM&feature=youtu.be])  
 
 ## Objetivos
 
@@ -67,10 +52,12 @@ de dissuasão
 diversidades das RMs brasileiras.
 
 # To run the model:
-## Instalação inicial
+## Instalação
+
+### Windows
 
 1. Preferencialmente, download e instale Python, via [https://www.anaconda.com/distribution] conda. 
-No mínimo, tenha Pyton3 instalado
+No mínimo, tenha Python 3 instalado
 2. Preferencialmente, download e instale uma IDE. Sugiro 
 [https://www.jetbrains.com/pycharm/download/] PyCharm Community. 
 Universitários tem acesso à versão profissional, basta cadastro com e-mail institucional. 
@@ -79,14 +66,19 @@ Universitários tem acesso à versão profissional, basta cadastro com e-mail in
 clone esse repositório:
     1. `git clone https://github.com/BAFurtado/VIDA_home_violence.git`  
     2. `conda install mesa`
-    
-## Para rodar o modelo
 
-### requires mesa
+### Linux
 
-1. To run generalization_aps (many metro regions), run 
+1. Python3 e o pip (gerenciador de módulos) são nativos da instalação na maioria das distribuições.
+2. Utilize o comando `sudo apt-get install git` (No Ubuntu ou outras distros baseadas em Debian), `sudo dnf install git` (Fedora), para instalar o Git em sua máquina.
+3. Utilize o comando `pip install mesa` para instalar o mesa. Utilize o comando `pip freeze | grep -i 'mesa=='` e certifique-se que a versão do mesa seja >= 2.2.4
+4. Clone o repositório: `git clone https://github.com/BAFurtado/VIDA_home_violence.git`.
 
-`python "violence/generalization_aps.py"`
+## Instruções para a execução do modelo
 
-    
+
+1. Para executar o generalization_aps (várias regiões metropolitanas), utilize o comando: 
+
+* `python "violence/generalization_aps.py"`
+
 Enjoy modeling!

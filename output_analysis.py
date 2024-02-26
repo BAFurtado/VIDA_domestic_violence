@@ -2,21 +2,28 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def plotting(data: pd.DataFrame, name='All'):
 
-def plotting(data, name='All'):
-    fig, ax = plt.subplots()
-    ax = data['Attacks per female'].plot(kind='hist', bins=40, alpha=.7, color='orange', ax=ax,
-                                         label='Ataques por 100 mil mulheres')
-    ax.set(xlabel='Ataques por 100 mil mulheres',
+    xlabel = 'Ataques por 100 mil mulheres'
+    _, histogram = plt.subplots()
+    histogram = data['Attacks per female'].plot(kind='hist', bins=40, alpha=.7, color='orange', ax=histogram,
+                                         label=xlabel)
+    
+    histogram.set(xlabel=xlabel,
            ylabel='Frequência')
-    y_min, y_max = ax.get_ylim()
-    ax.vlines(data['Attacks per female'].median(), y_min, y_max, colors='red', alpha=.5,
+    
+    y_min, y_max = histogram.get_ylim()
+
+    histogram.vlines(data['Attacks per female'].median(), y_min, y_max, colors='red', alpha=.5,
               label=f"Mediana: {data['Attacks per female'].median():.02f}")
-    for each in ['top', 'bottom', 'right', 'left']:
-        ax.spines[each].set_visible(False)
-    ax.get_xaxis().tick_bottom()
-    ax.get_yaxis().tick_left()
-    ax.legend(frameon=False)
+    
+    for position in ['top', 'bottom', 'right', 'left']:
+        histogram.spines[position].set_visible(False)
+
+    histogram.get_xaxis().tick_bottom()
+    histogram.get_yaxis().tick_left()
+    histogram.legend(frameon=False)
+    histogram.set_title(f'Histograma Frequência / {xlabel}')
 
     plt.grid(True, 'major', 'y', ls='--', lw=.5, c='k', alpha=.2)
     plt.tick_params(axis='both', which='both', bottom=False, top=False,
@@ -24,16 +31,15 @@ def plotting(data, name='All'):
     plt.savefig(f'{name}.png', bbox_inches='tight')
     plt.show()
 
-
 if __name__ == '__main__':
-    p = 'output'
-    files = os.listdir(p)
-    d = pd.DataFrame()
-    for f in files:
-        if '2000' in f:
-            d = d.append(pd.read_csv(os.path.join(p, f), sep=';'))
-    plotting(d)
-    for i, each in d.groupby(d.AREAP.astype(str).str[:2]):
+    output_dir  = 'output'
+    files       = os.listdir(output_dir)
+    dataframe   = pd.DataFrame()
+    for file in files:
+        if '2000' in file:
+            dataframe = dataframe._append(pd.read_csv(os.path.join(output_dir, file), sep=';'))
+    plotting(dataframe)
+    for i, each in dataframe.groupby(dataframe.AREAP.astype(str).str[:2]):
         print(i, each)
         plotting(each, name=i)
 
