@@ -125,7 +125,7 @@ class Home(Model):
                 self.schedule.add(doe)
                 family.add_agent(doe)
             # 2. Marry the couple
-            if len(to_marry) == 2:
+            if len(to_marry) == 2:  
                 to_marry[0].assign_spouse(to_marry[1])
 
             # 3. Update number of family members

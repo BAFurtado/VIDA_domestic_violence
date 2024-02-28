@@ -101,7 +101,10 @@ class Person(Agent):
         else:
             stress_level += (1 - (self.years_study / 10)) * Classification.HIGH
         # Hypothesis 2: # Higher incidence of attack by male between 15-29 years old
-        if 18 > self.age > 29:
+        
+        # if 18 > self.age > 29:
+        # Fixed interval error (self.age in [19-28])
+        if 18 < self.age < 29:
             stress_level *= Classification.HIGH
         # Hypothesis 3: Ethnicity influences victimization, likelihood increases 30% when spouse is black
         # This stress indicator will only update for married males
