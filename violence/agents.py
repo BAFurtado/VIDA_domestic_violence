@@ -1,9 +1,6 @@
 from mesa.agent import Agent
-
-HIGH = 10
-MEDIUM = 5
-LOW = 1
-
+from settings   import Classification
+from mesa.model import Model
 
 class Person(Agent):
     """
@@ -11,36 +8,37 @@ class Person(Agent):
 
     """
 
-    def __init__(self, unique_id, model, pos, gender='male', age=25, color='negra',
+    def __init__(self, unique_id: int, model: Model, pos, gender='male', age=25, color='negra',
                  years_study=6, has_gun=False, is_working=False,
                  wage=0, reserve_wage=.5, under_influence=False, address=None,
                  category='person', denounce=False, protection=False, condemnation=False):
+        
         super().__init__(unique_id, model)
-        self.pos = pos
-        self.gender = gender
-        self.age = age
-        self.color = color
-        self.years_study = years_study
-        self.has_gun = has_gun
-        self.is_working = is_working
-        self.reserve_wage = reserve_wage
-        self.under_influence = under_influence
-        self.wage = wage
-        self.address = address
+        self.pos                = pos
+        self.gender             = gender
+        self.age                = age
+        self.color              = color
+        self.years_study        = years_study
+        self.has_gun            = has_gun
+        self.is_working         = is_working
+        self.reserve_wage       = reserve_wage
+        self.under_influence    = under_influence
+        self.wage               = wage
+        self.address            = address
         # Set during the simulation
-        self.spouse = None
-        self.got_attacked = 0
-        self.assaulted = 0
-        self.hours_home = .34 if self.is_working else .67
-        self.family = None
+        self.spouse             = None
+        self.got_attacked       = 0
+        self.assaulted          = 0
+        self.hours_home         = .34 if self.is_working else .67
+        self.family             = None
         self.num_members_family = 1
-        self.stress = 0
-        self.category = category
+        self.stress             = 0
+        self.category           = category
         # Measures of dissuasion
-        self.denounce_group = 0
-        self.denounce = denounce
-        self.protection = protection
-        self.condemnation = condemnation
+        self.denounce_group     = 0
+        self.denounce           = denounce
+        self.protection         = protection
+        self.condemnation       = condemnation
 
     def step(self):
         """
@@ -69,13 +67,15 @@ class Person(Agent):
             if not self.is_working:
                 self.wage = 0
             else:
-                self.reserve_wage *= self.model.random.uniform(-self.model.pct_change_wage, self.model.pct_change_wage)
+                self.reserve_wage *= self.model.random.uniform(-self.model.pct_change_wage,
+                                                                self.model.pct_change_wage)
                 self.wage = self.reserve_wage
             self.hours_home = .34 if self.is_working else .67
 
     def assign_spouse(self, agent):
-        self.spouse = agent
+        self.spouse  = agent
         agent.spouse = self
+        return self.spouse
 
     def update_stress(self):
         # Although all adults stress is updated, only 'males' are aggressors
@@ -87,64 +87,67 @@ class Person(Agent):
         # Wage influences neighborhood_quality and house_size
         # Gender
         # We fixed gender stress for females in .2
-        tmp = self.model.gender_stress if self.gender == 'male' else .2
+        stress_level = self.model.gender_stress if self.gender == 'male' else .2
         # Salary
-        tmp += (1 - self.wage) * HIGH
+        stress_level += (1 - self.wage) * Classification.HIGH
         # Neighborhood quality
-        tmp += -self.family.family_wage * MEDIUM
+        stress_level += -self.family.family_wage * Classification.MEDIUM
         # House size: higher the wage or smaller the wage per person, less contribution to stress
-        tmp += 1 - (self.family.family_wage / self.num_members_family) * MEDIUM
+        stress_level += 1 - (self.family.family_wage / self.num_members_family) * Classification.MEDIUM
 
         # Hypothesis 1: # Education Education less than 6, likelihood increases by 60%
         if self.years_study < 6:
-            tmp += (1 - (self.years_study / 10)) * 1.6 * HIGH
+            stress_level += (1 - (self.years_study / 10)) * 1.6 * Classification.HIGH
         else:
-            tmp += (1 - (self.years_study / 10)) * HIGH
+            stress_level += (1 - (self.years_study / 10)) * Classification.HIGH
         # Hypothesis 2: # Higher incidence of attack by male between 15-29 years old
-        if 18 > self.age > 29:
-            tmp *= HIGH
+        
+        # if 18 > self.age > 29:
+        # Fixed interval error (self.age in [19-28])
+        if 18 < self.age < 29:
+            stress_level *= Classification.HIGH
         # Hypothesis 3: Ethnicity influences victimization, likelihood increases 30% when spouse is black
         # This stress indicator will only update for married males
         if self.spouse is not None:
             if self.spouse.color == 'preta':
-                tmp *= 1.3
+                stress_level *= 1.3
             # Hypothesis 4: relevance of women participating in the labor market
             if self.spouse.is_working:
-                # Increases -- level HIGH -- when spouse WORKS
+                # Increases -- level Classification.HIGH -- when spouse WORKS
                 # TODO: Find working data by gender by metropolis
-                tmp += 1 * MEDIUM
+                stress_level += 1 * Classification.MEDIUM
 
         # Home permanence
         if not self.model.quarantine:
-            tmp += self.hours_home * MEDIUM
+            stress_level += self.hours_home * Classification.MEDIUM
         else:
-            tmp += 1 * MEDIUM
+            stress_level += 1 * Classification.MEDIUM
         # History of assault. This stress indicator updates only for those 'male' attackers who already have a history
-        tmp += self.assaulted / 10 * HIGH
+        stress_level += self.assaulted / 10 * Classification.HIGH
         # Access to weapon
-        tmp += 1 * HIGH * HIGH if self.has_gun else 0
+        stress_level += 1 * Classification.HIGH * Classification.HIGH if self.has_gun else 0
         # Chemical dependence
-        tmp += 1 * self.model.random.random() * HIGH if self.under_influence else 0
+        stress_level += 1 * self.model.random.random() * Classification.HIGH if self.under_influence else 0
 
         # Dissuasion implementation as a decreasing factor of stress indicator
         if self.spouse is not None:
             if self.spouse.denounce:
-                tmp -= 1 * MEDIUM
+                stress_level -= 1 * Classification.MEDIUM
             if self.spouse.protection:
-                tmp -= 1 * HIGH
+                stress_level -= 1 * Classification.HIGH
             if self.spouse.condemnation:
-                tmp -= 1 * HIGH
+                stress_level -= 1 * Classification.HIGH
 
         # General effect adjustment
-        tmp /= self.model.model_scale
-        self.stress = tmp
+        stress_level /= self.model.model_scale
+        self.stress = stress_level
 
     def trigger_violence(self):
         """
         Uses self stress and family context to incur in probability of becoming violent
         """
         # First time offender get registered in the system and changes category into an Aggressor and a Victim
-        if self.assaulted == 0:
+        if not self.assaulted:
             if self.stress > self.random.random():
                 self.category = 'aggressor'
                 self.assaulted += 1
@@ -189,23 +192,22 @@ class Person(Agent):
             if self.model.random.random() > .5:
                 self.condemnation = True
 
-
 class Family(Agent):
     """
     A family that provides the environment and contain agents who might become victims or aggressors
     """
 
-    def __init__(self, unique_id, model, pos):
+    def __init__(self, unique_id: int, model: Model, pos):
         super().__init__(unique_id, model)
-        self.pos = pos
+        self.pos            = pos
         self.context_stress = 0
-        self.members = dict()
-        self.family_wage = 0
-        self.address = None
+        self.members        = dict()
+        self.family_wage    = 0
+        self.address        = None
 
-    def add_agent(self, agent):
-        self.members[agent.unique_id] = agent
-        agent.family = self
+    def add_agent(self, agent: Person):
+        self.members[agent.unique_id]   = agent
+        agent.family                    = self
         if self.address is None:
             self.address = agent.address
 
@@ -216,9 +218,9 @@ class Family(Agent):
         # It will include family stress indicator update
         # Likelihood of triggering aggression
         # New values
-        stress = 0
-        self.family_wage = 0
+        stress              = 0
+        self.family_wage    = 0
         for agent in self.members.values():
-            stress += agent.stress
-            self.family_wage += agent.wage
+            stress              += agent.stress
+            self.family_wage    += agent.wage
         self.context_stress = stress / len(self.members)
